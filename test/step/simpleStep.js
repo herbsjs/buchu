@@ -21,6 +21,15 @@ describe('A step', () => {
                 //then
                 assert.ok(ret.isOk)
             })
+
+            it('should doc', () => {
+                //given
+                const st = givenTheSimplestStep()
+                //when
+                const ret = st.doc()
+                //then
+                assert.equal(ret, null)
+            })
         })
 
         describe('returning Err', () => {

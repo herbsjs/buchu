@@ -9,7 +9,11 @@ describe('A use case', () => {
 
         const givenTheSimplestUseCase = () => {
             const uc = usecase('A use case', {
-                'A step': step(() => { return Ok() })
+                'A step': step(() => { return Ok() }),
+                'A second step': step({
+                    'step 1': step(() => { return Ok() }),
+                    'step 2': step(() => { return Ok() }),
+                })
             })
             return uc
         }
@@ -30,6 +34,27 @@ describe('A use case', () => {
                 const ret = uc.run()
                 //then
                 assert.ok(ret.isOk)
+            })
+
+            it('should doc', () => {
+                //given
+                const uc = givenTheSimplestUseCase()
+                //when
+                const ret = uc.doc()
+                //then
+                assert.deepEqual(ret, {
+                    description: "A use case",
+                    steps: [
+                        { description: "A step" },
+                        {
+                            description: 'A second step',
+                            steps: [
+                                { description: 'step 1' },
+                                { description: 'step 2' }
+                            ]
+                        }
+                    ]
+                })
             })
         })
 

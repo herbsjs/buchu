@@ -1,0 +1,51 @@
+TODO
+
+* Scenarios we are trying to cover
+- Uniform, auditable and secure use case model 
+- From simple to multi-step use cases
+
+* Use case
+[X] Base
+Run a use case
+
+[X] Steps
+Enable multiple steps for a use case
+
+[X] Nested Steps
+Enable multiple steps for a parent step
+
+[/] Doc
+Get description and structure from use case and its steps 
+
+[ ] Nested Steps - multiple files
+Enable multiple steps in diferent files for a parent step
+
+[ ] Conditional Steps
+Enable a If/Else constructor for steps
+
+[ ] Request
+Be able to describe and validate the use case request object 
+
+[ ] Response
+Be able to describe and validate the use case response object 
+
+[ ] Use Case Error
+Ok or Error results for a use case (Rust inspired) 
+
+[ ] Autorization
+Be able to autorize the execution of a use case and its steps
+
+[ ] Audit
+Be able to track use case runtime information 
+
+[ ] Audit - Timing
+Be able to track use case and its steps execution time 
+
+[ ] Async / MQ - Multiple Rounds
+Be able to partially execute a use case and continue (when a MQ is necessary, for instance) 
+
+[ ] transaction ID
+A ID to track execution between steps
+
+[ ] session ID
+A ID to track execution between use cases
