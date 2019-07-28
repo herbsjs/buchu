@@ -1,0 +1,21 @@
+{
+  "name": "grounds",
+  "version": "1.0.0",
+  "description": "Uniform, auditable and secure use case library. Influenced by Clean Architecture and Trailblazer",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --recursive"
+  },
+  "keywords": [
+    "usecase"
+  ],
+  "author": "David Lojudice Sb",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "mocha": "^6.2.0"
+  }
+}
