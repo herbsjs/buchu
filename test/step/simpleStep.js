@@ -6,7 +6,7 @@ describe('A step', () => {
 
     describe('with a function (simplest step)', () => {
 
-        describe('returning Ok', () => {
+        context('returning Ok', () => {
 
             const givenTheSimplestStep = () => {
                 const st = step(() => { return Ok() })
@@ -32,7 +32,7 @@ describe('A step', () => {
             })
         })
 
-        describe('returning Err', () => {
+        context('returning Err', () => {
 
             const givenTheSimplestStepWithError = () => {
                 const st = step(() => { return Err() })

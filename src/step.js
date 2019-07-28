@@ -52,11 +52,7 @@ class Step {
             const stepsDoc = []
             const steps = Object.entries(this._body)
             for (const step of steps) {
-                const ret = step[1].doc()
-                if (ret)
-                    stepsDoc.push({ description: step[0], steps: ret })
-                else
-                    stepsDoc.push({ description: step[0] })
+                stepsDoc.push({ description: step[0], steps: step[1].doc() })
             }
             return stepsDoc
         }

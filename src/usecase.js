@@ -19,15 +19,6 @@ class UseCase {
             steps: this.mainStep.doc()
         }
 
-        // const steps = Object.entries(this._body)
-        // for (const step of steps) {
-        //     const ret = step[1].doc()
-        //     if (ret)
-        //         usecase.steps.push({ description: step[0], steps: ret })
-        //     else
-        //         usecase.steps.push({ description: step[0] })
-        // }
-
         return usecase;
     }
 

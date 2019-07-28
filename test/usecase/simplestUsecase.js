@@ -45,12 +45,12 @@ describe('A use case', () => {
                 assert.deepEqual(ret, {
                     description: "A use case",
                     steps: [
-                        { description: "A step" },
+                        { description: "A step", steps: null },
                         {
                             description: 'A second step',
                             steps: [
-                                { description: 'step 1' },
-                                { description: 'step 2' }
+                                { description: 'step 1', steps: null },
+                                { description: 'step 2', steps: null }
                             ]
                         }
                     ]

@@ -7,7 +7,7 @@ describe('A use case', () => {
 
     describe('with multiple steps', () => {
 
-        describe('returning Ok', () => {
+        context('returning Ok', () => {
 
             const givenAMultiStepUseCase = () => {
                 const uc = usecase('A use case', {
@@ -28,7 +28,7 @@ describe('A use case', () => {
             })
         })
 
-        describe('returning Err', () => {
+        context('returning Err', () => {
 
             const givenAMultiStepUseCaseWithError = () => {
                 const uc = usecase('A use case', {

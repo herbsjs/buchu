@@ -33,9 +33,9 @@ describe('A step', () => {
                 const ret = st.doc()
                 //then
                 assert.deepEqual(ret, [
-                    { description: 'step 1' },
-                    { description: 'step 2' },
-                    { description: 'step 3' }
+                    { description: 'step 1', steps: null },
+                    { description: 'step 2', steps: null },
+                    { description: 'step 3', steps: null }
                 ])
             })
         })
@@ -108,27 +108,27 @@ describe('A step', () => {
                     {
                         description: 'step 1',
                         steps: [
-                            { description: 'step 1.1' }
+                            { description: 'step 1.1', steps: null }
                         ]
                     },
                     {
                         description: 'step 2',
                         steps: [
-                            { description: 'step 2.1' },
-                            { description: 'step 2.2' }
+                            { description: 'step 2.1', steps: null },
+                            { description: 'step 2.2', steps: null }
                         ]
                     },
                     {
                         description: 'step 3',
                         steps: [
-                            { description: 'step 3.1' },
-                            { description: 'step 3.2' },
+                            { description: 'step 3.1', steps: null },
+                            { description: 'step 3.2', steps: null },
                             {
                                 description: 'step 3.3',
                                 steps: [
-                                    { description: 'step 3.3.1' },
-                                    { description: 'step 3.3.2' },
-                                    { description: 'step 3.3.3' }
+                                    { description: 'step 3.3.1', steps: null },
+                                    { description: 'step 3.3.2', steps: null },
+                                    { description: 'step 3.3.3', steps: null }
                                 ]
                             }
                         ]
