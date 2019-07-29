@@ -15,21 +15,23 @@ class IfElse {
     }
 
     doc() {
+        const addDescription = (info) => {
+            const [description, step] = info
+            step.description = description
+            return step
+        }
+
         const steps = Object.entries(this._body)
-        const [ifStep, thenStep, elseStep] = steps
+        const [ifStepInfo, thenStepInfo, elseStepInfo] = steps
+
+        const ifStep = addDescription(ifStepInfo)
+        const thenStep = addDescription(thenStepInfo)
+        const elseStep = addDescription(elseStepInfo)
+
         return {
-            'if': {
-                description: ifStep[0],
-                steps: ifStep[1].doc()
-            },
-            'then': {
-                description: thenStep[0],
-                steps: thenStep[1].doc()
-            },
-            'else': {
-                description: elseStep[0],
-                steps: elseStep[1].doc()
-            }
+            'if': ifStep.doc(),
+            'then': thenStep.doc(),
+            'else': elseStep.doc()
         }
     }
 }

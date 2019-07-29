@@ -22,13 +22,26 @@ describe('A step', () => {
                 assert.ok(ret.isOk)
             })
 
+            it('should audit', () => {
+                //given
+                const st = givenTheSimplestStep()
+                //when
+                const ret = st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Ok()
+                })
+            })
+
             it('should doc', () => {
                 //given
                 const st = givenTheSimplestStep()
                 //when
                 const ret = st.doc()
                 //then
-                assert.equal(ret, null)
+                assert.deepEqual(ret, { description: undefined, steps: null })
             })
         })
 
@@ -46,6 +59,19 @@ describe('A step', () => {
                 const ret = st.run()
                 //then
                 assert.ok(ret.isErr)
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenTheSimplestStepWithError()
+                //when
+                const ret = st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Err()
+                })
             })
         })
     })

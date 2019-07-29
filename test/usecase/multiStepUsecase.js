@@ -26,6 +26,24 @@ describe('A use case', () => {
                 //then
                 assert.ok(ret.isOk)
             })
+
+            it('should audit', () => {
+                //given
+                const uc = givenAMultiStepUseCase()
+                //when
+                const ret = uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    return: Ok(),
+                    steps: [
+                        { type: 'step', description: 'step 1', return: Ok() },
+                        { type: 'step', description: 'step 2', return: Ok() },
+                        { type: 'step', description: 'step 3', return: Ok() },
+                    ]
+                })
+            })
         })
 
         context('returning Err', () => {
@@ -46,6 +64,23 @@ describe('A use case', () => {
                 const ret = uc.run()
                 //then
                 assert.ok(ret.isErr)
+            })
+
+            it('should audit', () => {
+                //given
+                const uc = givenAMultiStepUseCaseWithError()
+                //when
+                const ret = uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    return: Err(),
+                    steps: [
+                        { type: 'step', description: 'step 1', return: Ok() },
+                        { type: 'step', description: 'step 2', return: Err() }
+                    ]
+                })
             })
         })
     })

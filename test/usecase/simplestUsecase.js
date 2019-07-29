@@ -36,6 +36,27 @@ describe('A use case', () => {
                 assert.ok(ret.isOk)
             })
 
+            it('should audit', () => {
+                //given
+                const uc = givenTheSimplestUseCase()
+                //when
+                uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    return: Ok(),
+                    steps: [
+                        { type: 'step', description: 'A step', return: Ok() },
+                        {
+                            type: 'step', description: 'A second step', return: Ok(), steps: [
+                                { type: 'step', description: 'step 1', return: Ok() },
+                                { type: 'step', description: 'step 2', return: Ok() }
+                            ]
+                        }]
+                })
+            })
+
             it('should doc', () => {
                 //given
                 const uc = givenTheSimplestUseCase()

@@ -35,7 +35,7 @@ Ok or Error results for a use case (Rust inspired)
 [ ] Autorization
 Be able to autorize the execution of a use case and its steps
 
-[ ] Audit
+[X] Audit
 Be able to track use case runtime information 
 
 [ ] Audit - Timing

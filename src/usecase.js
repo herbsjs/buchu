@@ -5,21 +5,21 @@ class UseCase {
 
     constructor(description, body) {
         this.description = description
-        this.mainStep = step(body)
+        this._mainStep = step(body)
+        this._mainStep.description = description
+        this._mainStep._auditTrail.type = "use case"
     }
 
     run() {
-        return this.mainStep.run()
+        return this._mainStep.run()
     }
 
     doc() {
+        return this._mainStep.doc();
+    }
 
-        const usecase = {
-            description: this.description,
-            steps: this.mainStep.doc()
-        }
-
-        return usecase;
+    get auditTrail() {
+        return this._mainStep.auditTrail
     }
 
 }

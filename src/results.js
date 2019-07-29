@@ -14,6 +14,7 @@ class Ok {
 		else
 			return "Ok"
 	}
+	toJSON() { return this.toString() }
 }
 
 class Err {
@@ -32,6 +33,7 @@ class Err {
 		else
 			return "Error"
 	}
+	toJSON() { return this.toString() }
 }
 
 module.exports = {
