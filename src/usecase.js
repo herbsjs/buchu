@@ -15,7 +15,7 @@ class UseCase {
     }
 
     doc() {
-        return this._mainStep.doc();
+        return this._mainStep.doc()
     }
 
     get auditTrail() {

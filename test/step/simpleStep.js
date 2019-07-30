@@ -20,6 +20,7 @@ describe('A step', () => {
                 const ret = st.run()
                 //then
                 assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, null)
             })
 
             it('should audit', () => {
@@ -59,11 +60,144 @@ describe('A step', () => {
                 const ret = st.run()
                 //then
                 assert.ok(ret.isErr)
+                assert.deepEqual(ret.value, null)
             })
 
             it('should audit', () => {
                 //given
                 const st = givenTheSimplestStepWithError()
+                //when
+                const ret = st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Err()
+                })
+            })
+        })
+    })
+
+    describe('with a function (simplest step) returning value', () => {
+
+        context('returning Ok', () => {
+
+            const givenTheSimplestStepReturningValue = () => {
+                const st = step(() => { return Ok(1) })
+                return st
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenTheSimplestStepReturningValue()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, 1)
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenTheSimplestStepReturningValue()
+                //when
+                const ret = st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Ok(1)
+                })
+            })
+        })
+
+        context('returning Err', () => {
+
+            const givenTheSimplestStepReturningValueWithError = () => {
+                const st = step(() => { return Err(1) })
+                return st
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenTheSimplestStepReturningValueWithError()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isErr)
+                assert.deepEqual(ret.err, 1)
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenTheSimplestStepReturningValueWithError()
+                //when
+                const ret = st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Err(1)
+                })
+            })
+        })
+    })
+
+    describe('with a function (simplest step) and context', () => {
+
+        context('returning Ok', () => {
+
+            const givenTheSimplestStepWithContext = () => {
+                const st = step((ctx) => { ctx.ret.step1 = 1; return Ok() })
+                return st
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenTheSimplestStepWithContext()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, null)
+                assert.deepEqual(st.context.ret, { step1: 1 })
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenTheSimplestStepWithContext()
+                //when
+                st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Ok()
+                })
+            })
+        })
+
+        context('returning Err', () => {
+
+            const givenTheSimplestStepWithContextWithError = () => {
+                const st = step((ctx) => { ctx.ret.step1 = 1; return Err() })
+                return st
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenTheSimplestStepWithContextWithError()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isErr)
+                assert.deepEqual(ret.value, null)
+                assert.deepEqual(st.context.ret, { step1: 1 })
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenTheSimplestStepWithContextWithError()
                 //when
                 const ret = st.run()
                 //then

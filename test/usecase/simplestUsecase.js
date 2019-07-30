@@ -45,11 +45,11 @@ describe('A use case', () => {
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case',
                     description: 'A use case',
-                    return: Ok(),
+                    return: Ok({}),
                     steps: [
                         { type: 'step', description: 'A step', return: Ok() },
                         {
-                            type: 'step', description: 'A second step', return: Ok(), steps: [
+                            type: 'step', description: 'A second step', return: Ok({}), steps: [
                                 { type: 'step', description: 'step 1', return: Ok() },
                                 { type: 'step', description: 'step 2', return: Ok() }
                             ]
@@ -95,6 +95,66 @@ describe('A use case', () => {
                 const ret = uc.run()
                 //then
                 assert.ok(ret.isErr)
+            })
+        })
+    })
+
+    describe('the simplest use case with context', () => {
+
+        const givenTheSimplestUseCaseWithContext = () => {
+            const uc = usecase('A use case', {
+                'Change context': step({
+                    'step c1': step((ctx) => { ctx.step1 = 1; return Ok() }),
+                    'step c2': step((ctx) => { ctx.step2 = "2"; return Ok() }),
+                }),
+                'Change return': step({
+                    'step r1': step((ctx) => { ctx.ret.step1 = "ret1"; return Ok() }),
+                    'step r2': step((ctx) => { ctx.ret.step2 = "ret2"; return Ok() }),
+                })
+            })
+            return uc
+        }
+
+        it('should initiate', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithContext()
+            //then
+            assert.deepEqual(uc.description, 'A use case')
+        })
+
+        context('returning Ok', () => {
+
+            it('should run', () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithContext()
+                //when
+                const ret = uc.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, { step1: 'ret1', step2: 'ret2' })
+            })
+
+            it('should audit', () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithContext()
+                //when
+                uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case', description: 'A use case', return: Ok({ step1: 'ret1', step2: 'ret2' }), steps: [
+                        {
+                            type: 'step', description: 'Change context', return: Ok({}), steps: [
+                                { type: 'step', description: 'step c1', return: Ok() },
+                                { type: 'step', description: 'step c2', return: Ok() }
+                            ]
+                        },
+                        {
+                            type: 'step', description: 'Change return', return: Ok({ step1: 'ret1', step2: 'ret2' }), steps: [
+                                { type: 'step', description: 'step r1', return: Ok() },
+                                { type: 'step', description: 'step r2', return: Ok() }
+                            ]
+                        }]
+                })
             })
         })
     })

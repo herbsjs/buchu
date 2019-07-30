@@ -26,69 +26,189 @@ describe('If Else step', () => {
             //then
             assert.ok(ret.isOk)
         })
-    })
 
-    context('returning Ok from Then', () => {
-
-        const givenAnIfElseStep = () => {
-            const ifElseStep = ifElse({
-                'If Step': step(() => { return Ok() }),
-                'Then Step': step(() => { return Ok() }),
-                'Else Step': step(() => { return Err() })
-            })
-            return ifElseStep
-        }
-
-        it('should run', () => {
+        it('should audit', () => {
             //given
-            const st = givenAnIfElseStep()
+            const st = givenASimpleUseCase()
             //when
-            const ret = st.run()
+            st.run()
             //then
-            assert.ok(ret.isOk)
-        })
-
-        it('should doc', () => {
-            //given
-            const st = givenAnIfElseStep()
-            //when
-            const ret = st.doc()
-            //then
-            assert.deepEqual(ret, {
-                if: {
-                    description: 'If Step',
-                    steps: null
-                },
-                then: {
-                    description: 'Then Step',
-                    steps: null
-                },
-                else: {
-                    description: 'Else Step',
-                    steps: null
-                }
+            assert.deepEqual(st.auditTrail, {
+                type: 'use case', description: 'A use case', return: Ok({}),
+                steps: [
+                    {
+                        type: 'if else',
+                        description: 'A condition',
+                        returnIf: Ok(),
+                        returnThen: Ok()
+                    }
+                ],
             })
         })
     })
 
-    context('returning Ok from Else', () => {
-
-        const givenAnIfElseStep = () => {
-            const ifElseStep = ifElse({
-                'If': step(() => { return Err() }),
-                'Then': step(() => { return Err() }),
-                'Else': step(() => { return Ok() })
+    describe('on a use case with context', () => {
+        const givenASimpleUseCaseWithContext = () => {
+            const uc = usecase('A use case', {
+                'A condition': ifElse({
+                    'If Step': step((ctx) => { ctx.ret.IfStep = 10; return Ok() }),
+                    'Then Step': step((ctx) => { ctx.ret.ThenStep = 20; return Ok() }),
+                    'Else Step': step((ctx) => { ctx.ret.ElseStep = 30; return Err() })
+                })
             })
-            return ifElseStep
+            return uc
         }
 
         it('should run', () => {
             //given
-            const st = givenAnIfElseStep()
+            const uc = givenASimpleUseCaseWithContext()
             //when
-            const ret = st.run()
+            const ret = uc.run()
             //then
             assert.ok(ret.isOk)
+            assert.deepEqual(ret.value, { IfStep: 10, ThenStep: 20 })
+        })
+    })
+
+    describe('simple If Else Then', () => {
+
+        context('returning Ok from Then', () => {
+
+            const givenAnIfThenStep = () => {
+                const ifElseStep = ifElse({
+                    'If Step': step(() => { return Ok() }),
+                    'Then Step': step(() => { return Ok() }),
+                    'Else Step': step(() => { return Err() })
+                })
+                return ifElseStep
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenAnIfThenStep()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isOk)
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenAnIfThenStep()
+                //when
+                st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'if else',
+                    description: undefined,
+                    returnIf: Ok(),
+                    returnThen: Ok()
+                })
+            })
+
+            it('should doc', () => {
+                //given
+                const st = givenAnIfThenStep()
+                //when
+                const ret = st.doc()
+                //then
+                assert.deepEqual(ret, {
+                    if: {
+                        description: 'If Step',
+                        steps: null
+                    },
+                    then: {
+                        description: 'Then Step',
+                        steps: null
+                    },
+                    else: {
+                        description: 'Else Step',
+                        steps: null
+                    }
+                })
+            })
+        })
+
+        context('returning Ok from Else', () => {
+
+            const givenAnIfElseStep = () => {
+                const ifElseStep = ifElse({
+                    'If': step(() => { return Err() }),
+                    'Then': step(() => { return Err() }),
+                    'Else': step(() => { return Ok() })
+                })
+                return ifElseStep
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenAnIfElseStep()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isOk)
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenAnIfElseStep()
+                //when
+                st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'if else',
+                    description: undefined,
+                    returnIf: Err(),
+                    returnElse: Ok()
+                })
+            })
+        })
+    })
+
+    describe('If Else Then with with return value', () => {
+
+        context('returning Ok from Then', () => {
+
+            const givenAnIfThenStepWithReturn = () => {
+                const ifElseStep = ifElse({
+                    'If Step': step(() => { return Ok(1) }),
+                    'Then Step': step(() => { return Ok(2) }),
+                    'Else Step': step(() => { return Err(3) })
+                })
+                return ifElseStep
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenAnIfThenStepWithReturn()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, 2)
+            })
+        })
+
+        context('returning Ok from Else', () => {
+
+            const givenAnIfElseStepWithReturn = () => {
+                const ifElseStep = ifElse({
+                    'If Step': step(() => { return Err(1) }),
+                    'Then Step': step(() => { return Err(2) }),
+                    'Else Step': step(() => { return Ok(3) })
+                })
+                return ifElseStep
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenAnIfElseStepWithReturn()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, 3)
+            })
         })
     })
 })

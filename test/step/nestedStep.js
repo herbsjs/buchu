@@ -40,7 +40,7 @@ describe('A step', () => {
                         { type: 'step', description: 'step 2', return: Ok() },
                         { type: 'step', description: 'step 3', return: Ok() }
                     ],
-                    return: Ok()
+                    return: Ok({})
                 })
             })
 
@@ -146,25 +146,25 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
-                    return: Ok(),
+                    return: Ok({}),
                     steps: [
                         {
-                            type: 'step', description: 'step 1', return: Ok(), steps: [
+                            type: 'step', description: 'step 1', return: Ok({}), steps: [
                                 { type: 'step', description: 'step 1.1', return: Ok() }
                             ]
                         },
                         {
-                            type: 'step', description: 'step 2', return: Ok(), steps: [
+                            type: 'step', description: 'step 2', return: Ok({}), steps: [
                                 { type: 'step', description: 'step 2.1', return: Ok() },
                                 { type: 'step', description: 'step 2.2', return: Ok() }
                             ]
                         },
                         {
-                            type: 'step', description: 'step 3', return: Ok(), steps: [
+                            type: 'step', description: 'step 3', return: Ok({}), steps: [
                                 { type: 'step', description: 'step 3.1', return: Ok() },
                                 { type: 'step', description: 'step 3.2', return: Ok() },
                                 {
-                                    type: 'step', description: 'step 3.3', return: Ok(), steps: [
+                                    type: 'step', description: 'step 3.3', return: Ok({}), steps: [
                                         { type: 'step', description: 'step 3.3.1', return: Ok() },
                                         { type: 'step', description: 'step 3.3.2', return: Ok() },
                                         { type: 'step', description: 'step 3.3.3', return: Ok() }
@@ -250,6 +250,120 @@ describe('A step', () => {
                 const ret = st.run()
                 //then
                 assert.ok(ret.isErr)
+            })
+        })
+    })
+
+    describe('with many nested steps with return value', () => {
+
+        context('returning Ok', () => {
+
+            const givenManyNestedStepsWithReturn = () => {
+                const st = step({
+                    'step 1': step({
+                        'step 1.1': step(() => { return Ok(1) }),
+                    }),
+                    'step 2': step({
+                        'step 2.1': step(() => { return Ok(2) }),
+                        'step 2.2': step(() => { return Ok(3) })
+                    }),
+                    'step 3': step({
+                        'step 3.1': step(() => { return Ok(4) }),
+                        'step 3.2': step(() => { return Ok(5) }),
+                        'step 3.3': step({
+                            'step 3.3.1': step(() => { return Ok(6) }),
+                            'step 3.3.2': step(() => { return Ok(7) }),
+                            'step 3.3.3': step(() => { return Ok(8) })
+                        })
+                    })
+                })
+                return st
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenManyNestedStepsWithReturn()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, {})
+            })
+
+            it('should audit', () => {
+                //given
+                const st = givenManyNestedStepsWithReturn()
+                //when
+                const ret = st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Ok({}),
+                    steps: [
+                        {
+                            type: 'step', description: 'step 1', return: Ok({}), steps: [
+                                { type: 'step', description: 'step 1.1', return: Ok(1) }
+                            ]
+                        },
+                        {
+                            type: 'step', description: 'step 2', return: Ok({}), steps: [
+                                { type: 'step', description: 'step 2.1', return: Ok(2) },
+                                { type: 'step', description: 'step 2.2', return: Ok(3) }
+                            ]
+                        },
+                        {
+                            type: 'step', description: 'step 3', return: Ok({}), steps: [
+                                { type: 'step', description: 'step 3.1', return: Ok(4) },
+                                { type: 'step', description: 'step 3.2', return: Ok(5) },
+                                {
+                                    type: 'step', description: 'step 3.3', return: Ok({}), steps: [
+                                        { type: 'step', description: 'step 3.3.1', return: Ok(6) },
+                                        { type: 'step', description: 'step 3.3.2', return: Ok(7) },
+                                        { type: 'step', description: 'step 3.3.3', return: Ok(8) }
+                                    ]
+                                }
+                            ]
+                        }]
+                }
+                )
+            })
+
+        })
+
+        context('returning Err', () => {
+
+            const givenManyNestedStepsWithReturntWithError = () => {
+                const st = step({
+                    'step 1': step({
+                        'step 1.1': step(() => { return Ok(1) }),
+                        'step 1.2': step(() => { return Ok(2) })
+                    }),
+                    'step 2': step({
+                        'step 2.1': step(() => { return Ok(3) }),
+                        'step 2.2': step(() => { return Ok(4) })
+                    }),
+                    'step 3': step({
+                        'step 3.1': step(() => { return Ok(5) }),
+                        'step 3.2': step(() => { return Ok(6) }),
+                        'step 3.3': step({
+                            'step 3.3.1': step(() => { return Ok(7) }),
+                            'step 3.3.2': step(() => { return Ok(8) }),
+                            'step 3.3.3': step(() => { return Err(9) })
+                        })
+                    })
+                })
+                return st
+            }
+
+            it('should run', () => {
+                //given
+                const st = givenManyNestedStepsWithReturntWithError()
+                //when
+                const ret = st.run()
+                //then
+                assert.ok(ret.isErr)
+                assert.deepEqual(ret.err, 9)
             })
         })
     })

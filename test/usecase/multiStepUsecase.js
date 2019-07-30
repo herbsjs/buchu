@@ -36,7 +36,7 @@ describe('A use case', () => {
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case',
                     description: 'A use case',
-                    return: Ok(),
+                    return: Ok({}),
                     steps: [
                         { type: 'step', description: 'step 1', return: Ok() },
                         { type: 'step', description: 'step 2', return: Ok() },

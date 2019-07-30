@@ -10,26 +10,26 @@ class Ok {
 	get err() { return null }
 	toString() {
 		if (this.value)
-			return "Ok: " + this.value.toString()
+			return 'Ok: ' + JSON.toJSON(this.value)
 		else
-			return "Ok"
+			return 'Ok'
 	}
-	toJSON() { return this.toString() }
+	toJSON() { return { 'Ok': this.value } }
 }
 
 class Err {
 
 	constructor(error) {
-		this.error = error;
+		this._error = error;
 	}
 
 	get isOk() { return false }
 	get isErr() { return true }
 	get ok() { return null }
-	get err() { return this.error }
+	get err() { return this._error }
 	toString() {
-		if (this.error)
-			return "Error: " + this.error.toString()
+		if (this._error)
+			return "Error: " + this._error.toString()
 		else
 			return "Error"
 	}

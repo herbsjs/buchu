@@ -17,15 +17,19 @@ class Step {
         this._auditTrail = {
             type: "step"
         }
+        this.context = {
+            di: {},
+            ret: {}
+        }
     }
 
     run() {
 
         const type = stepTypes.check(this._body)
-
+        
         const _runFunction = () => {
             if (type != stepTypes.Func) return
-            const ret = this._body()
+            const ret = this._body(this.context)
             return ret
         }
 
@@ -37,6 +41,7 @@ class Step {
                 
                 const [description, step] = stepInfo
                 step.description = description
+                step.context = this.context
                 
                 const ret = step.run()
                 
@@ -44,18 +49,16 @@ class Step {
                 
                 if (ret.isErr) return ret
             }
-            return Ok()
+            return Ok({...this.context.ret})
         }
 
         let ret = undefined;
         this._auditTrail.description = this.description
 
-        ret = _runFunction()
-        this._auditTrail.return = ret
+        ret = this._auditTrail.return = _runFunction()
         if (ret) return ret;
 
-        ret = _runNestedSteps()
-        this._auditTrail.return = ret
+        ret = this._auditTrail.return = _runNestedSteps()
         return ret;
     }
 
