@@ -16,7 +16,7 @@ Enable multiple steps for a parent step
 
 [ ] Dependency Injection
 
-[ ] Shared State
+[X] Shared Context between Steps
 
 [/] Doc
 Get description and structure from use case and its steps 
