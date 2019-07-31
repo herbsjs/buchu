@@ -158,4 +158,117 @@ describe('A use case', () => {
             })
         })
     })
+
+    describe('the simplest use case with request', () => {
+
+        const givenTheSimplestUseCaseWithRequest = () => {
+            const uc = usecase('A use case', {
+                request: {
+                    param1: String,
+                    param2: Number
+                },
+                'A step': step((ctx) => {
+                    ctx.ret.response3 = ctx.req.param2 + 1
+                    return Ok()
+                })
+            })
+            return uc
+        }
+
+        it('should run', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithRequest()
+            //when
+            const ret = uc.run({ param1: "a", param2: 2 })
+            //then
+            assert.ok(ret.isOk)
+            assert.deepEqual(ret.value, { response3: 3 })
+        })
+
+        it('should audit', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithRequest()
+            //when
+            uc.run({ param1: "a", param2: 2 })
+            //then
+            assert.deepEqual(uc.auditTrail, {
+                type: 'use case',
+                description: 'A use case',
+                return: Ok({ response3: 3 }),
+                steps: [
+                    { type: 'step', description: 'A step', return: Ok() }]
+            })
+        })
+
+        it('should doc', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithRequest()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepEqual(ret, {
+                request: {
+                    param1: String,
+                    param2: Number
+                },
+                description: "A use case",
+                steps: [
+                    { description: "A step", steps: null }
+                ]
+            })
+        })
+
+        it('should not run with invalid request value', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithRequest()
+            //when
+            const ret = uc.run({ param1: 10, param2: "x" })
+            //then
+            assert.ok(ret.isErr)
+            assert.equal(ret.err.length, 2)
+            assert.equal(ret.err[0].err.type, 'invalid value')
+        })
+
+        it('should not run with invalid request schema', () => {
+
+            const givenTheSimplestUseCaseWithInvalidRequest = () => {
+                const uc = usecase('A use case', {
+                    request: {
+                        param1: "String",
+                        param2: "Number"
+                    },
+                    'A step': step(() => { return Ok() })
+                })
+                return uc
+            }
+
+            //given
+            const uc = givenTheSimplestUseCaseWithInvalidRequest()
+            //when
+            const ret = uc.run({ param1: "a", param2: 2 })
+            //then
+            assert.ok(ret.isErr)
+            assert.equal(ret.err.length, 2)
+            assert.equal(ret.err[0].err.type, 'invalid schema')
+        })
+
+        it('should not run without request schema', () => {
+
+            const givenTheSimplestUseCaseWithNoRequest = () => {
+                const uc = usecase('A use case', {
+                    'A step': step(() => { return Ok() })
+                })
+                return uc
+            }
+
+            //given
+            const uc = givenTheSimplestUseCaseWithNoRequest()
+            //when
+            const ret = uc.run({ param1: "a", param2: 2 })
+            //then
+            assert.ok(ret.isErr)
+            assert.equal(ret.err.length, 1)
+            assert.equal(ret.err[0].type, 'invalid schema')
+        })
+    })
 })

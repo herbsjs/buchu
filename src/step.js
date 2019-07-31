@@ -19,11 +19,12 @@ class Step {
         }
         this.context = {
             di: {},
-            ret: {}
+            ret: {},
+            req: {}
         }
     }
 
-    run() {
+    run(request) {
 
         const type = stepTypes.check(this._body)
         
@@ -40,6 +41,7 @@ class Step {
             for (const stepInfo of steps) {
                 
                 const [description, step] = stepInfo
+                if (step === null) continue
                 step.description = description
                 step.context = this.context
                 
@@ -52,7 +54,7 @@ class Step {
             return Ok({...this.context.ret})
         }
 
-        let ret = undefined;
+        let ret = undefined
         this._auditTrail.description = this.description
 
         ret = this._auditTrail.return = _runFunction()
@@ -71,6 +73,7 @@ class Step {
             const steps = Object.entries(this._body)
             for (const stepInfo of steps) {
                 const [description, step] = stepInfo
+                if (step === null) continue
                 step.description = description
                 docArray.push(step.doc())
             }

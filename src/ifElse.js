@@ -17,7 +17,6 @@ class IfElse {
     }
 
     run() {
-
         this._auditTrail.description = this.description
 
         const steps = Object.entries(this._body)
@@ -26,10 +25,11 @@ class IfElse {
         const ifStep = this._addMeta(ifInfo)
         const thenStep = this._addMeta(thenInfo)
         const elseStep = this._addMeta(elseInfo)
-        
+
         const ifRet = this._auditTrail.returnIf = ifStep.run()
-        if (ifRet.isOk) { return this._auditTrail.returnThen = thenStep.run() }
-        else { return this._auditTrail.returnElse = elseStep.run() }
+        if (ifRet && ifRet.isOk) { return this._auditTrail.returnThen = thenStep.run() }
+        if (ifRet && ifRet.isErr) { return this._auditTrail.returnElse = elseStep.run() }
+        return this._auditTrail.returnIf = Err('Invalid ifElse')
     }
 
     doc() {

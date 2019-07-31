@@ -1,0 +1,218 @@
+const { schema } = require('../../../src/schema');
+const assert = require('assert')
+
+describe('Request schema validation', () => {
+
+    it('should validate request (flat and simple)', () => {
+        // given
+        const requestSchema = { name: String, at: Date, able: Boolean, age: Number, meta: Object, many: Array }
+        const scm = schema(requestSchema)
+        const request = { name: "jhon", at: new Date('2001-01-01'), able: true, age: 50, meta: {}, many: [1, 2] }
+        // when
+        const ret = scm.validate(request)
+        // then
+        assert.equal(ret, true)
+        assert.equal(scm.isValid, true)
+    })
+
+    it('should validate request (partial - more keys on schema)', () => {
+        // given
+        const requestSchema = { name: String, at: Date, able: Boolean, age: Number, meta: Object, many: Array }
+        const scm = schema(requestSchema)
+        const request = { name: "jhon", able: true, age: 50, meta: {} }
+        // when
+        const ret = scm.validate(request)
+        // then
+        assert.equal(ret, true)
+    })
+
+    it('should validate request (partial - more keys on request)', () => {
+        // given
+        const requestSchema = { name: String, at: Date, age: Number, many: Array }
+        const scm = schema(requestSchema)
+        const request = { name: "jhon", at: new Date('2001-01-01'), able: true, age: 50, meta: {}, many: [1, 2] }
+        // when
+        const ret = scm.validate(request)
+        // then
+        assert.equal(ret, false)
+        assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "able", msg: `Key [\"able\"] does not exist on schema.` })
+        assert.deepEqual(scm.errors[1].err, { type: "invalid value", key: "meta", msg: `Key [\"meta\"] does not exist on schema.` })
+    })
+
+    it('should validate request (empty)', () => {
+        // given
+        const requestSchema = { name: String, at: Date, able: Boolean, age: Number, meta: Object, many: Array }
+        const scm = schema(requestSchema)
+        const request = {}
+        // when
+        const ret = scm.validate(request)
+        // then
+        assert.equal(ret, true)
+    })
+
+    it('should validate request (arrays)', () => {
+        // given
+        const descSchema = { name: [String], at: [Date], able: [Boolean], age: [Number], meta: [Object], many: [Array] }
+        const scm = schema(descSchema)
+        // when
+        const ret = scm.validateSchema()
+        // then
+        assert.equal(ret, true)
+    })
+
+    describe('Number', () => {
+        it('should validate number', () => {
+            // given
+            const requestSchema = { n: Number }
+            const scm = schema(requestSchema)
+            const request = { n: 1 }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate number (wrong)', () => {
+            // given
+            const requestSchema = { n: Number }
+            const scm = schema(requestSchema)
+            const request = { n: '1' }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "n", value: "1", msg: `["1"] is not a number.` })
+        })
+    })
+
+    describe('String', () => {
+
+        it('should validate string', () => {
+            // given
+            const requestSchema = { s: String }
+            const scm = schema(requestSchema)
+            const request = { s: 'a' }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate string (wrong)', () => {
+            // given
+            const requestSchema = { s: String }
+            const scm = schema(requestSchema)
+            const request = { s: 1 }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "s", value: 1, msg: `["1"] is not a string.` })
+        })
+    })
+
+    describe('Boolean', () => {
+
+        it('should validate boolean', () => {
+            // given
+            const requestSchema = { b: Boolean }
+            const scm = schema(requestSchema)
+            const request = { b: false }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate boolean (wrong)', () => {
+            // given
+            const requestSchema = { b: Boolean }
+            const scm = schema(requestSchema)
+            const request = { b: 1 }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "b", value: 1, msg: `["1"] is not boolean.` })
+        })
+    })
+
+    describe('Date', () => {
+
+        it('should validate date', () => {
+            // given
+            const requestSchema = { d: Date }
+            const scm = schema(requestSchema)
+            const request = { d: new Date() }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate date (wrong)', () => {
+            // given
+            const requestSchema = { d: Date }
+            const scm = schema(requestSchema)
+            const request = { d: 1 }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "d", value: 1, msg: `["1"] is not a date.` })
+        })
+    })
+
+    describe('Object', () => {
+
+        it('should validate object', () => {
+            // given
+            const requestSchema = { o: Object }
+            const scm = schema(requestSchema)
+            const request = { o: new Object() }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate object (wrong)', () => {
+            // given
+            const requestSchema = { o: Object }
+            const scm = schema(requestSchema)
+            const request = { o: 1 }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "o", value: 1, msg: `["1"] is not a object.` })
+        })
+    })
+
+    describe('Array', () => {
+
+        it('should validate array', () => {
+            // given
+            const requestSchema = { a: Array }
+            const scm = schema(requestSchema)
+            const request = { a: [] }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate array (wrong)', () => {
+            // given
+            const requestSchema = { a: Array }
+            const scm = schema(requestSchema)
+            const request = { a: 1 }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "a", value: 1, msg: `["1"] is not a array.` })
+        })
+    })
+});
+

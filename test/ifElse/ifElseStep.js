@@ -70,6 +70,64 @@ describe('If Else step', () => {
         })
     })
 
+    describe('on a use case with request', () => {
+        const givenASimpleUseCaseWithRequest = () => {
+            const uc = usecase('A use case', {
+                request: {
+                    param1: Number,
+                },
+                'A condition': ifElse({
+                    'If Step': step((ctx) => {
+                        if (ctx.req.param1 == 1) return Ok()
+                        if (ctx.req.param1 == 2) return Err()
+                    }),
+                    'Then Step': step((ctx) => { ctx.ret.return1 = 1; return Ok() }),
+                    'Else Step': step((ctx) => { ctx.ret.return2 = 2; return Ok() })
+                })
+            })
+            return uc
+        }
+
+        it('should run - then', () => {
+            //given
+            const uc = givenASimpleUseCaseWithRequest()
+            //when
+            const ret = uc.run({ param1: 1 })
+            //then
+            assert.ok(ret.isOk)
+            assert.equal(ret.value.return1, 1)
+        })
+
+        it('should run - else', () => {
+            //given
+            const uc = givenASimpleUseCaseWithRequest()
+            //when
+            const ret = uc.run({ param1: 2 })
+            //then
+            assert.ok(ret.isOk)
+            assert.equal(ret.value.return2, 2)
+        })
+
+        it('should audit', () => {
+            //given
+            const st = givenASimpleUseCaseWithRequest()
+            //when
+            st.run({ param1: 1 })
+            //then
+            assert.deepEqual(st.auditTrail, {
+                type: 'use case', description: 'A use case', return: Ok({ return1: 1 }),
+                steps: [
+                    {
+                        type: 'if else',
+                        description: 'A condition',
+                        returnIf: Ok(),
+                        returnThen: Ok()
+                    }
+                ],
+            })
+        })
+    })
+
     describe('simple If Else Then', () => {
 
         context('returning Ok from Then', () => {

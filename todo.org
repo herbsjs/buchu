@@ -18,6 +18,11 @@ Enable multiple steps for a parent step
 
 [X] Shared Context between Steps
 
+[X] Request
+Be able to describe and validate the use case request object 
+- Schema
+    - Standard Types
+
 [/] Doc
 Get description and structure from use case and its steps 
 
@@ -27,13 +32,10 @@ Enable multiple steps in diferent files for a parent step
 [X] Conditional Steps
 Enable a If/Else constructor for steps
 
-[ ] Request
-Be able to describe and validate the use case request object 
-
 [ ] Response
 Be able to describe and validate the use case response object 
 
-[ ] Use Case Error
+[X] Use Case Error
 Ok or Error results for a use case (Rust inspired) 
 
 [ ] Autorization
