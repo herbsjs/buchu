@@ -14,7 +14,9 @@
   ],
   "author": "David Lojudice Sb",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "uuid": "^3.3.2"
+  },
   "devDependencies": {
     "mocha": "^6.2.0"
   }

@@ -45,6 +45,7 @@ describe('A use case', () => {
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case',
                     description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
                     return: Ok({}),
                     steps: [
                         { type: 'step', description: 'A step', return: Ok() },
@@ -141,7 +142,9 @@ describe('A use case', () => {
                 uc.run()
                 //then
                 assert.deepEqual(uc.auditTrail, {
-                    type: 'use case', description: 'A use case', return: Ok({ step1: 'ret1', step2: 'ret2' }), steps: [
+                    type: 'use case', description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    return: Ok({ step1: 'ret1', step2: 'ret2' }), steps: [
                         {
                             type: 'step', description: 'Change context', return: Ok({}), steps: [
                                 { type: 'step', description: 'step c1', return: Ok() },
@@ -194,6 +197,7 @@ describe('A use case', () => {
             assert.deepEqual(uc.auditTrail, {
                 type: 'use case',
                 description: 'A use case',
+                transactionId: uc._mainStep._auditTrail.transactionId,
                 return: Ok({ response3: 3 }),
                 steps: [
                     { type: 'step', description: 'A step', return: Ok() }]

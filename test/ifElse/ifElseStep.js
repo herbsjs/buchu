@@ -29,12 +29,15 @@ describe('If Else step', () => {
 
         it('should audit', () => {
             //given
-            const st = givenASimpleUseCase()
+            const uc = givenASimpleUseCase()
             //when
-            st.run()
+            uc.run()
             //then
-            assert.deepEqual(st.auditTrail, {
-                type: 'use case', description: 'A use case', return: Ok({}),
+            assert.deepEqual(uc.auditTrail, {
+                type: 'use case',
+                description: 'A use case',
+                transactionId: uc._mainStep._auditTrail.transactionId,
+                return: Ok({}),
                 steps: [
                     {
                         type: 'if else',
@@ -110,12 +113,15 @@ describe('If Else step', () => {
 
         it('should audit', () => {
             //given
-            const st = givenASimpleUseCaseWithRequest()
+            const uc = givenASimpleUseCaseWithRequest()
             //when
-            st.run({ param1: 1 })
+            uc.run({ param1: 1 })
             //then
-            assert.deepEqual(st.auditTrail, {
-                type: 'use case', description: 'A use case', return: Ok({ return1: 1 }),
+            assert.deepEqual(uc.auditTrail, {
+                type: 'use case',
+                description: 'A use case',
+                transactionId: uc._mainStep._auditTrail.transactionId,
+                return: Ok({ return1: 1 }),
                 steps: [
                     {
                         type: 'if else',

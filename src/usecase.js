@@ -1,5 +1,6 @@
 const { step } = require('./step')
 const { schema } = require('./schema')
+const uuidv4 = require('uuid/v4');
 const { Ok, Err } = require('./results')
 
 class UseCase {
@@ -15,6 +16,7 @@ class UseCase {
         this._mainStep = step(body)
         this._mainStep.description = description
         this._mainStep._auditTrail.type = "use case"
+        this._mainStep._auditTrail.transactionId = uuidv4()
     }
 
     run(request) {
