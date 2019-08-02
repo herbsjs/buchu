@@ -14,7 +14,7 @@ Enable multiple steps for a use case
 [X] Nested Steps
 Enable multiple steps for a parent step
 
-[ ] Dependency Injection
+[X] Dependency Injection
 
 [X] Shared Context between Steps
 
@@ -50,7 +50,7 @@ Be able to track use case and its steps execution time
 [ ] Async / MQ - Multiple Rounds
 Be able to partially execute a use case and continue (when a MQ is necessary, for instance) 
 
-[ ] transaction ID
+[X] transaction ID
 A ID to track execution between steps
 
 [ ] session ID

@@ -12,11 +12,20 @@ class UseCase {
         this._requestSchema = body.request
         delete body.request
 
+        //request schema
+        this._dependency = body.dependency || {}
+        delete body.dependency
+
         // main step
         this._mainStep = step(body)
         this._mainStep.description = description
         this._mainStep._auditTrail.type = "use case"
         this._mainStep._auditTrail.transactionId = uuidv4()
+        this._mainStep.context.di = this._dependency
+    }
+
+    inject(injection) {
+        this._mainStep.context.di = Object.assign({}, this._dependency, injection)
     }
 
     run(request) {
