@@ -27,9 +27,9 @@ class IfElse {
         const elseStep = this._addMeta(elseInfo)
 
         const ifRet = this._auditTrail.returnIf = await ifStep.run()
-        if (ifRet && ifRet.isOk) { return this._auditTrail.returnThen = await thenStep.run() }
-        if (ifRet && ifRet.isErr) { return this._auditTrail.returnElse = await elseStep.run() }
-        return this._auditTrail.returnIf = Err('Invalid ifElse')
+        if (ifRet && ifRet.isOk && ifRet.value === true) { return this._auditTrail.returnThen = await thenStep.run() }
+        if (ifRet && ifRet.isOk && ifRet.value === false) { return this._auditTrail.returnElse = await elseStep.run() }
+        return this._auditTrail.returnIf = Err({value: ifRet, msg:'Invalid ifElse'})
     }
 
     doc() {

@@ -10,7 +10,7 @@ describe('If Else step', () => {
         const givenASimpleUseCase = () => {
             const uc = usecase('A use case', {
                 'A condition': ifElse({
-                    'If Step': step(() => { return Ok() }),
+                    'If Step': step(() => { return Ok(true) }),
                     'Then Step': step(() => { return Ok() }),
                     'Else Step': step(() => { return Err() })
                 })
@@ -42,7 +42,7 @@ describe('If Else step', () => {
                     {
                         type: 'if else',
                         description: 'A condition',
-                        returnIf: Ok(),
+                        returnIf: Ok(true),
                         returnThen: Ok()
                     }
                 ],
@@ -54,7 +54,7 @@ describe('If Else step', () => {
         const givenASimpleUseCaseWithContext = () => {
             const uc = usecase('A use case', {
                 'A condition': ifElse({
-                    'If Step': step((ctx) => { ctx.ret.IfStep = 10; return Ok() }),
+                    'If Step': step((ctx) => { ctx.ret.IfStep = 10; return Ok(true) }),
                     'Then Step': step((ctx) => { ctx.ret.ThenStep = 20; return Ok() }),
                     'Else Step': step((ctx) => { ctx.ret.ElseStep = 30; return Err() })
                 })
@@ -81,8 +81,9 @@ describe('If Else step', () => {
                 },
                 'A condition': ifElse({
                     'If Step': step((ctx) => {
-                        if (ctx.req.param1 == 1) return Ok()
-                        if (ctx.req.param1 == 2) return Err()
+                        if (ctx.req.param1 == 1) return Ok(true)
+                        if (ctx.req.param1 == 2) return Ok(false)
+                        return Err()
                     }),
                     'Then Step': step((ctx) => { ctx.ret.return1 = 1; return Ok() }),
                     'Else Step': step((ctx) => { ctx.ret.return2 = 2; return Ok() })
@@ -126,7 +127,7 @@ describe('If Else step', () => {
                     {
                         type: 'if else',
                         description: 'A condition',
-                        returnIf: Ok(),
+                        returnIf: Ok(true),
                         returnThen: Ok()
                     }
                 ],
@@ -140,7 +141,7 @@ describe('If Else step', () => {
 
             const givenAnIfThenStep = () => {
                 const ifElseStep = ifElse({
-                    'If Step': step(() => { return Ok() }),
+                    'If Step': step(() => { return Ok(true) }),
                     'Then Step': step(() => { return Ok() }),
                     'Else Step': step(() => { return Err() })
                 })
@@ -165,7 +166,7 @@ describe('If Else step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
-                    returnIf: Ok(),
+                    returnIf: Ok(true),
                     returnThen: Ok()
                 })
             })
@@ -197,7 +198,7 @@ describe('If Else step', () => {
 
             const givenAnIfElseStep = () => {
                 const ifElseStep = ifElse({
-                    'If': step(() => { return Err() }),
+                    'If': step(() => { return Ok(false) }),
                     'Then': step(() => { return Err() }),
                     'Else': step(() => { return Ok() })
                 })
@@ -222,7 +223,7 @@ describe('If Else step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
-                    returnIf: Err(),
+                    returnIf: Ok(false),
                     returnElse: Ok()
                 })
             })
@@ -235,7 +236,7 @@ describe('If Else step', () => {
 
             const givenAnIfThenStepWithReturn = () => {
                 const ifElseStep = ifElse({
-                    'If Step': step(() => { return Ok(1) }),
+                    'If Step': step(() => { return Ok(true) }),
                     'Then Step': step(() => { return Ok(2) }),
                     'Else Step': step(() => { return Err(3) })
                 })
@@ -257,7 +258,7 @@ describe('If Else step', () => {
 
             const givenAnIfElseStepWithReturn = () => {
                 const ifElseStep = ifElse({
-                    'If Step': step(() => { return Err(1) }),
+                    'If Step': step(() => { return Ok(false) }),
                     'Then Step': step(() => { return Err(2) }),
                     'Else Step': step(() => { return Ok(3) })
                 })
