@@ -76,6 +76,37 @@ describe('A step', () => {
                 })
             })
         })
+
+        context('returning Exception', () => {
+
+            const givenTheSimplestStepWithException = () => {
+                const st = step(() => { throw new Error() })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenTheSimplestStepWithException()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isErr)
+                assert.ok(ret.err instanceof Error)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenTheSimplestStepWithException()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Err(new Error())
+                })
+            })
+        })
     })
 
     describe('with a function (simplest step) returning value', () => {

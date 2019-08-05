@@ -30,7 +30,12 @@ class Step {
         
         const _runFunction = async () => {
             if (type != stepTypes.Func) return
-            const ret = await this._body(this.context)
+            let ret;
+            try {
+                ret = await this._body(this.context)
+            } catch (error) {
+                ret = Err(error)
+            }
             return ret
         }
 
