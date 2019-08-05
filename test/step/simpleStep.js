@@ -13,21 +13,21 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenTheSimplestStep()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, null)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenTheSimplestStep()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -53,21 +53,21 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenTheSimplestStepWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
                 assert.deepEqual(ret.value, null)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenTheSimplestStepWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -87,21 +87,21 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenTheSimplestStepReturningValue()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, 1)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenTheSimplestStepReturningValue()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -118,21 +118,21 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenTheSimplestStepReturningValueWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
                 assert.deepEqual(ret.err, 1)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenTheSimplestStepReturningValueWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -152,22 +152,22 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenTheSimplestStepWithContext()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, null)
                 assert.deepEqual(st.context.ret, { step1: 1 })
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenTheSimplestStepWithContext()
                 //when
-                st.run()
+                await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -184,22 +184,87 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenTheSimplestStepWithContextWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
                 assert.deepEqual(ret.value, null)
                 assert.deepEqual(st.context.ret, { step1: 1 })
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenTheSimplestStepWithContextWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Err()
+                })
+            })
+        })
+    })
+
+    describe('with a async function (simplest step)', () => {
+
+        context('returning Ok', () => {
+
+            const givenTheSimplestAsyncStep = () => {
+                const st = step(async () => { return Ok() })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenTheSimplestAsyncStep()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, null)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenTheSimplestAsyncStep()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Ok()
+                })
+            })
+        })
+
+        context('returning Err', () => {
+
+            const givenTheSimplestAsyncStepWithError = () => {
+                const st = step(() => { return Err() })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenTheSimplestAsyncStepWithError()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isErr)
+                assert.deepEqual(ret.value, null)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenTheSimplestAsyncStepWithError()
+                //when
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',

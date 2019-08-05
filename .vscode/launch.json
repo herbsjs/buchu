@@ -16,7 +16,11 @@
                 "--recursive",
                 "${workspaceFolder}/test"
             ],
-            "internalConsoleOptions": "openOnSessionStart"
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+              ]
         }
         
        

@@ -18,20 +18,20 @@ describe('A use case', () => {
                 return uc
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const uc = givenAMultiStepUseCase()
                 //when
-                const ret = uc.run()
+                const ret = await uc.run()
                 //then
                 assert.ok(ret.isOk)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const uc = givenAMultiStepUseCase()
                 //when
-                const ret = uc.run()
+                const ret = await uc.run()
                 //then
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case',
@@ -47,7 +47,7 @@ describe('A use case', () => {
             })
         })
 
-        context('returning Err', () => {
+        context('returning Err', async () => {
 
             const givenAMultiStepUseCaseWithError = () => {
                 const uc = usecase('A use case', {
@@ -58,20 +58,20 @@ describe('A use case', () => {
                 return uc
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const uc = givenAMultiStepUseCaseWithError()
                 //when
-                const ret = uc.run()
+                const ret = await uc.run()
                 //then
                 assert.ok(ret.isErr)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const uc = givenAMultiStepUseCaseWithError()
                 //when
-                const ret = uc.run()
+                const ret = await uc.run()
                 //then
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case',

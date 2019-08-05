@@ -27,20 +27,20 @@ describe('A use case', () => {
 
         context('returning Ok', () => {
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const uc = givenTheSimplestUseCase()
                 //when
-                const ret = uc.run()
+                const ret = await uc.run()
                 //then
                 assert.ok(ret.isOk)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const uc = givenTheSimplestUseCase()
                 //when
-                uc.run()
+                await uc.run()
                 //then
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case',
@@ -89,11 +89,11 @@ describe('A use case', () => {
                 return uc
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithError()
                 //when
-                const ret = uc.run()
+                const ret = await uc.run()
                 //then
                 assert.ok(ret.isErr)
             })
@@ -125,21 +125,21 @@ describe('A use case', () => {
 
         context('returning Ok', () => {
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithContext()
                 //when
-                const ret = uc.run()
+                const ret = await uc.run()
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, { step1: 'ret1', step2: 'ret2' })
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithContext()
                 //when
-                uc.run()
+                await uc.run()
                 //then
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case', description: 'A use case',
@@ -178,21 +178,21 @@ describe('A use case', () => {
             return uc
         }
 
-        it('should run', () => {
+        it('should run', async () => {
             //given
             const uc = givenTheSimplestUseCaseWithRequest()
             //when
-            const ret = uc.run({ param1: "a", param2: 2 })
+            const ret = await uc.run({ param1: "a", param2: 2 })
             //then
             assert.ok(ret.isOk)
             assert.deepEqual(ret.value, { response3: 3 })
         })
 
-        it('should audit', () => {
+        it('should audit', async () => {
             //given
             const uc = givenTheSimplestUseCaseWithRequest()
             //when
-            uc.run({ param1: "a", param2: 2 })
+            await uc.run({ param1: "a", param2: 2 })
             //then
             assert.deepEqual(uc.auditTrail, {
                 type: 'use case',
@@ -222,18 +222,18 @@ describe('A use case', () => {
             })
         })
 
-        it('should not run with invalid request value', () => {
+        it('should not run with invalid request value', async () => {
             //given
             const uc = givenTheSimplestUseCaseWithRequest()
             //when
-            const ret = uc.run({ param1: 10, param2: "x" })
+            const ret = await uc.run({ param1: 10, param2: "x" })
             //then
             assert.ok(ret.isErr)
             assert.equal(ret.err.length, 2)
             assert.equal(ret.err[0].err.type, 'invalid value')
         })
 
-        it('should not run with invalid request schema', () => {
+        it('should not run with invalid request schema', async () => {
 
             const givenTheSimplestUseCaseWithInvalidRequest = () => {
                 const uc = usecase('A use case', {
@@ -249,14 +249,14 @@ describe('A use case', () => {
             //given
             const uc = givenTheSimplestUseCaseWithInvalidRequest()
             //when
-            const ret = uc.run({ param1: "a", param2: 2 })
+            const ret = await uc.run({ param1: "a", param2: 2 })
             //then
             assert.ok(ret.isErr)
             assert.equal(ret.err.length, 2)
             assert.equal(ret.err[0].err.type, 'invalid schema')
         })
 
-        it('should not run without request schema', () => {
+        it('should not run without request schema', async () => {
 
             const givenTheSimplestUseCaseWithNoRequest = () => {
                 const uc = usecase('A use case', {
@@ -268,7 +268,7 @@ describe('A use case', () => {
             //given
             const uc = givenTheSimplestUseCaseWithNoRequest()
             //when
-            const ret = uc.run({ param1: "a", param2: 2 })
+            const ret = await uc.run({ param1: "a", param2: 2 })
             //then
             assert.ok(ret.isErr)
             assert.equal(ret.err.length, 1)
@@ -297,22 +297,22 @@ describe('A use case', () => {
             assert.deepEqual(uc.description, 'A use case')
         })
 
-        it('should run with default value', () => {
+        it('should run with default value', async () => {
             //given
             const uc = givenTheSimplestUseCaseWithDependencyInjection()
             //when
-            const ret = uc.run()
+            const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
             assert.deepEqual(ret.value, { step1: 1 })
         })
 
-        it('should run with injected value', () => {
+        it('should run with injected value', async () => {
             //given
             const uc = givenTheSimplestUseCaseWithDependencyInjection()
             //when
             uc.inject({ obj1: { f1() { return 2 } }})
-            const ret = uc.run()
+            const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
             assert.deepEqual(ret.value, { step1: 2 })

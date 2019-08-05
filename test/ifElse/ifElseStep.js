@@ -18,20 +18,20 @@ describe('If Else step', () => {
             return uc
         }
 
-        it('should run', () => {
+        it('should run', async () => {
             //given
             const uc = givenASimpleUseCase()
             //when
-            const ret = uc.run()
+            const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
         })
 
-        it('should audit', () => {
+        it('should audit', async () => {
             //given
             const uc = givenASimpleUseCase()
             //when
-            uc.run()
+            await uc.run()
             //then
             assert.deepEqual(uc.auditTrail, {
                 type: 'use case',
@@ -62,11 +62,11 @@ describe('If Else step', () => {
             return uc
         }
 
-        it('should run', () => {
+        it('should run', async () => {
             //given
             const uc = givenASimpleUseCaseWithContext()
             //when
-            const ret = uc.run()
+            const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
             assert.deepEqual(ret.value, { IfStep: 10, ThenStep: 20 })
@@ -91,31 +91,31 @@ describe('If Else step', () => {
             return uc
         }
 
-        it('should run - then', () => {
+        it('should run - then', async () => {
             //given
             const uc = givenASimpleUseCaseWithRequest()
             //when
-            const ret = uc.run({ param1: 1 })
+            const ret = await uc.run({ param1: 1 })
             //then
             assert.ok(ret.isOk)
             assert.equal(ret.value.return1, 1)
         })
 
-        it('should run - else', () => {
+        it('should run - else', async () => {
             //given
             const uc = givenASimpleUseCaseWithRequest()
             //when
-            const ret = uc.run({ param1: 2 })
+            const ret = await uc.run({ param1: 2 })
             //then
             assert.ok(ret.isOk)
             assert.equal(ret.value.return2, 2)
         })
 
-        it('should audit', () => {
+        it('should audit', async () => {
             //given
             const uc = givenASimpleUseCaseWithRequest()
             //when
-            uc.run({ param1: 1 })
+            await uc.run({ param1: 1 })
             //then
             assert.deepEqual(uc.auditTrail, {
                 type: 'use case',
@@ -147,20 +147,20 @@ describe('If Else step', () => {
                 return ifElseStep
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenAnIfThenStep()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenAnIfThenStep()
                 //when
-                st.run()
+                await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'if else',
@@ -204,20 +204,20 @@ describe('If Else step', () => {
                 return ifElseStep
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenAnIfElseStep()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenAnIfElseStep()
                 //when
-                st.run()
+                await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'if else',
@@ -242,11 +242,11 @@ describe('If Else step', () => {
                 return ifElseStep
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenAnIfThenStepWithReturn()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, 2)
@@ -264,11 +264,11 @@ describe('If Else step', () => {
                 return ifElseStep
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenAnIfElseStepWithReturn()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, 3)

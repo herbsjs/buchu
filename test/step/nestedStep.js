@@ -17,20 +17,20 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenNestedSteps()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenNestedSteps()
                 //when
-                const ret = st.run()
+                await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -72,20 +72,20 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenNestedStepsWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenNestedStepsWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -128,20 +128,20 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenManyNestedSteps()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenManyNestedSteps()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -243,11 +243,11 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenManyNestedStepsWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
             })
@@ -280,21 +280,21 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenManyNestedStepsWithReturn()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, {})
             })
 
-            it('should audit', () => {
+            it('should audit', async () => {
                 //given
                 const st = givenManyNestedStepsWithReturn()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
@@ -356,11 +356,11 @@ describe('A step', () => {
                 return st
             }
 
-            it('should run', () => {
+            it('should run', async () => {
                 //given
                 const st = givenManyNestedStepsWithReturntWithError()
                 //when
-                const ret = st.run()
+                const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
                 assert.deepEqual(ret.err, 9)

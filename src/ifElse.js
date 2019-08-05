@@ -16,7 +16,7 @@ class IfElse {
         return step
     }
 
-    run() {
+    async run() {
         this._auditTrail.description = this.description
 
         const steps = Object.entries(this._body)
@@ -26,9 +26,9 @@ class IfElse {
         const thenStep = this._addMeta(thenInfo)
         const elseStep = this._addMeta(elseInfo)
 
-        const ifRet = this._auditTrail.returnIf = ifStep.run()
-        if (ifRet && ifRet.isOk) { return this._auditTrail.returnThen = thenStep.run() }
-        if (ifRet && ifRet.isErr) { return this._auditTrail.returnElse = elseStep.run() }
+        const ifRet = this._auditTrail.returnIf = await ifStep.run()
+        if (ifRet && ifRet.isOk) { return this._auditTrail.returnThen = await thenStep.run() }
+        if (ifRet && ifRet.isErr) { return this._auditTrail.returnElse = await elseStep.run() }
         return this._auditTrail.returnIf = Err('Invalid ifElse')
     }
 
