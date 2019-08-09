@@ -61,3 +61,5 @@ A ID to track execution between use cases
 [ ] Deal with no default results (Ok/Err)
 
 [X] Deal with async / await steps
+
+[X] Use case examples

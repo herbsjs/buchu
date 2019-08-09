@@ -7,7 +7,25 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Mocha Tests",
+            "name": "Example Tests",
+            "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
+            "args": [
+                "--timeout",
+                "999999",
+                "--colors",
+                "--recursive",
+                "${workspaceFolder}/examples/**/*.test.js"
+            ],
+            "internalConsoleOptions": "openOnSessionStart",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Core Tests",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [
                 "--timeout",
@@ -20,9 +38,7 @@
             "skipFiles": [
                 "${workspaceFolder}/node_modules/**/*.js",
                 "<node_internals>/**/*.js"
-              ]
+            ]
         }
-        
-       
     ]
 }

@@ -6,9 +6,6 @@
   "directories": {
     "test": "test"
   },
-  "scripts": {
-    "test": "mocha --recursive"
-  },
   "keywords": [
     "usecase"
   ],
