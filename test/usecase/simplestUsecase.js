@@ -311,11 +311,113 @@ describe('A use case', () => {
             //given
             const uc = givenTheSimplestUseCaseWithDependencyInjection()
             //when
-            uc.inject({ obj1: { f1() { return 2 } }})
+            uc.inject({ obj1: { f1() { return 2 } } })
             const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
             assert.deepEqual(ret.value, { step1: 2 })
+        })
+    })
+
+    describe('the simplest use case with authorization', () => {
+
+        const givenTheSimplestUseCaseWithAuthorization = () => {
+            const uc = usecase('A use case', {
+                authorize: (user) => { return user.isAdmin ? Ok() : Err() },
+                'Step 1': step(() => { return Ok() })
+            })
+            return uc
+        }
+
+        context('with access', () => {
+
+            it('should initiate', () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                //then
+                assert.deepEqual(uc.description, 'A use case')
+            })
+
+            it('should run', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                //when
+                uc.authorize({ user: "John", id: '923b8b9a', isAdmin: true })
+                const ret = await uc.run()
+                //then
+                assert.ok(ret.isOk)
+            })
+
+            it('should audit', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                //when
+                uc.authorize({ user: "John", id: '923b8b9a', isAdmin: true })
+                await uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    return: Ok({}),
+                    authorized: true,
+                    user: {
+                        user: 'John',
+                        id: '923b8b9a',
+                        isAdmin: true
+                    },
+                    steps: [{ type: 'step', description: 'Step 1', return: Ok() }]
+                })
+            })
+        })
+
+        context('with without access', () => {
+
+            it('should initiate', () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                //then
+                assert.deepEqual(uc.description, 'A use case')
+            })
+
+            it('should not run', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                //when
+                uc.authorize({ user: "Bob", id: '923b8b9a', isAdmin: false })
+                const ret = await uc.run()
+                //then
+                assert.ok(ret.isErr)
+            })
+
+            it('should not run if [authotize] is defined but not called', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                //when
+                const ret = await uc.run()
+                //then
+                assert.ok(ret.isErr)
+            })
+
+            it('should audit', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                //when
+                uc.authorize({ user: "Bob", id: '923b8b9a', isAdmin: false })
+                await uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    authorized: false,
+                    user: {
+                        user: 'Bob',
+                        id: '923b8b9a',
+                        isAdmin: false
+                    }
+                })
+            })
         })
     })
 })

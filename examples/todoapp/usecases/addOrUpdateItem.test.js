@@ -19,9 +19,11 @@ describe('Add Or Update Item Use Case', () => {
                 listId: 1,
                 item: { id: 10, name: "Do not forget this", position: 9 }
             }
+            const user = { user: "John", id: '923b8b9a', isAdmin: true }
 
             // When
             const uc = addOrUpdateItem()
+            uc.authorize(user)
             uc.inject(injection)
             const ret = await uc.run(req)
 
@@ -47,9 +49,11 @@ describe('Add Or Update Item Use Case', () => {
                 listId: 1,
                 item: { id: 10, name: "Do not forget this", position: 10 }
             }
+            const user = { user: "John", id: '923b8b9a', isAdmin: true }
 
             // When
             const uc = addOrUpdateItem()
+            uc.authorize(user)
             uc.inject(injection)
             const ret = await uc.run(req)
 

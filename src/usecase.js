@@ -16,19 +16,40 @@ class UseCase {
         this._dependency = body.dependency || {}
         delete body.dependency
 
+        //authotization
+        this._authorize = body.authorize
+        this._hasAuthorization = null
+        delete body.authorize
+
         // main step
         this._mainStep = step(body)
         this._mainStep.description = description
-        this._mainStep._auditTrail.type = "use case"
-        this._mainStep._auditTrail.transactionId = uuidv4()
         this._mainStep.context.di = this._dependency
+
+        // audit trail
+        this._auditTrail = this._mainStep._auditTrail
+        this._auditTrail.type = "use case"
+        this._auditTrail.description = description
+        this._auditTrail.transactionId = uuidv4()
     }
 
     inject(injection) {
         this._mainStep.context.di = Object.assign({}, this._dependency, injection)
     }
 
+    authorize(user) {
+        this._hasAuthorization = false
+        this._auditTrail.user = {...user}
+        if (this._authorize) {
+            const ret = this._authorize(user)
+            if (ret.isOk) this._hasAuthorization = true
+        }
+        return this._auditTrail.authorized = this._hasAuthorization
+    }
+
     run(request) {
+        if (this._hasAuthorization === false) return Err('Not Authorized')
+        if (this._authorize && this._hasAuthorization === null) return Err('Not Authorized')
 
         if (request) {
             const requestSchema = schema(this._requestSchema)

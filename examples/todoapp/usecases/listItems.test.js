@@ -16,9 +16,11 @@ describe('List Items Use Case', () => {
             }
         }
         const req = { listId: 1 }
+        const user = { user: "John", id: '923b8b9a', isAdmin: true }
 
         // When
         const uc = listItems()
+        uc.authorize(user)
         uc.inject(injection)
         const ret = await uc.run(req)
 

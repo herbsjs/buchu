@@ -6,6 +6,8 @@ const addOrUpdateItem = () =>
 
         request: { listId: Number, item: Object },
 
+        authorize: (user) => user.isAdmin ? Ok() : Err(),
+        
         dependency: {
             ItemRepository: require('../repositories/ItemRepository').ItemRepository,
             ListRepository: require('../repositories/ListRepository').ListRepository,

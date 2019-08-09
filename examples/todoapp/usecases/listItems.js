@@ -6,6 +6,8 @@ const listItems = () =>
 
         request: { listId: Number },
 
+        authorize: (user) => user.isAdmin ? Ok() : Err(),
+
         dependency: {
             ItemRepository: require('../repositories/ItemRepository').ItemRepository,
             Item: require('../entities/Item').Item
