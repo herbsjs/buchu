@@ -1,13 +1,27 @@
 {
   "name": "grounds",
   "version": "1.0.0",
-  "description": "Uniform, auditable and secure use case library. Influenced by Clean Architecture and Trailblazer",
-  "main": "index.js",
+  "description": "Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer",
+  "main": "./src/grounds.js",
   "directories": {
-    "test": "test"
+    "lib": "src",
+    "test": "test",
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dalssoft/grounds.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dalssoft/grounds/issues/"
+  },
+  "engines": {
+    "node": ">= 12.3.0"
   },
   "keywords": [
-    "usecase"
+    "grounds",
+    "usecase",
+    "clean architecture"
   ],
   "author": "David Lojudice Sb",
   "license": "MIT",
