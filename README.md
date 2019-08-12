@@ -6,6 +6,9 @@ Uniform, auditable and secure use case javascript library. Influenced by Clean A
 
 ### Using
 
+Check the complete examples [here](https://github.com/dalssoft/grounds/tree/master/examples). 
+
+usecases/addOrUpdateItem.js:
 ```javascript
 const { Ok, Err, usecase, step, ifElse } = require('../../../src/grounds')
 
@@ -13,54 +16,101 @@ const addOrUpdateItem = () =>
 
     usecase("Add or Update an Item on a to-do List", {
 
+        // Input/Request type validation 
         request: { listId: Number, item: Object },
 
+        // Authorization Audit  
         authorize: (user) => user.isAdmin ? Ok() : Err(),
         
+        // Dependency Injection control  
         dependency: {
             ItemRepository: require('../repositories/ItemRepository').ItemRepository,
-            ListRepository: require('../repositories/ListRepository').ListRepository,
-            Item: require('../entities/Item').Item
+            ...
         },
 
+        // Step audit and description
         "Check if the Item is valid": step((ctx) => {
-            const item = ctx.ret.item = new ctx.di.Item(ctx.req.item)
+            ...
             return item.validate() // Ok or Error
         }),
 
         "Check if the List exists": step(async (ctx) => {
-            const listRepo = new ctx.di.ListRepository(ctx.di)
-            const list = await listRepo.first(ctx.req.listId)
-            const hasList = (list != null)
-            if (!hasList) { return Err("List does not exist. listId: " + ctx.req.listId) }
+            ...
             return Ok()
         }),
 
+        // Conditional step
         "Add or Update the Item": ifElse({
 
             "If the Item exists": step(async (ctx) => {
-                const itemRepo = new ctx.di.ItemRepository(ctx.di)
-                const item = await itemRepo.firstLike(ctx.req.item.name)
-                const newItem = (item == null)
-                if (!newItem) ctx.ret.item = item
+                ...
                 return Ok(newItem)
             }),
 
             "Then: Add a new Item to the List": step(async (ctx) => {
-                const item = ctx.ret.item = new ctx.di.Item(ctx.req.item)
-                const itemRepo = new ctx.di.ItemRepository(ctx.di)
+                ...
                 return await itemRepo.save(item) // Ok or Error
             }),
 
             "Else: Update Item on the List": step(async (ctx) => {
-                const item = ctx.ret.item
-                item.name = ctx.req.item.name
-                item.position = ctx.req.item.position
-                const itemRepo = new ctx.di.ItemRepository(ctx.di)
+                ...
                 return await itemRepo.save(item) // Ok or Error
             })
         })
     })
+```
+
+controler/addOrUpdateItem.js:
+```javascript
+app.put('/items/:item', function (req, res) {
+    const req = req.params
+    const user = { user: "John", id: '923b8b9a', isAdmin: true } // from session
+
+    const uc = addOrUpdateItem()
+    uc.authorize(user)
+    const ret = await uc.run(req)
+    res.send(ret)
+})
+```
+
+`uc.doc()`:
+```javascript
+{
+  "description": "Add or Update an Item on a to-do List",
+  "steps": [
+    { "description": "Check if the Item is valid", "steps": null },
+    { "description": "Check if the List exists", "steps": null },
+    { 
+        "if": { "description": "If the Item exists", "steps": null },
+        "then": { "description": "Then: Add a new Item to the List", "steps": null },
+        "else": { "description": "Else: Update Item on the List", "steps": null }
+    }
+  ],
+  "request": { }
+}
+```
+
+`uc.auditTrail`:
+```javascript
+{
+    type: "use case",
+    description: "Add or Update an Item on a to-do List",
+    transactionId: "9985fb70-f56d-466a-b466-e200d1d4848c",
+    user: { user: "John", id: "923b8b9a", isAdmin: true },
+    authorized: true,
+    return: {
+        Ok: { item: { id: 100, name: "Do not forget this", position: 9 } }
+    },
+    steps: [
+        { type: "step", description: "Check if the Item is valid", return: {} },
+        { type: "step", description: "Check if the List exists", return: {} },
+        {
+            type: "if else", description: "Add or Update the Item",
+            returnIf: { Ok: true },
+            returnThen: {}
+        }
+    ]
+}
 ```
 
 ### To Do
