@@ -6,6 +6,7 @@ const { Ok, Err } = require('./results')
 class UseCase {
 
     constructor(description, body) {
+        this.type = "use case"
         this.description = description
 
         //request schema
@@ -23,12 +24,13 @@ class UseCase {
 
         // main step
         this._mainStep = step(body)
+        this._mainStep.type = this.type
         this._mainStep.description = description
         this._mainStep.context.di = this._dependency
 
         // audit trail
         this._auditTrail = this._mainStep._auditTrail
-        this._auditTrail.type = "use case"
+        this._auditTrail.type = this.type
         this._auditTrail.description = description
         this._auditTrail.transactionId = uuidv4()
     }

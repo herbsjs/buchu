@@ -12,11 +12,10 @@ const stepTypes = Object.freeze({
 class Step {
 
     constructor(body) {
+        this.type = "step"
         this.description = undefined
         this._body = body
-        this._auditTrail = {
-            type: "step"
-        }
+        this._auditTrail = { type: this.type }
         this.context = {
             di: {},
             ret: {},
@@ -27,7 +26,7 @@ class Step {
     async run(request) {
 
         const type = stepTypes.check(this._body)
-        
+
         const _runFunction = async () => {
             if (type != stepTypes.Func) return
             let ret;
@@ -44,19 +43,19 @@ class Step {
             const steps = Object.entries(this._body)
             this._auditTrail.steps = []
             for (const stepInfo of steps) {
-                
+
                 const [description, step] = stepInfo
                 if (step === null) continue
                 step.description = description
                 step.context = this.context
-                
+
                 const ret = await step.run()
-                
+
                 this._auditTrail.steps.push(step.auditTrail)
-                
+
                 if (ret.isErr) return ret
             }
-            return Ok({...this.context.ret})
+            return Ok({ ...this.context.ret })
         }
 
         let ret = undefined
@@ -70,10 +69,9 @@ class Step {
     }
 
     doc() {
-        const docStep = { description: this.description, steps: null }
+        const docStep = { type: this.type, description: this.description, steps: null }
         const type = stepTypes.check(this._body)
         if (type == stepTypes.Nested) {
-
             const docArray = []
             const steps = Object.entries(this._body)
             for (const stepInfo of steps) {
@@ -84,9 +82,7 @@ class Step {
             }
             docStep.steps = docArray
         }
-
         return docStep;
-
     }
 
     get auditTrail() {

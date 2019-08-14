@@ -3,10 +3,9 @@ const { Ok, Err } = require('./results')
 class IfElse {
 
     constructor(body) {
+        this.type = "if else"
         this._body = body
-        this._auditTrail = {
-            type: "if else"
-        }
+        this._auditTrail = { type: this.type }
     }
 
     _addMeta = (info) => {
@@ -29,7 +28,7 @@ class IfElse {
         const ifRet = this._auditTrail.returnIf = await ifStep.run()
         if (ifRet && ifRet.isOk && ifRet.value === true) { return this._auditTrail.returnThen = await thenStep.run() }
         if (ifRet && ifRet.isOk && ifRet.value === false) { return this._auditTrail.returnElse = await elseStep.run() }
-        return this._auditTrail.returnIf = Err({value: ifRet, msg:'Invalid ifElse'})
+        return this._auditTrail.returnIf = Err({ value: ifRet, msg: 'Invalid ifElse' })
     }
 
     doc() {
@@ -41,6 +40,7 @@ class IfElse {
         const elseStep = this._addMeta(elseInfo)
 
         return {
+            type: this.type,
             'if': ifStep.doc(),
             'then': thenStep.doc(),
             'else': elseStep.doc()

@@ -178,15 +178,19 @@ describe('If Else step', () => {
                 const ret = st.doc()
                 //then
                 assert.deepEqual(ret, {
+                    type: "if else",
                     if: {
+                        type: "step",
                         description: 'If Step',
                         steps: null
                     },
                     then: {
+                        type: "step",
                         description: 'Then Step',
                         steps: null
                     },
                     else: {
+                        type: "step",
                         description: 'Else Step',
                         steps: null
                     }

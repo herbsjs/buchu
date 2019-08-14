@@ -65,14 +65,16 @@ describe('A use case', () => {
                 const ret = uc.doc()
                 //then
                 assert.deepEqual(ret, {
+                    type: "use case",
                     description: "A use case",
                     steps: [
-                        { description: "A step", steps: null },
+                        { type: "step", description: "A step", steps: null },
                         {
+                            type: "step",
                             description: 'A second step',
                             steps: [
-                                { description: 'step 1', steps: null },
-                                { description: 'step 2', steps: null }
+                                { type: "step", description: 'step 1', steps: null },
+                                { type: "step", description: 'step 2', steps: null }
                             ]
                         }
                     ]
@@ -215,9 +217,10 @@ describe('A use case', () => {
                     param1: String,
                     param2: Number
                 },
+                type: "use case", 
                 description: "A use case",
                 steps: [
-                    { description: "A step", steps: null }
+                    { type: "step", description: "A step", steps: null }
                 ]
             })
         })

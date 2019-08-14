@@ -42,7 +42,7 @@ describe('A step', () => {
                 //when
                 const ret = st.doc()
                 //then
-                assert.deepEqual(ret, { description: undefined, steps: null })
+                assert.deepEqual(ret, { type: "step", description: undefined, steps: null })
             })
         })
 

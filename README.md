@@ -76,36 +76,38 @@ app.put('/items/:item', function (req, res) {
 `uc.doc()`:
 ```javascript
 {
-  "description": "Add or Update an Item on a to-do List",
-  "steps": [
-    { "description": "Check if the Item is valid", "steps": null },
-    { "description": "Check if the List exists", "steps": null },
+  type: 'use case',
+  description: 'Add or Update an Item on a to-do List',
+  request: { listId: Number, item: Object },
+  steps: [
+    { type: 'step', description: 'Check if the Item is valid', steps: null },
+    { type: 'step', description: 'Check if the List exists', steps: null },
     { 
-        "if": { "description": "If the Item exists", "steps": null },
-        "then": { "description": "Then: Add a new Item to the List", "steps": null },
-        "else": { "description": "Else: Update Item on the List", "steps": null }
+        type: 'if else',
+        if: { type: 'step', description: 'If the Item exists', steps: null },
+        then: { type: 'step', description: 'Then: Add a new Item to the List', steps: null },
+        else: { type: 'step', description: 'Else: Update Item on the List', steps: null }
     }
-  ],
-  "request": { }
+  ]
 }
 ```
 
 `uc.auditTrail`:
 ```javascript
 {
-    type: "use case",
-    description: "Add or Update an Item on a to-do List",
-    transactionId: "9985fb70-f56d-466a-b466-e200d1d4848c",
-    user: { user: "John", id: "923b8b9a", isAdmin: true },
+    type: 'use case',
+    description: 'Add or Update an Item on a to-do List',
+    transactionId: '9985fb70-f56d-466a-b466-e200d1d4848c',
+    user: { user: 'John', id: '923b8b9a', isAdmin: true },
     authorized: true,
     return: {
-        Ok: { item: { id: 100, name: "Do not forget this", position: 9 } }
+        Ok: { item: { id: 100, name: 'Do not forget this', position: 9 } }
     },
     steps: [
-        { type: "step", description: "Check if the Item is valid", return: {} },
-        { type: "step", description: "Check if the List exists", return: {} },
+        { type: 'step', description: 'Check if the Item is valid', return: {} },
+        { type: 'step', description: 'Check if the List exists', return: {} },
         {
-            type: "if else", description: "Add or Update the Item",
+            type: 'if else', description: 'Add or Update the Item',
             returnIf: { Ok: true },
             returnThen: {}
         }
@@ -138,7 +140,7 @@ app.put('/items/:item', function (req, res) {
 - [ ] Doc - Documentation and samples for each feature 
 
 
-## Contribute
+### Contribute
 Come with us to make an awesome *Grounds*.
 
 Now, if you do not have technical knowledge and also have intend to help us, do not feel shy, [click here](https://github.com/dalssoft/grounds/issues) to open an issue and collaborate their ideas, the contribution may be a criticism or a compliment (why not?)
