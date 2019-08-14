@@ -1,6 +1,8 @@
 # grounds
 Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer
 
+<img src="/dalssoft/grounds/blob/master/docs/logo.png?raw=true" align="left" height="200">
+
 ### Installing
     $ npm install grounds
 
