@@ -14,7 +14,7 @@ const { Ok, Err, usecase, step, ifElse } = require('../../../src/grounds')
 
 const addOrUpdateItem = () =>
 
-    usecase("Add or Update an Item on a to-do List", {
+    usecase('Add or Update an Item on a to-do List', {
 
         // Input/Request type validation 
         request: { listId: Number, item: Object },
@@ -29,30 +29,30 @@ const addOrUpdateItem = () =>
         },
 
         // Step audit and description
-        "Check if the Item is valid": step((ctx) => {
+        'Check if the Item is valid': step((ctx) => {
             ...
             return item.validate() // Ok or Error
         }),
 
-        "Check if the List exists": step(async (ctx) => {
+        'Check if the List exists': step(async (ctx) => {
             ...
             return Ok()
         }),
 
         // Conditional step
-        "Add or Update the Item": ifElse({
+        'Add or Update the Item': ifElse({
 
-            "If the Item exists": step(async (ctx) => {
+            'If the Item exists': step(async (ctx) => {
                 ...
                 return Ok(newItem)
             }),
 
-            "Then: Add a new Item to the List": step(async (ctx) => {
+            'Then: Add a new Item to the List': step(async (ctx) => {
                 ...
                 return await itemRepo.save(item) // Ok or Error
             }),
 
-            "Else: Update Item on the List": step(async (ctx) => {
+            'Else: Update Item on the List': step(async (ctx) => {
                 ...
                 return await itemRepo.save(item) // Ok or Error
             })
@@ -64,7 +64,7 @@ controler/addOrUpdateItem.js:
 ```javascript
 app.put('/items/:item', function (req, res) {
     const req = req.params
-    const user = { user: "John", id: '923b8b9a', isAdmin: true } // from session
+    const user = { user: 'John', id: '923b8b9a', isAdmin: true } // from session
 
     const uc = addOrUpdateItem()
     uc.authorize(user)
