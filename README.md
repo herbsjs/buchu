@@ -65,12 +65,12 @@ const addOrUpdateItem = () =>
 controler/addOrUpdateItem.js:
 ```javascript
 app.put('/items/:item', function (req, res) {
-    const req = req.params
-    const user = { user: 'John', id: '923b8b9a', isAdmin: true } // from session
+    const request = req.params
+    const user = { name: 'John', id: '923b8b9a', isAdmin: true } // from session
 
     const uc = addOrUpdateItem()
     uc.authorize(user)
-    const ret = await uc.run(req)
+    const ret = await uc.run(request)
     res.send(ret)
 })
 ```
@@ -100,7 +100,7 @@ app.put('/items/:item', function (req, res) {
     type: 'use case',
     description: 'Add or Update an Item on a to-do List',
     transactionId: '9985fb70-f56d-466a-b466-e200d1d4848c',
-    user: { user: 'John', id: '923b8b9a', isAdmin: true },
+    user: { name: 'John', id: '923b8b9a', isAdmin: true },
     authorized: true,
     return: {
         Ok: { item: { id: 100, name: 'Do not forget this', position: 9 } }
@@ -117,6 +117,45 @@ app.put('/items/:item', function (req, res) {
     ]
 }
 ```
+
+### Motivations
+
+#### Maintainability 
+"Programs must be written for people to read, and only incidentally for machines to execute" - Harold Abelson, Structure and Interpretation of Computer Programs 
+
+Understanding what a software is doing from a business perspective is a must in order to be able to change it quickly and in a sustainable way. 
+
+#### Software intent metadata
+It should be easy to retrieve a system's metadata for all its use cases and steps. This info could be used to leverage innovative interfaces (ex: dynamic admin pages, use case documentations, etc), helping narrow the gap between developers, testers and product managers.
+
+#### Auditable and Secure
+It should be easy to have enterprise grade features even for simple applications. Authorization and auditing, for instance, should be available out of the box. Not using should be opt-in.
+
+### Use Case
+
+#### What is it?
+
+"These use cases orchestrate the flow of data to and from the entities, and direct those entities to use their Critical Business Rules to achieve the goals of the use case." - Clean Architecture book
+
+It should:
+- Be modeled around business
+- Be reusable
+- Be testable / Have clear acceptance criteria
+- Help identify right architecture 
+- Ubiquitous language
+
+#### Best pratices
+
+- Keep it simple by telling stories
+- Understand the big picture
+- Focus on value
+- Build the system in slices
+- Deliver the system in increments 
+- Adapt to meet the team’s needs
+
+References:
+- Clean Architecture book [link](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164)
+- Use Case 2.0 [link](https://www.ivarjacobson.com/sites/default/files/field_iji_file/article/use-case_2.0_final_rev3.pdf)
 
 ### To Do
 - [X] Base - Run a use case
