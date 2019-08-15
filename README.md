@@ -125,7 +125,7 @@ app.put('/items/:item', function (req, res) {
 
 Understanding what a software is doing from a business perspective is a must in order to be able to change it quickly and in a sustainable way. 
 
-#### Software intent metadata
+#### Metadata for system intent 
 It should be easy to retrieve a system's metadata for all its use cases and steps. This info could be used to leverage innovative interfaces (ex: dynamic admin pages, use case documentations, etc), helping narrow the gap between developers, testers and product managers.
 
 #### Auditable and Secure
@@ -135,7 +135,9 @@ It should be easy to have enterprise grade features even for simple applications
 
 #### What is it?
 
-"These use cases orchestrate the flow of data to and from the entities, and direct those entities to use their Critical Business Rules to achieve the goals of the use case." - Clean Architecture book
+A Use Case reflects a single action exposed by the Domain to the end user. Ex: _Reopen Ticket_, _Reply Message_, _Add User_
+
+Internaly a Use Case control the interaction between Entities, Repositories (infrastructure) and other Domain components.
 
 It should:
 - Be modeled around business
@@ -144,18 +146,89 @@ It should:
 - Help identify right architecture 
 - Ubiquitous language
 
+"Use cases orchestrate the flow of data to and from the entities, and direct those entities to use their Critical Business Rules to achieve the goals of the use case." - Clean Architecture book
+
 #### Best pratices
 
 - Keep it simple by telling stories
 - Understand the big picture
 - Focus on value
-- Build the system in slices
-- Deliver the system in increments 
-- Adapt to meet the team’s needs
+- Build the use case in steps 
+
+Architecture:
+
+- Implement business __flows__ using Use Cases. 
+
+	Ex: _Reply Message_ use case interacts with `Message`, `Ticket`, `User` and others entities in order to reply a message for a user 
+
+- Split the __flows__ in smaller steps
+
+- Avoid implement __validations__ using Use Cases. Prefer Entities for validations
+	
+- Access Use Cases from outside the Domain
+
+	Use cases are the "entry points" for the Domain layer, so it is the only accessible layer from outside the Domain.
+
+- Don't access any other sublayer which belongs to Domain layer (Entities, etc) apart Use Case from outside Domain
+
+- Name the Use Case folder, file and its steps  as an action (verb). 
+
+	Ex: `OpenTicket.js`, `ReplyMessage.js`, `AddUser.js`
+
+	Use Cases are implemented as [command patterns](https://sourcemaking.com/design_patterns/command).
 
 References:
 - Clean Architecture book [link](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164)
 - Use Case 2.0 [link](https://www.ivarjacobson.com/sites/default/files/field_iji_file/article/use-case_2.0_final_rev3.pdf)
+- Use Case diagram [link](http://www.agilemodeling.com/artifacts/useCaseDiagram.htm)
+- Service Layer [link](https://martinfowler.com/eaaCatalog/serviceLayer.html)
+
+#### What is it?
+
+A Use Case reflects a single action exposed by the Domain to the end user. Ex: _Reopen Ticket_, _Reply Message_, _Add User_
+
+Internaly a Use Case control the interaction between Entities, Repositories (infrastructure) and other Domain components.
+
+It should:
+- Be modeled around business
+- Be reusable
+- Be testable / Have clear acceptance criteria
+- Help identify right architecture 
+- Ubiquitous language
+
+"Use cases orchestrate the flow of data to and from the entities, and direct those entities to use their Critical Business Rules to achieve the goals of the use case." - Clean Architecture book
+
+#### Best pratices
+
+- Keep it simple by telling stories
+- Understand the big picture
+- Focus on value
+- Build the use case in steps 
+
+Implement business __flows__ using Use cases. 
+
+> Ex: _Reply Message_ use case interacts with `Message`, `Ticket`, `User` and others entities in order to reply a message for a user 
+
+__AVOID__ implement __validations__ using Use cases. Prefer Entities for validations
+
+__DO__ split the __flows__ in smaller steps
+	
+__DO__ access Use cases from outside the Domain
+
+Use cases are the "entry points" for the Domain layer, so it is the only accessible layer from outside the Domain.
+
+__DON'T__ access any other sublayer which belongs to Domain layer (Entities, etc) apart Use Case from outside Domain
+
+__DO__ name the Use Case folder, file and its steps  as an action (verb). 
+Ex: `ReopenTicket.js`, `ReplyMessage.js`, `AddUser.js`
+Use cases are implemented as [command patterns](https://sourcemaking.com/design_patterns/command).
+
+References:
+- Clean Architecture book [link](https://www.amazon.com/Clean-Architecture-Craftsmans-Software-Structure/dp/0134494164)
+- Use Case 2.0 [link](https://www.ivarjacobson.com/sites/default/files/field_iji_file/article/use-case_2.0_final_rev3.pdf)
+- Use Case diagram [link](http://www.agilemodeling.com/artifacts/useCaseDiagram.htm)
+- Service Layer [link](https://martinfowler.com/eaaCatalog/serviceLayer.html)
+
 
 ### To Do
 - [X] Base - Run a use case
