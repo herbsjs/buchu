@@ -1,6 +1,6 @@
 {
   "name": "grounds",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer",
   "main": "./src/grounds.js",
   "directories": {
