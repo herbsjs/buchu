@@ -7,6 +7,18 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Main.js Launch",
+            "program": "${workspaceFolder}/examples/todoapp/main.js",
+            "skipFiles": [
+                "${workspaceFolder}/node_modules/**/*.js",
+                "<node_internals>/**/*.js"
+            ]
+        },
+        
+        
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Example Tests",
             "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
             "args": [

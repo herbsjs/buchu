@@ -189,6 +189,7 @@ References:
 - [X] Steps - Enable multiple steps for a use case
 - [X] Nested Steps - Enable multiple steps for a parent step
 - [ ] Nested Steps - multiple files - Enable multiple steps in diferent files for a parent step
+- [ ] Use usecase as a step
 - [X] Doc Step - Get description and structure from use case and its steps 
 - [X] Request - Be able to describe and validate the use case request object 
 - [ ] Response - Be able to describe and validate the use case response object 
@@ -206,7 +207,6 @@ References:
 - [X] Deal with async / await steps
 - [X] Use case examples
 - [ ] Doc - Documentation and samples for each feature 
-
 
 ### Contribute
 Come with us to make an awesome *Grounds*.
