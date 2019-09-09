@@ -279,46 +279,31 @@ describe('A use case', () => {
         })
     })
 
-    describe('the simplest use case with dependency injection', () => {
+    describe('the simplest use case with setup function', () => {
 
-        const givenTheSimplestUseCaseWithDependencyInjection = () => {
+        const givenTheSimplestUseCaseWithSetupFunction = () => {
             const uc = usecase('A use case', {
-                dependency: {
-                    obj1: { f1() { return 1 } }
-                },
-                'Change return': step({
-                    'step i1': step((ctx) => { ctx.ret.step1 = ctx.di.obj1.f1(); return Ok() }),
-                })
+                setup: (ctx) => ctx.ret.step1 = 1,
+                'Change return': step(() => Ok())
             })
             return uc
         }
 
         it('should initiate', () => {
             //given
-            const uc = givenTheSimplestUseCaseWithDependencyInjection()
+            const uc = givenTheSimplestUseCaseWithSetupFunction()
             //then
             assert.deepEqual(uc.description, 'A use case')
         })
 
         it('should run with default value', async () => {
             //given
-            const uc = givenTheSimplestUseCaseWithDependencyInjection()
+            const uc = givenTheSimplestUseCaseWithSetupFunction()
             //when
             const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
             assert.deepEqual(ret.value, { step1: 1 })
-        })
-
-        it('should run with injected value', async () => {
-            //given
-            const uc = givenTheSimplestUseCaseWithDependencyInjection()
-            //when
-            uc.inject({ obj1: { f1() { return 2 } } })
-            const ret = await uc.run()
-            //then
-            assert.ok(ret.isOk)
-            assert.deepEqual(ret.value, { step1: 2 })
         })
     })
 

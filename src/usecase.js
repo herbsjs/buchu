@@ -13,20 +13,19 @@ class UseCase {
         this._requestSchema = body.request
         delete body.request
 
-        //request schema
-        this._dependency = body.dependency || {}
-        delete body.dependency
-
         //authotization
         this._authorize = body.authorize
         this._hasAuthorization = null
         delete body.authorize
 
+        //setup function
+        this._setup = body.setup || (() => void 0)
+        delete body.setup
+
         // main step
         this._mainStep = step(body)
         this._mainStep.type = this.type
         this._mainStep.description = description
-        this._mainStep.context.di = this._dependency
 
         // audit trail
         this._auditTrail = this._mainStep._auditTrail
@@ -35,13 +34,9 @@ class UseCase {
         this._auditTrail.transactionId = uuidv4()
     }
 
-    inject(injection) {
-        this._mainStep.context.di = Object.assign({}, this._dependency, injection)
-    }
-
     authorize(user) {
         this._hasAuthorization = false
-        this._auditTrail.user = {...user}
+        this._auditTrail.user = { ...user }
         if (this._authorize) {
             const ret = this._authorize(user)
             if (ret.isOk) this._hasAuthorization = true
@@ -59,6 +54,8 @@ class UseCase {
             if (!requestSchema.isValid) return Err(requestSchema.errors)
             this._mainStep.context.req = request
         }
+
+        this._setup(this._mainStep.context)
 
         return this._mainStep.run()
     }

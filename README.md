@@ -13,8 +13,12 @@ Check the complete examples [here](https://github.com/dalssoft/grounds/tree/mast
 usecases/addOrUpdateItem.js:
 ```javascript
 const { Ok, Err, usecase, step, ifElse } = require('../../../src/grounds')
+const dependency = {
+    ItemRepository: require('../repositories/ItemRepository').ItemRepository,
+    ...
+}
 
-const addOrUpdateItem = () =>
+const addOrUpdateItem = (injection) =>
 
     usecase('Add or Update an Item on a to-do List', {
 
@@ -23,13 +27,10 @@ const addOrUpdateItem = () =>
 
         // Authorization Audit  
         authorize: (user) => user.isAdmin ? Ok() : Err(),
-        
-        // Dependency Injection control  
-        dependency: {
-            ItemRepository: require('../repositories/ItemRepository').ItemRepository,
-            ...
-        },
 
+        // Dependency Injection control
+        setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
+        
         // Step audit and description
         'Check if the Item is valid': step((ctx) => {
             ...
@@ -193,7 +194,7 @@ References:
 - [X] Doc Step - Get description and structure from use case and its steps 
 - [X] Request - Be able to describe and validate the use case request object 
 - [ ] Response - Be able to describe and validate the use case response object 
-- [X] Dependency Injection
+- [X] Dependency Injection (removed)
 - [X] `ctx` var - Share context between Steps 
 - [X] Conditional Steps - Enable a If/Else constructor for steps
 - [X] Authorization - Be able to authorize the execution of a use case and its steps

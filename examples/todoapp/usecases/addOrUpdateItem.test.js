@@ -22,9 +22,8 @@ describe('Add Or Update Item Use Case', () => {
             const user = { user: "John", id: '923b8b9a', isAdmin: true }
 
             // When
-            const uc = addOrUpdateItem()
+            const uc = addOrUpdateItem(injection)
             uc.authorize(user)
-            uc.inject(injection)
             const ret = await uc.run(req)
 
             // Then
@@ -52,9 +51,8 @@ describe('Add Or Update Item Use Case', () => {
             const user = { user: "John", id: '923b8b9a', isAdmin: true }
 
             // When
-            const uc = addOrUpdateItem()
+            const uc = addOrUpdateItem(injection)
             uc.authorize(user)
-            uc.inject(injection)
             const ret = await uc.run(req)
 
             // Then

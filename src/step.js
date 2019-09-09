@@ -17,7 +17,6 @@ class Step {
         this._body = body
         this._auditTrail = { type: this.type }
         this.context = {
-            di: {},
             ret: {},
             req: {}
         }

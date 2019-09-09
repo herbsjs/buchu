@@ -1,18 +1,19 @@
 const { Ok, Err, usecase, step, ifElse } = require('../../../src/grounds')
+const dependency = {
+    ItemRepository: require('../repositories/ItemRepository').ItemRepository,
+    ListRepository: require('../repositories/ListRepository').ListRepository,
+    Item: require('../entities/Item').Item
+}
 
-const addOrUpdateItem = () =>
+const addOrUpdateItem = (injection) =>
 
     usecase("Add or Update an Item on a to-do List", {
 
         request: { listId: Number, item: Object },
 
         authorize: (user) => user.isAdmin ? Ok() : Err(),
-        
-        dependency: {
-            ItemRepository: require('../repositories/ItemRepository').ItemRepository,
-            ListRepository: require('../repositories/ListRepository').ListRepository,
-            Item: require('../entities/Item').Item
-        },
+
+        setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
 
         "Check if the Item is valid": step((ctx) => {
             const item = ctx.ret.item = new ctx.di.Item(ctx.req.item)

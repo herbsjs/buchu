@@ -1,6 +1,10 @@
 const { Ok, Err, usecase, step } = require('../../../src/grounds')
+const dependency = {
+    ItemRepository: require('../repositories/ItemRepository').ItemRepository,
+    Item: require('../entities/Item').Item
+}
 
-const listItems = () =>
+const listItems = (injection) =>
 
     usecase("List all items on a expecific to-do list", {
 
@@ -8,10 +12,7 @@ const listItems = () =>
 
         authorize: (user) => user.isAdmin ? Ok() : Err(),
 
-        dependency: {
-            ItemRepository: require('../repositories/ItemRepository').ItemRepository,
-            Item: require('../entities/Item').Item
-        },
+        setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
 
         "List items": step(async (ctx) => {
             const itemRepo = new ctx.di.ItemRepository(ctx.di)
