@@ -10,7 +10,7 @@ class Ok {
 	get err() { return null }
 	toString() {
 		if (this.value)
-			return 'Ok: ' + JSON.toJSON(this.value)
+			return 'Ok: ' + JSON.stringify(this.value)
 		else
 			return 'Ok'
 	}
