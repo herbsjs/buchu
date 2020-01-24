@@ -33,7 +33,7 @@ class Err {
 		else
 			return "Error"
 	}
-	toJSON() { return JSON.stringify(this) }
+	toJSON() { return { 'Error': this._error } }
 }
 
 module.exports = {
