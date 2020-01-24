@@ -29,11 +29,11 @@ class Err {
 	get err() { return this._error }
 	toString() {
 		if (this._error)
-			return "Error: " + this._error.toString()
+			return "Error: " + JSON.stringify(this._error)
 		else
 			return "Error"
 	}
-	toJSON() { return this.toString() }
+	toJSON() { return JSON.stringify(this) }
 }
 
 module.exports = {
