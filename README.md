@@ -221,6 +221,7 @@ We have some conventions to contribute to the *Buchu* project, see more informat
 Buchu is most often used as a stimulating tonic and a diuretic. It is now commonly used to treat urinary tract infections. In the past, this herb has also been used to treat arthritis, kidney stones and gout. It can also be used externally for bruises and sprains.
 
 https://www.herbslist.net/
+
 https://en.wikipedia.org/wiki/Agathosma_betulina
 
 ### License
