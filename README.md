@@ -1,18 +1,18 @@
-<p align="center"><img src="https://raw.githubusercontent.com/dalssoft/grounds/master/docs/logo.png" height="250"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/dalssoft/buchu/master/docs/logo.png" height="250"></p>
 
-# grounds
+# buchu
 Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer
 
 ### Installing
-    $ npm install grounds
+    $ npm install buchu
 
 ### Using
 
-Check the complete examples [here](https://github.com/dalssoft/grounds/tree/master/examples). 
+Check the complete examples [here](https://github.com/dalssoft/buchu/tree/master/examples). 
 
 usecases/addOrUpdateItem.js:
 ```javascript
-const { Ok, Err, usecase, step, ifElse } = require('../../../src/grounds')
+const { Ok, Err, usecase, step, ifElse } = require('../../../src/buchu')
 const dependency = {
     ItemRepository: require('../repositories/ItemRepository').ItemRepository,
     ...
@@ -210,13 +210,13 @@ References:
 - [ ] Doc - Documentation and samples for each feature 
 
 ### Contribute
-Come with us to make an awesome *Grounds*.
+Come with us to make an awesome *Buchu*.
 
-Now, if you do not have technical knowledge and also have intend to help us, do not feel shy, [click here](https://github.com/dalssoft/grounds/issues) to open an issue and collaborate their ideas, the contribution may be a criticism or a compliment (why not?)
+Now, if you do not have technical knowledge and also have intend to help us, do not feel shy, [click here](https://github.com/dalssoft/buchu/issues) to open an issue and collaborate their ideas, the contribution may be a criticism or a compliment (why not?)
 
-We have some conventions to contribute to the *Grounds* project, see more information in our [CONTRIBUTING.md](CONTRIBUTING.md). So please, read this before send to us a [pull requests](https://github.com/dalssoft/grounds/pulls).
+We have some conventions to contribute to the *Buchu* project, see more information in our [CONTRIBUTING.md](CONTRIBUTING.md). So please, read this before send to us a [pull requests](https://github.com/dalssoft/buchu/pulls).
 
 ### License
 
-**Grounds** is released under the
-[MIT license](https://github.com/dalssoft/grounds/blob/development/LICENSE.md).
+**Buchu** is released under the
+[MIT license](https://github.com/dalssoft/buchu/blob/development/LICENSE.md).

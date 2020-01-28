@@ -1,8 +1,8 @@
 {
-  "name": "grounds",
+  "name": "buchu",
   "version": "1.0.2",
   "description": "Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer",
-  "main": "./src/grounds.js",
+  "main": "./src/buchu.js",
   "directories": {
     "lib": "src",
     "test": "test",
@@ -10,16 +10,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dalssoft/grounds.git"
+    "url": "https://github.com/dalssoft/buchu.git"
   },
   "bugs": {
-    "url": "https://github.com/dalssoft/grounds/issues/"
+    "url": "https://github.com/dalssoft/buchu/issues/"
   },
   "engines": {
     "node": ">= 12.3.0"
   },
   "keywords": [
-    "grounds",
+    "buchu",
     "usecase",
     "clean architecture"
   ],

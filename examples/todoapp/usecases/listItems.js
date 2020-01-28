@@ -1,4 +1,4 @@
-const { Ok, Err, usecase, step } = require('../../../src/grounds')
+const { Ok, Err, usecase, step } = require('../../../src/buchu')
 const dependency = {
     ItemRepository: require('../repositories/ItemRepository').ItemRepository,
     Item: require('../entities/Item').Item

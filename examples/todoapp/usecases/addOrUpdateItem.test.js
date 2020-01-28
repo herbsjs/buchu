@@ -1,5 +1,5 @@
 const { addOrUpdateItem } = require('./addOrUpdateItem')
-const { Ok, Err } = require('../../../src/grounds')
+const { Ok, Err } = require('../../../src/buchu')
 const assert = require('assert')
 
 describe('Add Or Update Item Use Case', () => {
