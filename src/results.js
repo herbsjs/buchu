@@ -10,7 +10,7 @@ class Ok {
 	get err() { return null }
 	toString() {
 		if (this.value)
-			return 'Ok: ' + JSON.toJSON(this.value)
+			return 'Ok: ' + JSON.stringify(this.value)
 		else
 			return 'Ok'
 	}
@@ -29,11 +29,11 @@ class Err {
 	get err() { return this._error }
 	toString() {
 		if (this._error)
-			return "Error: " + this._error.toString()
+			return "Error: " + JSON.stringify(this._error)
 		else
 			return "Error"
 	}
-	toJSON() { return this.toString() }
+	toJSON() { return { 'Error': this._error } }
 }
 
 module.exports = {
