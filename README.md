@@ -52,12 +52,12 @@ const addOrUpdateItem = (injection) =>
 
             'Then: Add a new Item to the List': step(async (ctx) => {
                 ...
-                return await itemRepo.save(item) // Ok or Error
+                return ctx.ret = await itemRepo.save(item) // Ok or Error
             }),
 
             'Else: Update Item on the List': step(async (ctx) => {
                 ...
-                return await itemRepo.save(item) // Ok or Error
+                return ctx.ret = await itemRepo.save(item) // Ok or Error
             })
         })
     })
@@ -118,6 +118,38 @@ app.put('/items/:item', function (req, res) {
     ]
 }
 ```
+
+### Request Validation
+
+A request can be validated against the field's type.
+
+```javascript
+const addOrUpdateItem = (injection) =>
+
+    usecase('Add or Update an Item on a to-do List', {
+
+        // Input/Request type validation 
+        request: { listId: Number, item: Object },
+
+    ...
+```
+
+#### Request types
+
+A field in a request can be of basic types, the same as those used by JavaScript:
+
+`Number`: double-precision 64-bit binary format IEEE 754 value
+
+`String`: a UTF‐16 character sequence
+
+`Boolean`: true or false
+
+`Date`: represents a single moment in time in a platform-independent format. 
+
+`Object`: the Object class represents one of JavaScript's data types.
+
+`Array`: the Array class is a object that is used in the construction of arrays. 
+
 
 ### Motivations
 
