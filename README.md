@@ -95,6 +95,10 @@ app.put('/items/:item', function (req, res) {
 }
 ```
 
+### Audit
+
+It is possible to retrieve the audit trail of an use case after its execution   
+
 `uc.auditTrail`:
 ```javascript
 {
@@ -118,6 +122,9 @@ app.put('/items/:item', function (req, res) {
     ]
 }
 ```
+
+TIP: If you need to audit the exceptions thrown by the use case use `process.env.HERBS_EXCEPTION = "audit"`. This will swallow the exceptions and return a Err on the step. Recommended for production environments. 
+
 
 ### Request Validation
 

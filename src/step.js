@@ -29,11 +29,13 @@ class Step {
         const _runFunction = async () => {
             if (type != stepTypes.Func) return
             let ret;
-            try {
-                ret = await this._body(this.context)
-            } catch (error) {
-                ret = Err(error)
+
+            if (process.env.HERBS_EXCEPTION === "audit") {
+                try { ret = await this._body(this.context) }
+                catch (error) { ret = Err(error) }
             }
+            else
+                ret = await this._body(this.context)
             return ret
         }
 

@@ -77,7 +77,12 @@ describe('A step', () => {
             })
         })
 
-        context('returning Exception', () => {
+        context('returning Exception when production', () => {
+
+            beforeEach((done) => {
+                process.env.HERBS_EXCEPTION = "audit"
+                done()
+            })
 
             const givenTheSimplestStepWithException = () => {
                 const st = step(() => { throw new Error() })
@@ -106,6 +111,53 @@ describe('A step', () => {
                     return: Err(new Error())
                 })
             })
+
+            afterEach((done) => {
+                process.env.HERBS_EXCEPTION = null
+                done()
+            })
+
+        })
+
+        context('throwing Exception when not production', () => {
+
+            beforeEach((done) => {
+                process.env.HERBS_EXCEPTION = "dev"
+                done()
+            })
+
+            const givenTheSimplestStepWithException = () => {
+                const st = step(() => { throw new Error() })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenTheSimplestStepWithException()
+                //when
+                const f = async () => { const ret = await st.run() }
+                //then
+                assert.rejects(f(), Error)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenTheSimplestStepWithException()
+                //when
+                try { await st.run() }
+                catch (e) {}
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined
+                })
+            })
+
+            afterEach((done) => {
+                process.env.HERBS_EXCEPTION = null
+                done()
+            })
+
         })
     })
 
