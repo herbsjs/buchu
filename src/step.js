@@ -40,23 +40,27 @@ class Step {
         }
 
         const _runNestedSteps = async () => {
-            if (type != stepTypes.Nested) return
-            const steps = Object.entries(this._body)
-            this._auditTrail.steps = []
-            for (const stepInfo of steps) {
+            try{
+                if (type != stepTypes.Nested) return
+                const steps = Object.entries(this._body)
+                this._auditTrail.steps = []
+                for (const stepInfo of steps) {
 
-                const [description, step] = stepInfo
-                if (step === null) continue
-                step.description = description
-                step.context = this.context
+                    const [description, step] = stepInfo
+                    if (step === null) continue
+                    step.description = description
+                    step.context = this.context
 
-                const ret = await step.run()
+                    const ret = await step.run()
 
-                this._auditTrail.steps.push(step.auditTrail)
+                    this._auditTrail.steps.push(step.auditTrail)
 
-                if (ret.isErr) return ret
+                    if (ret.isErr) return ret
+                }
+                return Ok({ ...this.context.ret })
+            catch(error){
+                return Err(error)
             }
-            return Ok({ ...this.context.ret })
         }
 
         let ret = undefined
