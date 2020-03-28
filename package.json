@@ -10,10 +10,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dalssoft/buchu.git"
+    "url": "https://github.com/herbsjs/buchu.git"
   },
   "bugs": {
-    "url": "https://github.com/dalssoft/buchu/issues/"
+    "url": "https://github.com/herbsjs/buchu/issues/"
   },
   "engines": {
     "node": ">= 12.3.0"
@@ -24,6 +24,7 @@
     "clean architecture"
   ],
   "author": "David Lojudice Sb",
+  "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
     "uuid": "^3.3.2"
