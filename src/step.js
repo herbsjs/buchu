@@ -56,7 +56,11 @@ class Step {
 
                 if (ret.isErr) return ret
             }
-            return Ok({ ...this.context.ret })
+            const ret = this.context.ret
+            if (ret.__proto__ === Ok().__proto__)
+                return Ok(ret)
+            else
+                return Ok({ ...ret })
         }
 
         let ret = undefined

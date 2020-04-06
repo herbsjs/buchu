@@ -164,6 +164,92 @@ describe('A use case', () => {
         })
     })
 
+
+    describe('the simplest use case with context returning multiple Oks or Errs', () => {
+
+        context('returning Ok', () => {
+
+            const givenAnUseCaseWithOkReturn = () => {
+                const uc = usecase('A use case', {
+                    'Change return': step({
+                        'step r1': step((ctx) => { ctx.ret = Ok('uc ret'); return Ok('step1 ret') }),
+                    })
+                })
+                return uc
+            }
+
+            it('should run', async () => {
+                //given
+                const uc = givenAnUseCaseWithOkReturn()
+                //when
+                const ret = await uc.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, 'uc ret')
+            })
+
+            it('should audit', async () => {
+                //given
+                const uc = givenAnUseCaseWithOkReturn()
+                //when
+                await uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    return: Ok('uc ret'), steps: [
+                        {
+                            type: 'step', description: 'Change return', return: Ok('uc ret'), steps: [
+                                { type: 'step', description: 'step r1', return: Ok('step1 ret') },
+                            ]
+                        }]
+                })
+            })
+        })
+
+        context('returning Err', () => {
+
+            const givenAnUseCaseWithErrReturn = () => {
+                const uc = usecase('A use case', {
+                    'Change return': step({
+                        'step r1': step((ctx) => { ctx.ret = Err('uc ret'); return Err('step1 ret') }),
+                    })
+                })
+                return uc
+            }
+
+            it('should run', async () => {
+                //given
+                const uc = givenAnUseCaseWithErrReturn()
+                //when
+                const ret = await uc.run()
+                //then
+                assert.ok(ret.isErr)
+                assert.deepEqual(ret.err, 'step1 ret')
+            })
+
+            it('should audit', async () => {
+                //given
+                const uc = givenAnUseCaseWithErrReturn()
+                //when
+                await uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    return: Err('step1 ret'), steps: [
+                        {
+                            type: 'step', description: 'Change return', return: Err('step1 ret'), steps: [
+                                { type: 'step', description: 'step r1', return: Err('step1 ret') },
+                            ]
+                        }]
+                })
+            })
+        })
+    })
+
     describe('the simplest use case with request', () => {
 
         const givenTheSimplestUseCaseWithRequest = () => {
@@ -217,7 +303,7 @@ describe('A use case', () => {
                     param1: String,
                     param2: Number
                 },
-                type: "use case", 
+                type: "use case",
                 description: "A use case",
                 steps: [
                     { type: "step", description: "A step", steps: null }
