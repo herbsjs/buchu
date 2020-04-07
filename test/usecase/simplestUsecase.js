@@ -318,8 +318,13 @@ describe('A use case', () => {
             const ret = await uc.run({ param1: 10, param2: "x" })
             //then
             assert.ok(ret.isErr)
-            assert.equal(ret.err.length, 2)
-            assert.equal(ret.err[0].err.type, 'invalid value')
+            assert.deepEqual(ret.err, {
+                request: [
+                    { param1: [{ wrongType: 'String' }] },
+                    { param2: [{ wrongType: 'Number' }] }
+                ]
+            })
+
         })
 
         it('should not run with invalid request schema', async () => {
@@ -341,8 +346,12 @@ describe('A use case', () => {
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
             assert.ok(ret.isErr)
-            assert.equal(ret.err.length, 2)
-            assert.equal(ret.err[0].err.type, 'invalid schema')
+            assert.deepEqual(ret.err, {
+                request: [
+                    { param1: [{ invalidType: 'String' }] },
+                    { param2: [{ invalidType: 'Number' }] }
+                ]
+            })
         })
 
         it('should not run without request schema', async () => {
@@ -360,8 +369,7 @@ describe('A use case', () => {
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
             assert.ok(ret.isErr)
-            assert.equal(ret.err.length, 1)
-            assert.equal(ret.err[0].type, 'invalid schema')
+            assert.deepEqual(ret.err, { request: [{ notDefined: true }] })
         })
     })
 

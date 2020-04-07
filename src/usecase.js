@@ -51,7 +51,7 @@ class UseCase {
         if (request) {
             const requestSchema = schema(this._requestSchema)
             requestSchema.validate(request)
-            if (!requestSchema.isValid) return Err(requestSchema.errors)
+            if (!requestSchema.isValid) return Err({request: requestSchema.errors})
             this._mainStep.context.req = request
         }
 
