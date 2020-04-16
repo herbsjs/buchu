@@ -1,5 +1,7 @@
 <p align="center"><img src="https://raw.githubusercontent.com/herbsjs/buchu/master/docs/logo.png" height="220"></p>
 
+![Node.js CI](https://github.com/herbsjs/buchu/workflows/Node.js%20CI/badge.svg)
+
 # buchu
 Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer
 

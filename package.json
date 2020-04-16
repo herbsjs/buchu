@@ -3,6 +3,9 @@
   "version": "1.0.5",
   "description": "Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer",
   "main": "./src/buchu.js",
+  "scripts": {
+    "test": "mocha --timeout 999999 --colors --recursive ./test"
+  },
   "directories": {
     "lib": "src",
     "test": "test",
