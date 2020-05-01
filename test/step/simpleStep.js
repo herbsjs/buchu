@@ -77,6 +77,36 @@ describe('A step', () => {
             })
         })
 
+        context('returning nothing', () => {
+
+            const givenTheSimplestStepWithNoReturn = () => {
+                const st = step(() => { })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenTheSimplestStepWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret, Ok())
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenTheSimplestStepWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    return: Ok()
+                })
+            })
+        })
+
         context('returning Exception when production', () => {
 
             beforeEach((done) => {

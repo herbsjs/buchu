@@ -101,6 +101,46 @@ describe('A step', () => {
             })
 
         })
+
+        context('returning nothing', () => {
+
+            const givenNestedStepsWithNoReturn = () => {
+                const st = step({
+                    'step 1': step(() => { return Ok() }),
+                    'step 2': step(() => { return Ok() }),
+                    'step 3': step(() => { })
+                })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenNestedStepsWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isOk)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenNestedStepsWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    steps: [
+                        { type: 'step', description: 'step 1', return: Ok() },
+                        { type: 'step', description: 'step 2', return: Ok() },
+                        { type: 'step', description: 'step 3', return: Ok() }
+                    ],
+                    return: Ok({})
+                })
+            })
+
+        })
     })
 
     describe('with many nested steps', () => {

@@ -36,6 +36,7 @@ class Step {
             }
             else
                 ret = await this._body(this.context)
+            ret = ret || Ok()
             return ret
         }
 
@@ -50,8 +51,8 @@ class Step {
                 step.description = description
                 step.context = this.context
 
-                const ret = await step.run()
-
+                let ret = await step.run()
+            
                 this._auditTrail.steps.push(step.auditTrail)
 
                 if (ret.isErr) return ret
