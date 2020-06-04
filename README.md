@@ -11,7 +11,7 @@ Uniform, auditable and secure use case javascript library. Influenced by Clean A
 
 ### Using
 
-Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/examples). 
+Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/examples) or for a complete solution using herbsJS [here](https://github.com/herbsjs/todolist-on-herbs). 
 
 usecases/addOrUpdateItem.js:
 ```javascript
