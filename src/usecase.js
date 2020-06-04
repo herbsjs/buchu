@@ -1,6 +1,6 @@
 const { step } = require('./step')
 const { schema } = require('./schema')
-const uuidv4 = require('uuid/v4');
+const uuidv4 = require('uuid/v4')
 const { Ok, Err } = require('./results')
 
 class UseCase {
@@ -51,7 +51,7 @@ class UseCase {
         if (request) {
             const requestSchema = schema(this._requestSchema)
             requestSchema.validate(request)
-            if (!requestSchema.isValid) return Err({request: requestSchema.errors})
+            if (!requestSchema.isValid) return Err({ request: requestSchema.errors })
             this._mainStep.context.req = request
         }
 

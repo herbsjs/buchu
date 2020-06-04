@@ -11,7 +11,7 @@ Uniform, auditable and secure use case javascript library. Influenced by Clean A
 
 ### Using
 
-Check the complete examples [here](https://github.com/dalssoft/buchu/tree/master/examples). 
+Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/examples). 
 
 usecases/addOrUpdateItem.js:
 ```javascript
@@ -114,8 +114,8 @@ It is possible to retrieve the audit trail of an use case after its execution
         Ok: { item: { id: 100, name: 'Do not forget this', position: 9 } }
     },
     steps: [
-        { type: 'step', description: 'Check if the Item is valid', return: {} },
-        { type: 'step', description: 'Check if the List exists', return: {} },
+        { type: 'step', description: 'Check if the Item is valid', elapsedTime: 0.584 , return: {} },
+        { type: 'step', description: 'Check if the List exists', elapsedTime: 0.2547 , return: {}  },
         {
             type: 'if else', 
             description: 'Add or Update the Item',
@@ -241,7 +241,7 @@ References:
 - [X] Conditional Steps - Enable a If/Else constructor for steps
 - [X] Authorization - Be able to authorize the execution of a use case and its steps
 - [X] Audit - Be able to track use case runtime information 
-- [ ] Audit - Timing - Be able to track use case and its steps execution time 
+- [X] Audit - Timing - Be able to track use case and its steps execution time 
 - [ ] Async / MQ - Multiple Rounds - Be able to partially execute a use case and continue (when a MQ is necessary, for instance) 
 - [X] transaction ID - A ID to track execution between steps
 - [ ] session ID - A ID to track execution between use cases
@@ -254,9 +254,9 @@ References:
 ### Contribute
 Come with us to make an awesome *Buchu*.
 
-Now, if you do not have technical knowledge and also have intend to help us, do not feel shy, [click here](https://github.com/dalssoft/buchu/issues) to open an issue and collaborate their ideas, the contribution may be a criticism or a compliment (why not?)
+Now, if you do not have technical knowledge and also have intend to help us, do not feel shy, [click here](https://github.com/herbsjs/buchu/issues) to open an issue and collaborate their ideas, the contribution may be a criticism or a compliment (why not?)
 
-We have some conventions to contribute to the *Buchu* project, see more information in our [CONTRIBUTING.md](CONTRIBUTING.md). So please, read this before send to us a [pull requests](https://github.com/dalssoft/buchu/pulls).
+We have some conventions to contribute to the *Buchu* project, see more information in our [CONTRIBUTING.md](CONTRIBUTING.md). So please, read this before send to us a [pull requests](https://github.com/herbsjs/buchu/pulls).
 
 ### The Herb
 
@@ -269,4 +269,4 @@ https://en.wikipedia.org/wiki/Agathosma_betulina
 ### License
 
 **Buchu** is released under the
-[MIT license](https://github.com/dalssoft/buchu/blob/development/LICENSE.md).
+[MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE.md).

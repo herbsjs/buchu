@@ -11,20 +11,20 @@ Here are the guidelines we'd like you to follow:
 
 ## <a name="issue"></a> Got a Question or Issue?
 If you got a question, find a bug or an issue in the source code or a mistake in the documentation, you can help us by
-submitting an issue to our [GitHub Repository](https://github.com/dalssoft/buchu/issues). Even better you can submit a Pull Request
+submitting an issue to our [GitHub Repository](https://github.com/herbsjs/buchu/issues). Even better you can submit a Pull Request
 with a fix.
 
 **Please see the Submission Guidelines below**.
 
 ## <a name="feature"></a> Want a Feature?
-You can request a new feature by submitting an issue to our [GitHub Repository](https://github.com/dalssoft/buchu/issues).  If you would like to implement
+You can request a new feature by submitting an issue to our [GitHub Repository](https://github.com/herbsjs/buchu/issues).  If you would like to implement
 a new feature then consider what kind of change it is:
 
 * **Major Changes** that you wish to contribute to the project should be discussed first in issue on our
-[GitHub Repository](https://github.com/dalssoft/buchu/issues) so that we can better coordinate our efforts, prevent
+[GitHub Repository](https://github.com/herbsjs/buchu/issues) so that we can better coordinate our efforts, prevent
 duplication of work, and help you to craft the change so that it is successfully accepted into the
 project.
-* **Small Changes** can be crafted and submitted to the [GitHub Repository](https://github.com/dalssoft/buchu/pulls) as a Pull Request.
+* **Small Changes** can be crafted and submitted to the [GitHub Repository](https://github.com/herbsjs/buchu/pulls) as a Pull Request.
 
 
 ## <a name="submit"></a> Submission Guidelines
@@ -46,14 +46,14 @@ Providing the following information will increase the chances of your issue bein
 * **Suggest a Fix** - if you can't fix the bug yourself, perhaps you can point to what might be
   causing the problem (line of code or commit)
 
-Here is a great example of a well defined issue: https://github.com/dalssoft/buchu/issues/1
+Here is a great example of a well defined issue: https://github.com/herbsjs/buchu/issues/1
 
 **If you get help, help others. Good karma rulez!**
 
 ### Submitting a Pull Request
 Before you submit your pull request consider the following guidelines:
 
-* Search [GitHub](https://github.com/dalssoft/buchu/pulls) for an open or closed Pull Request that relates to your
+* Search [GitHub](https://github.com/herbsjs/buchu/pulls) for an open or closed Pull Request that relates to your
   submission. You don't want to duplicate effort.
 * Make your changes in a new git branch, using [git-flow](http://nvie.com/posts/a-successful-git-branching-model/):
   * ***feature***

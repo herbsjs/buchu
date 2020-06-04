@@ -1,4 +1,5 @@
 const { Ok, Err } = require('./results')
+const stopwatch = require('./stopwatch')
 
 const stepTypes = Object.freeze({
     Func: 1,
@@ -28,7 +29,7 @@ class Step {
 
         const _runFunction = async () => {
             if (type != stepTypes.Func) return
-            let ret;
+            let ret
 
             if (process.env.HERBS_EXCEPTION === "audit") {
                 try { ret = await this._body(this.context) }
@@ -51,8 +52,10 @@ class Step {
                 step.description = description
                 step.context = this.context
 
+                stopwatch.start(step.description)
                 let ret = await step.run()
-            
+                step.auditTrail.elapsedTime = stopwatch.stop(description).time
+
                 this._auditTrail.steps.push(step.auditTrail)
 
                 if (ret.isErr) return ret
@@ -68,10 +71,10 @@ class Step {
         this._auditTrail.description = this.description
 
         ret = this._auditTrail.return = await _runFunction()
-        if (ret) return ret;
+        if (ret) return ret
 
         ret = this._auditTrail.return = await _runNestedSteps()
-        return ret;
+        return ret
     }
 
     doc() {
@@ -88,7 +91,7 @@ class Step {
             }
             docStep.steps = docArray
         }
-        return docStep;
+        return docStep
     }
 
     get auditTrail() {

@@ -20,6 +20,9 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
+                assert.ok(ret.toString())
+                assert.ok(ret.toJSON())
+                assert.deepEqual(ret.err, null)
                 assert.deepEqual(ret.value, null)
             })
 
@@ -60,6 +63,9 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
+                assert.ok(ret.toString())
+                assert.ok(ret.toJSON())
+                assert.deepEqual(ret.ok, null)
                 assert.deepEqual(ret.value, null)
             })
 
