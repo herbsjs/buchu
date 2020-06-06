@@ -37,6 +37,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({}),
                     steps: [
                         { type: 'step', description: 'step 1', return: Ok(), elapsedTime:  uc._auditTrail.steps[0].elapsedTime },
@@ -77,6 +78,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Err(),
                     steps: [
                         { type: 'step', description: 'step 1', return: Ok() , elapsedTime:  uc._auditTrail.steps[0].elapsedTime },

@@ -1,4 +1,5 @@
 const { addOrUpdateItem } = require('./usecases/addOrUpdateItem')
+const stopwatch = require('../../src/stopwatch')
 
 void async function main() {
     const user = { user: "John", id: '923b8b9a', isAdmin: true }
@@ -12,6 +13,10 @@ void async function main() {
     console.log("------ doc: ------\n", uc.doc())
 
     uc.authorize(user)
+    stopwatch.start("addOrUpdateItem")
     await uc.run(req)
+ 
+    console.log("------ elapsedTime: ------\n", stopwatch.stop("addOrUpdateItem").time)
     console.log("------ audit: ------\n", uc.auditTrail)
+
 }()

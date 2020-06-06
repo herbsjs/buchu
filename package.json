@@ -30,7 +30,6 @@
   "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
-    "chai": "^4.2.0",
     "suma": "^1.0.4",
     "uuid": "^3.3.2"
   },

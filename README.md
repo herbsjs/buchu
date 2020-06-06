@@ -108,6 +108,7 @@ It is possible to retrieve the audit trail of an use case after its execution
     type: 'use case',
     description: 'Add or Update an Item on a to-do List',
     transactionId: '9985fb70-f56d-466a-b466-e200d1d4848c',
+    elapsedTime: 1.2541,
     user: { name: 'John', id: '923b8b9a', isAdmin: true },
     authorized: true,
     return: {

@@ -47,6 +47,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({}),
                     steps: [
                         { type: 'step', description: 'A step', return: Ok(), elapsedTime: uc._auditTrail.steps[0].elapsedTime },
@@ -147,6 +148,7 @@ describe('A use case', () => {
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case', description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({ step1: 'ret1', step2: 'ret2' }), steps: [
                         {
                             type: 'step', description: 'Change context', return: Ok({}), elapsedTime: uc._auditTrail.steps[0].elapsedTime, steps: [
@@ -199,6 +201,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok('uc ret'), steps: [
                         {
                             type: 'step', description: 'Change return', return: Ok('uc ret'), elapsedTime: uc._auditTrail.steps[0].elapsedTime, steps: [
@@ -240,6 +243,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Err('step1 ret'), steps: [
                         {
                             type: 'step', description: 'Change return', return: Err('step1 ret'), elapsedTime: uc._auditTrail.steps[0].elapsedTime, steps: [
@@ -287,6 +291,7 @@ describe('A use case', () => {
                 type: 'use case',
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
+                elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                 return: Ok({ response3: 3 }),
                 steps: [
                     { type: 'step', description: 'A step', return: Ok(), elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
@@ -442,6 +447,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({}),
                     authorized: true,
                     user: {
@@ -493,6 +499,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     authorized: false,
                     user: {
                         user: 'Bob',

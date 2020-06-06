@@ -2,6 +2,7 @@ const { step } = require('./step')
 const { schema } = require('./schema')
 const uuidv4 = require('uuid/v4')
 const { Ok, Err } = require('./results')
+const stopwatch = require('./stopwatch')
 
 class UseCase {
 
@@ -32,6 +33,7 @@ class UseCase {
         this._auditTrail.type = this.type
         this._auditTrail.description = description
         this._auditTrail.transactionId = uuidv4()
+
     }
 
     authorize(user) {
@@ -45,8 +47,13 @@ class UseCase {
     }
 
     run(request) {
-        if (this._hasAuthorization === false) return Err('Not Authorized')
-        if (this._authorize && this._hasAuthorization === null) return Err('Not Authorized')
+             
+        stopwatch.start(this.description)
+        
+        if ((this._hasAuthorization === false) || (this._authorize && this._hasAuthorization === null)) {   
+            this._auditTrail.elapsedTime = stopwatch.stop(this.description).time 
+            return  Err('Not Authorized')
+        }
 
         if (request) {
             const requestSchema = schema(this._requestSchema)

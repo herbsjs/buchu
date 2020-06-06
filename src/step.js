@@ -54,7 +54,7 @@ class Step {
 
                 stopwatch.start(step.description)
                 let ret = await step.run()
-                step.auditTrail.elapsedTime = stopwatch.stop(description).time
+                step._auditTrail.elapsedTime = stopwatch.stop(description).time
 
                 this._auditTrail.steps.push(step.auditTrail)
 
@@ -74,6 +74,7 @@ class Step {
         if (ret) return ret
 
         ret = this._auditTrail.return = await _runNestedSteps()
+        if (this && this.type == "use case") this._auditTrail.elapsedTime = stopwatch.stop(this.description).time
         return ret
     }
 
