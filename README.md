@@ -108,15 +108,15 @@ It is possible to retrieve the audit trail of an use case after its execution
     type: 'use case',
     description: 'Add or Update an Item on a to-do List',
     transactionId: '9985fb70-f56d-466a-b466-e200d1d4848c',
-    elapsedTime: 1.2541,
+    elapsedTime: 3.2541, // in milliseconds
     user: { name: 'John', id: '923b8b9a', isAdmin: true },
     authorized: true,
     return: {
         Ok: { item: { id: 100, name: 'Do not forget this', position: 9 } }
     },
     steps: [
-        { type: 'step', description: 'Check if the Item is valid', elapsedTime: 0.584 , return: {} },
-        { type: 'step', description: 'Check if the List exists', elapsedTime: 0.2547 , return: {}  },
+        { type: 'step', description: 'Check if the Item is valid', elapsedTime: 1.584 , return: {} },
+        { type: 'step', description: 'Check if the List exists', elapsedTime: 1.2547 , return: {}  },
         {
             type: 'if else', 
             description: 'Add or Update the Item',

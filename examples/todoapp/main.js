@@ -13,10 +13,7 @@ void async function main() {
     console.log("------ doc: ------\n", uc.doc())
 
     uc.authorize(user)
-    stopwatch.start("addOrUpdateItem")
     await uc.run(req)
- 
-    console.log("------ elapsedTime: ------\n", stopwatch.stop("addOrUpdateItem").time)
     console.log("------ audit: ------\n", uc.auditTrail)
 
 }()
