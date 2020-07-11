@@ -43,4 +43,4 @@ class Err {
 module.exports = {
 	Ok: (value) => new Ok(value),
 	Err: (err) => new Err(err)
-};
+}
