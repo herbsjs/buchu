@@ -20,10 +20,26 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert.ok(ret.toString())
-                assert.ok(ret.toJSON())
                 assert.deepEqual(ret.err, null)
                 assert.deepEqual(ret.value, null)
+            })
+
+            it('should check toString() function', async () => {
+                //given
+                const st = givenTheSimplestStep()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toString(), "Ok")
+            })
+
+            it('should check toJSON() function', async () => {
+                //given
+                const st = givenTheSimplestStep()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toJSON(), { Ok: undefined })
             })
 
             it('should audit', async () => {
@@ -47,6 +63,7 @@ describe('A step', () => {
                 //then
                 assert.deepEqual(ret, { type: "step", description: undefined, steps: null })
             })
+
         })
 
         context('returning Err', () => {
@@ -63,10 +80,26 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
-                assert.ok(ret.toString())
-                assert.ok(ret.toJSON())
                 assert.deepEqual(ret.ok, null)
                 assert.deepEqual(ret.value, null)
+            })
+
+            it('should check toString() function', async () => {
+                //given
+                const st = givenTheSimplestStepWithError()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toString(), "Error")
+            })
+
+            it('should check toJSON() function', async () => {
+                //given
+                const st = givenTheSimplestStepWithError()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toJSON(), { Error: undefined })
             })
 
             it('should audit', async () => {
