@@ -1,4 +1,4 @@
-const { Ok, Err } = require('./results');
+const { Ok, Err } = require('./results')
 
 class IfElse {
 
