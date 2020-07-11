@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { addOrUpdateItem } = require('./usecases/addOrUpdateItem')
 const stopwatch = require('../../src/stopwatch')
 

@@ -1,0 +1,39 @@
+name: CI build
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: npm i --ignore-scripts
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm test
+      - run: npx nyc --reporter=lcov npm test && npx codecov
+        env:
+          CI: true
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1.0.7
+      - name: Run Super Linter - ESLint
+        uses: github/super-linter@v3.3.0
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          LINTER_RULES_PATH: .github/linters
+          JAVASCRIPT_ES_CONFIG_FILE: .eslintrc.json
+          VALIDATE_JAVASCRIPT_STANDARD: false
+          VALIDATE_JAVASCRIPT_ES: true
+          DISABLE_ERRORS: false

@@ -14,7 +14,7 @@ class IfElse {
         step.context = this.context
         return step
     }
-
+    
     async run() {
         this._auditTrail.description = this.description
 
