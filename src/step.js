@@ -74,7 +74,13 @@ class Step {
         if (ret) return ret
 
         ret = this._auditTrail.return = await _runNestedSteps()
-        if (this && this.type == "use case") this._auditTrail.elapsedTime = stopwatch.stop(this.description).time
+        
+        if (!this._auditTrail.elapsedTime)
+        {
+             let elapsedTime =  stopwatch.stop(this.description)
+             if(elapsedTime && elapsedTime.time)
+                this._auditTrail.elapsedTime = elapsedTime.time
+        }
         return ret
     }
 

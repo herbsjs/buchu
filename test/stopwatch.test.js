@@ -32,12 +32,4 @@ describe('stopwatch validator', () => {
     }, aboveTime)
   })
 
-  it('should return error for stop a not started clock', () => {
-    expected = Error
-    const clockName = 'herbsjs'
-
-    const ret = () => stopwatch.stop(clockName)
-
-    assert.throws(ret, expected)
-  })
 })
