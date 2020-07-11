@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { addOrUpdateItem } = require('./usecases/addOrUpdateItem')
 
 void async function main() {

@@ -1,7 +1,7 @@
 const suma = require("suma")
 
 const { Ok, Err } = require('./results')
-const nativeTypes = [Boolean, Number, String, Array, Object, Date, Function];
+const nativeTypes = [Boolean, Number, String, Array, Object, Date, Function]
 
 const errorCodes = {
     invalidType: 'invalidType',
@@ -37,7 +37,7 @@ class Schema {
         const isValidSchema = this.validateSchema()
         if (!isValidSchema) return false
 
-        return this.validateValues(value);
+        return this.validateValues(value)
     }
 
     validateValues(value) {
@@ -51,12 +51,12 @@ class Schema {
         for (let key in this._description) {
             if (this._description.hasOwnProperty(key)) {
                 const validation = { type: this._description[key] }
-                let ret = suma.validate(value[key], validation);
+                let ret = suma.validate(value[key], validation)
                 if (ret.errors.length > 0)
                     this._errors.push({ [key]: ret.errors })
             }
         }
-        return this.isValid;
+        return this.isValid
     }
 
     validateSchema() {
@@ -68,7 +68,7 @@ class Schema {
         Object.keys(this._description).forEach(key => {
             let error = SchemaValidator.isValid(key, this._description[key])
             if (error) this._errors.push(error)
-        });
+        })
 
         return this.isValid
     }

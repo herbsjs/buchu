@@ -28,7 +28,7 @@ class Step {
 
         const _runFunction = async () => {
             if (type != stepTypes.Func) return
-            let ret;
+            let ret
 
             if (process.env.HERBS_EXCEPTION === "audit") {
                 try { ret = await this._body(this.context) }
@@ -68,10 +68,10 @@ class Step {
         this._auditTrail.description = this.description
 
         ret = this._auditTrail.return = await _runFunction()
-        if (ret) return ret;
+        if (ret) return ret
 
         ret = this._auditTrail.return = await _runNestedSteps()
-        return ret;
+        return ret
     }
 
     doc() {
@@ -88,7 +88,7 @@ class Step {
             }
             docStep.steps = docArray
         }
-        return docStep;
+        return docStep
     }
 
     get auditTrail() {

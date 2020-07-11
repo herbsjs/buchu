@@ -1,4 +1,4 @@
-const { schema } = require('../../../src/schema');
+const { schema } = require('../../../src/schema')
 const assert = require('assert')
 
 describe('Request schema validation', () => {
@@ -213,5 +213,5 @@ describe('Request schema validation', () => {
             assert.deepEqual(scm.errors, [{ a: [{ wrongType: 'Array' }] }])
         })
     })
-});
+})
 
