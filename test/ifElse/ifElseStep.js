@@ -167,9 +167,11 @@ describe('If Else step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     returnIf: Ok(true),
                     returnThen: Ok(),
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
             it('should doc', () => {
@@ -227,9 +229,11 @@ describe('If Else step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     returnIf: Ok(false),
                     returnElse: Ok(),
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })

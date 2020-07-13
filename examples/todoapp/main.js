@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 const { addOrUpdateItem } = require('./usecases/addOrUpdateItem')
-const stopwatch = require('../../src/stopwatch')
 
 void async function main() {
     const user = { user: "John", id: '923b8b9a', isAdmin: true }

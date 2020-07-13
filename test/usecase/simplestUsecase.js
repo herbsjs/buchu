@@ -499,7 +499,6 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
-                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     authorized: false,
                     user: {
                         user: 'Bob',

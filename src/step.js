@@ -1,5 +1,4 @@
 const { Ok, Err } = require('./results')
-const stopwatch = require('./stopwatch')
 
 const stepTypes = Object.freeze({
     Func: 1,
@@ -24,6 +23,7 @@ class Step {
     }
 
     async run(request) {
+        const startTime = process.hrtime.bigint() /* measure time */
 
         const type = stepTypes.check(this._body)
 
@@ -52,9 +52,7 @@ class Step {
                 step.description = description
                 step.context = this.context
 
-                stopwatch.start(step.description)
                 let ret = await step.run()
-                step._auditTrail.elapsedTime = stopwatch.stop(description).time
 
                 this._auditTrail.steps.push(step.auditTrail)
 
@@ -71,16 +69,13 @@ class Step {
         this._auditTrail.description = this.description
 
         ret = this._auditTrail.return = await _runFunction()
-        if (ret) return ret
+        if (ret) {
+            this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
+            return ret
+        }
 
         ret = this._auditTrail.return = await _runNestedSteps()
-        
-        if (!this._auditTrail.elapsedTime)
-        {
-             let elapsedTime =  stopwatch.stop(this.description)
-             if(elapsedTime && elapsedTime.time)
-                this._auditTrail.elapsedTime = elapsedTime.time
-        }
+        this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
         return ret
     }
 

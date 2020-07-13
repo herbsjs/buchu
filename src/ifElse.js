@@ -14,8 +14,9 @@ class IfElse {
         step.context = this.context
         return step
     }
-    
+
     async run() {
+        const startTime = process.hrtime.bigint() /* measure time */
         this._auditTrail.description = this.description
 
         const steps = Object.entries(this._body)
@@ -26,9 +27,17 @@ class IfElse {
         const elseStep = this._addMeta(elseInfo)
 
         const ifRet = this._auditTrail.returnIf = await ifStep.run()
-        if (ifRet && ifRet.isOk && ifRet.value === true) { return this._auditTrail.returnThen = await thenStep.run() }
-        if (ifRet && ifRet.isOk && ifRet.value === false) { return this._auditTrail.returnElse = await elseStep.run() }
-        return this._auditTrail.returnIf = Err({ value: ifRet, msg: 'Invalid ifElse' })
+        let ret
+        if (ifRet && ifRet.isOk && ifRet.value === true) {
+            ret = this._auditTrail.returnThen = await thenStep.run()
+        }
+        else if (ifRet && ifRet.isOk && ifRet.value === false) {
+            ret = this._auditTrail.returnElse = await elseStep.run()
+        }
+        else
+            ret = this._auditTrail.returnIf = Err({ value: ifRet, msg: 'Invalid ifElse' })
+        this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
+        return ret
     }
 
     doc() {

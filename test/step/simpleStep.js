@@ -51,8 +51,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
             it('should doc', () => {
@@ -111,8 +113,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -141,8 +145,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -177,8 +183,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err(new Error())
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
             afterEach((done) => {
@@ -258,8 +266,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok(1)
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -289,8 +299,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err(1)
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })
@@ -324,8 +336,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -356,8 +370,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })
@@ -390,8 +406,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -421,8 +439,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })

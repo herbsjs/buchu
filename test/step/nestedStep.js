@@ -35,6 +35,7 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
                         { type: 'step', description: 'step 1', return: Ok(), elapsedTime: st._auditTrail.steps[0].elapsedTime },
                         { type: 'step', description: 'step 2', return: Ok(), elapsedTime: st._auditTrail.steps[1].elapsedTime },
@@ -42,6 +43,7 @@ describe('A step', () => {
                     ],
                     return: Ok({})
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
             it('should doc', () => {
@@ -91,6 +93,7 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
                         { type: 'step', description: 'step 1', return: Ok(), elapsedTime: st._auditTrail.steps[0].elapsedTime },
                         { type: 'step', description: 'step 2', return: Ok(), elapsedTime: st._auditTrail.steps[1].elapsedTime },
@@ -98,6 +101,7 @@ describe('A step', () => {
                     ],
                     return: Err()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
         })
@@ -131,6 +135,7 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
                         { type: 'step', description: 'step 1', return: Ok(), elapsedTime: st._auditTrail.steps[0].elapsedTime },
                         { type: 'step', description: 'step 2', return: Ok(), elapsedTime: st._auditTrail.steps[1].elapsedTime },
@@ -138,6 +143,7 @@ describe('A step', () => {
                     ],
                     return: Ok({})
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
         })
@@ -187,6 +193,7 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok({}),
                     steps: [
                         {
@@ -213,8 +220,8 @@ describe('A step', () => {
                                 }
                             ]
                         }]
-                }
-                )
+                })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
             it('should doc', () => {
@@ -345,6 +352,7 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok({}),
                     steps: [
                         {
@@ -371,8 +379,8 @@ describe('A step', () => {
                                 }
                             ]
                         }]
-                }
-                )
+                })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
         })
