@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const { addOrUpdateItem } = require('./usecases/addOrUpdateItem')
+const stopwatch = require('../../src/stopwatch')
 
 void async function main() {
     const user = { user: "John", id: '923b8b9a', isAdmin: true }
@@ -15,4 +16,5 @@ void async function main() {
     uc.authorize(user)
     await uc.run(req)
     console.log("------ audit: ------\n", uc.auditTrail)
+
 }()
