@@ -6,4 +6,4 @@ class ListRepository {
 	async first() { return "" }
 }
 
-module.exports.ListRepository = ListRepository;
+module.exports.ListRepository = ListRepository
