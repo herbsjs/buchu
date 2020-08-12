@@ -3,7 +3,7 @@ const { Err } = require('./results')
 class IfElse {
 
     constructor(body) {
-        this.type = "if else"
+        this.type = 'if else'
         this._body = body
         this._auditTrail = { type: this.type }
     }

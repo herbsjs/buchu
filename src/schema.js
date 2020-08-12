@@ -1,4 +1,4 @@
-const suma = require("suma")
+const suma = require('suma')
 
 const nativeTypes = [Boolean, Number, String, Array, Object, Date, Function]
 
@@ -43,11 +43,13 @@ class Schema {
 
         // check if all keys exist on schema description
         for (let key in value) {
+            // eslint-disable-next-line no-prototype-builtins
             if (value.hasOwnProperty(key) && !this._description.hasOwnProperty(key))
                 this._errors.push({ [key]: [{ [errorCodes.invalidKey]: true }] })
         }
 
         for (let key in this._description) {
+            // eslint-disable-next-line no-prototype-builtins
             if (this._description.hasOwnProperty(key)) {
                 const validation = { type: this._description[key] }
                 let ret = suma.validate(value[key], validation)

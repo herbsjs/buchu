@@ -6,7 +6,7 @@ const { Err } = require('./results')
 class UseCase {
 
     constructor(description, body) {
-        this.type = "use case"
+        this.type = 'use case'
         this.description = description
 
         //request schema

@@ -4,7 +4,7 @@ const stepTypes = Object.freeze({
     Func: 1,
     Nested: 2,
     check(body) {
-        if (typeof body === "function") return stepTypes.Func
+        if (typeof body === 'function') return stepTypes.Func
         return stepTypes.Nested
     }
 })
@@ -12,7 +12,7 @@ const stepTypes = Object.freeze({
 class Step {
 
     constructor(body) {
-        this.type = "step"
+        this.type = 'step'
         this.description = undefined
         this._body = body
         this._auditTrail = { type: this.type }
@@ -31,7 +31,7 @@ class Step {
             if (type != stepTypes.Func) return
             let ret
 
-            if (process.env.HERBS_EXCEPTION === "audit") {
+            if (process.env.HERBS_EXCEPTION === 'audit') {
                 try { ret = await this._body(this.context) }
                 catch (error) { ret = Err(error) }
             }

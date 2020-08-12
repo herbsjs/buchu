@@ -33,9 +33,9 @@ class Err {
 	get err() { return this._error }
 	toString() {
 		if (this._error)
-			return "Error: " + JSON.stringify(this._error)
+			return 'Error: ' + JSON.stringify(this._error)
 		else
-			return "Error"
+			return 'Error'
 	}
 	toJSON() { return { 'Error': this._error } }
 }
