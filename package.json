@@ -4,7 +4,9 @@
   "description": "Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer",
   "main": "./src/buchu.js",
   "scripts": {
-    "test": "mocha --timeout 999999 --colors --recursive ./test"
+    "test": "mocha --timeout 999999 --colors --recursive ./test",
+    "lint": "npx eslint 'src/**/*.js'",
+    "lint-fix": "npx eslint --fix 'src/**/*{.js}'"
   },
   "directories": {
     "lib": "src",

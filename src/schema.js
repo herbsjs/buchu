@@ -1,6 +1,5 @@
 const suma = require("suma")
 
-const { Ok, Err } = require('./results')
 const nativeTypes = [Boolean, Number, String, Array, Object, Date, Function]
 
 const errorCodes = {
