@@ -39,7 +39,7 @@ describe('A step', () => {
                 //when
                 const ret = await st.run()
                 //then
-                assert.deepEqual(ret.toJSON(), { Ok: undefined })
+                assert.deepEqual(ret.toJSON(), { ok: undefined })
             })
 
             it('should audit', async () => {
@@ -101,7 +101,7 @@ describe('A step', () => {
                 //when
                 const ret = await st.run()
                 //then
-                assert.deepEqual(ret.toJSON(), { Error: undefined })
+                assert.deepEqual(ret.toJSON(), { error: undefined })
             })
 
             it('should audit', async () => {
