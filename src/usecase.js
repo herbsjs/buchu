@@ -13,6 +13,10 @@ class UseCase {
         this._requestSchema = body.request
         delete body.request
 
+         //response schema
+         this._responseSchema = body.response
+         delete body.response
+
         //authotization
         this._authorize = body.authorize
         this._hasAuthorization = null
@@ -65,11 +69,20 @@ class UseCase {
     doc() {
         const docStep = this._mainStep.doc()
         if (this._requestSchema) docStep.request = this._requestSchema
+        if (this._responseSchema) docStep.response = this._responseSchema
         return docStep
     }
 
     get auditTrail() {
         return this._mainStep.auditTrail
+    }
+
+    get requestSchema() {
+        return this._requestSchema;
+    }
+
+    get responseSchema() {
+        return this._responseSchema;
     }
 
 }
