@@ -255,7 +255,7 @@ describe('A use case', () => {
         })
     })
 
-    describe('the simplest use case with request', () => {
+    describe('the simplest use case with request and response', () => {
 
         const givenTheSimplestUseCaseWithRequest = () => {
             const uc = usecase('A use case', {
@@ -263,6 +263,7 @@ describe('A use case', () => {
                     param1: String,
                     param2: Number
                 },
+                response: String,
                 'A step': step((ctx) => {
                     ctx.ret.response3 = ctx.req.param2 + 1
                     return Ok()
@@ -309,6 +310,7 @@ describe('A use case', () => {
                     param1: String,
                     param2: Number
                 },
+                response: String,
                 type: "use case",
                 description: "A use case",
                 steps: [
