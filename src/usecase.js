@@ -13,9 +13,9 @@ class UseCase {
         this._requestSchema = body.request
         delete body.request
 
-         //response schema
-         this._responseSchema = body.response
-         delete body.response
+        //response schema
+        this._responseSchema = body.response
+        delete body.response
 
         //authotization
         this._authorize = body.authorize
@@ -78,11 +78,11 @@ class UseCase {
     }
 
     get requestSchema() {
-        return this._requestSchema;
+        return this._requestSchema
     }
 
     get responseSchema() {
-        return this._responseSchema;
+        return this._responseSchema
     }
 
 }
