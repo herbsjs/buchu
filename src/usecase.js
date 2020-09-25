@@ -69,10 +69,10 @@ class UseCase {
             const requestSchema = schema(this._responseSchema)
             requestSchema.validate(output.ok)
             if (!requestSchema.isValid) return Err({ response: requestSchema.errors })
-            return output;
+            return output
         }
 
-        return output;
+        return output
     }
 
     doc() {

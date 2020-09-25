@@ -451,7 +451,7 @@ describe('A use case', () => {
                 dateArray: [new Date(2020, 0, 1), new Date(2020, 0, 2)],
                 booleanArray: [true, false, true, false],
                 objectArray: [{ rep: [] }, { rep: [] }],
-            });
+            })
         })
 
         it('should not run with invalid response value', async () => {
@@ -533,7 +533,7 @@ describe('A use case', () => {
                         resp2: Number
                     },
                     'A step': step((ctx) => {
-                        ctx.ret = Ok({ resp1: 'a' });
+                        ctx.ret = Ok({ resp1: 'a' })
                         return Ok()
                     })
                 })
@@ -564,7 +564,7 @@ describe('A use case', () => {
                         resp2: Number
                     },
                     'A step': step((ctx) => {
-                        ctx.ret = Ok({ resp1: 2 });
+                        ctx.ret = Ok({ resp1: 2 })
                         return Ok()
                     })
                 })
