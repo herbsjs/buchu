@@ -8,7 +8,7 @@ class IfElse {
         this._auditTrail = { type: this.type }
     }
 
-    _addMeta = (info) => {
+    _addMeta(info) {
         const [description, step] = info
         step.description = description
         step.context = this.context
