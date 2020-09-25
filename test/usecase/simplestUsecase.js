@@ -455,16 +455,34 @@ describe('A use case', () => {
         })
 
         it('should not run with invalid response value', async () => {
+            const givenTheSimplestUseCaseWithInvalidResponse = () => {
+                const uc = usecase('A use case', {
+                    request: {
+                        param1: String,
+                        param2: Number
+                    },
+                    response: {
+                        resp1: String,
+                        resp2: Number
+                    },
+                    'A step': step((ctx) => {
+                        ctx.ret = Ok({ resp1: 10, resp2: 'x' })
+                        return Ok()
+                    })
+                })
+                return uc
+            }
+
             //given
-            const uc = givenTheSimplestUseCaseWithSimpleRequest()
+            const uc = givenTheSimplestUseCaseWithInvalidResponse()
             //when
-            const ret = await uc.run({ param1: 10, param2: "x" })
+            const ret = await uc.run({ param1: 'a', param2: 2 })
             //then
             assert.ok(ret.isErr)
             assert.deepEqual(ret.err, {
                 response: [
-                    { param1: [{ wrongType: 'String' }] },
-                    { param2: [{ wrongType: 'Number' }] }
+                    { resp1: [{ wrongType: 'String' }] },
+                    { resp2: [{ wrongType: 'Number' }] }
                 ]
             })
 
@@ -472,7 +490,7 @@ describe('A use case', () => {
 
         it('should not run with invalid response schema', async () => {
 
-            const givenTheSimplestUseCaseWithInvalidRequest = () => {
+            const givenTheSimplestUseCaseWithInvalidResponse = () => {
                 const uc = usecase('A use case', {
                     request: {
                         param1: String,
@@ -488,7 +506,7 @@ describe('A use case', () => {
             }
 
             //given
-            const uc = givenTheSimplestUseCaseWithInvalidRequest()
+            const uc = givenTheSimplestUseCaseWithInvalidResponse()
             //when
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
@@ -504,7 +522,7 @@ describe('A use case', () => {
 
         it('should run with partial valid response schema', async () => {
 
-            const givenTheSimplestUseCaseWithInvalidRequest = () => {
+            const givenTheSimplestUseCaseWithInvalidResponse = () => {
                 const uc = usecase('A use case', {
                     request: {
                         param1: String,
@@ -523,7 +541,7 @@ describe('A use case', () => {
             }
 
             //given
-            const uc = givenTheSimplestUseCaseWithInvalidRequest()
+            const uc = givenTheSimplestUseCaseWithInvalidResponse()
             //when
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
@@ -535,7 +553,7 @@ describe('A use case', () => {
 
         it('should not run with partial invalid response schema', async () => {
 
-            const givenTheSimplestUseCaseWithInvalidRequest = () => {
+            const givenTheSimplestUseCaseWithInvalidResponse = () => {
                 const uc = usecase('A use case', {
                     request: {
                         param1: String,
@@ -554,7 +572,7 @@ describe('A use case', () => {
             }
 
             //given
-            const uc = givenTheSimplestUseCaseWithInvalidRequest()
+            const uc = givenTheSimplestUseCaseWithInvalidResponse()
             //when
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
@@ -568,7 +586,7 @@ describe('A use case', () => {
 
         it('should run without response schema', async () => {
 
-            const givenTheSimplestUseCaseWithNoRequest = () => {
+            const givenTheSimplestUseCaseWithNoResponse = () => {
                 const uc = usecase('A use case', {
                     'A step': step(() => { return Ok() })
                 })
@@ -576,25 +594,7 @@ describe('A use case', () => {
             }
 
             //given
-            const uc = givenTheSimplestUseCaseWithNoRequest()
-            //when
-            const ret = await uc.run({ param1: "a", param2: 2 })
-            //then
-            assert.ok(ret.isErr)
-            assert.deepEqual(ret.err, { request: [{ notDefined: true }] })
-        })
-
-        it('should run without response schema', async () => {
-
-            const givenTheSimplestUseCaseWithNoRequest = () => {
-                const uc = usecase('A use case', {
-                    'A step': step(() => { return Ok() })
-                })
-                return uc
-            }
-
-            //given
-            const uc = givenTheSimplestUseCaseWithNoRequest()
+            const uc = givenTheSimplestUseCaseWithNoResponse()
             //when
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
