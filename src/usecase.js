@@ -48,7 +48,7 @@ class UseCase {
         return this._auditTrail.authorized = this._hasAuthorization
     }
 
-    run(request) {
+    async run(request) {
 
         if ((this._hasAuthorization === false) ||
             (this._authorize && this._hasAuthorization === null))
@@ -63,7 +63,16 @@ class UseCase {
 
         this._setup(this._mainStep.context)
 
-        return this._mainStep.run()
+        const output = await this._mainStep.run()
+
+        if (output.isOk && this._responseSchema) {
+            const requestSchema = schema(this._responseSchema)
+            requestSchema.validate(output.ok)
+            if (!requestSchema.isValid) return Err({ response: requestSchema.errors })
+            return output;
+        }
+
+        return output;
     }
 
     doc() {
