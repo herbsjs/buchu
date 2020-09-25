@@ -263,7 +263,6 @@ describe('A use case', () => {
                     param1: String,
                     param2: Number
                 },
-                response: { response3: Number },
                 'A step': step((ctx) => {
                     ctx.ret.response3 = ctx.req.param2 + 1
                     return Ok()
@@ -310,7 +309,6 @@ describe('A use case', () => {
                     param1: String,
                     param2: Number
                 },
-                response: { response3: Number },
                 type: "use case",
                 description: "A use case",
                 steps: [
@@ -382,21 +380,22 @@ describe('A use case', () => {
     })
 
     describe('the simplest use case with response', () => {
-        it('should run', async () => {
-            const givenTheSimplestUseCaseWithSimpleResponse = () => {
-                const uc = usecase('A use case', {
-                    request: {
-                        param1: String,
-                        param2: Number
-                    },
-                    response: { resp: Number },
-                    'A step': step((ctx) => {
-                        return (ctx.ret.resp = ctx.req.param2 + 1)
-                    })
-                })
-                return uc
-            }
 
+        const givenTheSimplestUseCaseWithSimpleResponse = () => {
+            const uc = usecase('A use case', {
+                request: {
+                    param1: String,
+                    param2: Number
+                },
+                response: { resp: Number },
+                'A step': step((ctx) => {
+                    return (ctx.ret.resp = ctx.req.param2 + 1)
+                })
+            })
+            return uc
+        }
+
+        it('should run', async () => {  
             //given            
             const uc = givenTheSimplestUseCaseWithSimpleResponse()
             //when
@@ -404,6 +403,26 @@ describe('A use case', () => {
             //then
             assert.ok(ret.isOk)
             assert.deepEqual(ret.value, { resp: 3 })
+        })
+
+        it('should doc', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithSimpleResponse()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepEqual(ret, {
+                request: {
+                    param1: String,
+                    param2: Number
+                },
+                response: { resp: Number },
+                type: "use case",
+                description: "A use case",
+                steps: [
+                    { type: "step", description: "A step", steps: null }
+                ]
+            })
         })
 
         it('should run with array response', async () => {
