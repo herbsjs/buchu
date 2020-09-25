@@ -66,9 +66,9 @@ class UseCase {
         const output = await this._mainStep.run()
 
         if (output.isOk && this._responseSchema) {
-            const requestSchema = schema(this._responseSchema)
-            requestSchema.validate(output.ok)
-            if (!requestSchema.isValid) return Err({ response: requestSchema.errors })
+            const responseSchema = schema(this._responseSchema)
+            responseSchema.validate(output.ok)
+            if (!responseSchema.isValid) return Err({ response: responseSchema.errors })
             return output
         }
 
