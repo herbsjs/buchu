@@ -49,6 +49,7 @@ class IfElse {
         const elseStep = this._addMeta(elseInfo)
 
         return {
+            description: this.description,
             type: this.type,
             'if': ifStep.doc(),
             'then': thenStep.doc(),
