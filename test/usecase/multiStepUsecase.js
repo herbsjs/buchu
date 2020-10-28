@@ -37,11 +37,12 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({}),
                     steps: [
-                        { type: 'step', description: 'step 1', return: Ok() },
-                        { type: 'step', description: 'step 2', return: Ok() },
-                        { type: 'step', description: 'step 3', return: Ok() },
+                        { type: 'step', description: 'step 1', return: Ok(), elapsedTime:  uc._auditTrail.steps[0].elapsedTime },
+                        { type: 'step', description: 'step 2', return: Ok(), elapsedTime:  uc._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 3', return: Ok(), elapsedTime:  uc._auditTrail.steps[2].elapsedTime },
                     ]
                 })
             })
@@ -77,10 +78,11 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Err(),
                     steps: [
-                        { type: 'step', description: 'step 1', return: Ok() },
-                        { type: 'step', description: 'step 2', return: Err() }
+                        { type: 'step', description: 'step 1', return: Ok() , elapsedTime:  uc._auditTrail.steps[0].elapsedTime },
+                        { type: 'step', description: 'step 2', return: Err(), elapsedTime:  uc._auditTrail.steps[1].elapsedTime }
                     ]
                 })
             })

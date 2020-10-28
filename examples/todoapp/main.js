@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const { addOrUpdateItem } = require('./usecases/addOrUpdateItem')
 
 void async function main() {
@@ -14,4 +15,5 @@ void async function main() {
     uc.authorize(user)
     await uc.run(req)
     console.log("------ audit: ------\n", uc.auditTrail)
+
 }()

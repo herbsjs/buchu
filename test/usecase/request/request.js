@@ -1,4 +1,4 @@
-const { schema } = require('../../../src/schema');
+const { schema } = require('../../../src/schema')
 const assert = require('assert')
 
 describe('Request schema validation', () => {
@@ -35,8 +35,7 @@ describe('Request schema validation', () => {
         const ret = scm.validate(request)
         // then
         assert.equal(ret, false)
-        assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "able", msg: `Key [\"able\"] does not exist on schema.` })
-        assert.deepEqual(scm.errors[1].err, { type: "invalid value", key: "meta", msg: `Key [\"meta\"] does not exist on schema.` })
+        assert.deepEqual(scm.errors, [{ able: [{ invalidKey: true }] }, { meta: [{ invalidKey: true }] }])
     })
 
     it('should validate request (empty)', () => {
@@ -81,7 +80,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "n", value: "1", msg: `["1"] is not a number.` })
+            assert.deepEqual(scm.errors, [{ n: [{ wrongType: 'Number' }] }])
         })
     })
 
@@ -107,7 +106,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "s", value: 1, msg: `["1"] is not a string.` })
+            assert.deepEqual(scm.errors, [{ s: [{ wrongType: 'String' }] }])
         })
     })
 
@@ -133,7 +132,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "b", value: 1, msg: `["1"] is not boolean.` })
+            assert.deepEqual(scm.errors, [{ b: [{ wrongType: 'Boolean' }] }])
         })
     })
 
@@ -159,7 +158,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "d", value: 1, msg: `["1"] is not a date.` })
+            assert.deepEqual(scm.errors, [{ d: [{ wrongType: 'Date' }] }])
         })
     })
 
@@ -185,7 +184,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "o", value: 1, msg: `["1"] is not a object.` })
+            assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'Object' }] }])
         })
     })
 
@@ -211,8 +210,8 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors[0].err, { type: "invalid value", key: "a", value: 1, msg: `["1"] is not a array.` })
+            assert.deepEqual(scm.errors, [{ a: [{ wrongType: 'Array' }] }])
         })
     })
-});
+})
 

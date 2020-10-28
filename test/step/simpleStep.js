@@ -20,7 +20,26 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
+                assert.deepEqual(ret.err, null)
                 assert.deepEqual(ret.value, null)
+            })
+
+            it('should check toString() function', async () => {
+                //given
+                const st = givenTheSimplestStep()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toString(), "Ok")
+            })
+
+            it('should check toJSON() function', async () => {
+                //given
+                const st = givenTheSimplestStep()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toJSON(), { Ok: undefined })
             })
 
             it('should audit', async () => {
@@ -32,8 +51,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
             it('should doc', () => {
@@ -44,6 +65,7 @@ describe('A step', () => {
                 //then
                 assert.deepEqual(ret, { type: "step", description: undefined, steps: null })
             })
+
         })
 
         context('returning Err', () => {
@@ -60,7 +82,26 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
+                assert.deepEqual(ret.ok, null)
                 assert.deepEqual(ret.value, null)
+            })
+
+            it('should check toString() function', async () => {
+                //given
+                const st = givenTheSimplestStepWithError()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toString(), "Error")
+            })
+
+            it('should check toJSON() function', async () => {
+                //given
+                const st = givenTheSimplestStepWithError()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret.toJSON(), { Error: undefined })
             })
 
             it('should audit', async () => {
@@ -72,12 +113,51 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
-        context('returning Exception', () => {
+        context('returning nothing', () => {
+
+            const givenTheSimplestStepWithNoReturn = () => {
+                const st = step(() => { })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenTheSimplestStepWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(ret, Ok())
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenTheSimplestStepWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
+                    return: Ok()
+                })
+                assert.ok(st.auditTrail.elapsedTime > 0)
+            })
+        })
+
+        context('returning Exception when production', () => {
+
+            beforeEach((done) => {
+                process.env.HERBS_EXCEPTION = "audit"
+                done()
+            })
 
             const givenTheSimplestStepWithException = () => {
                 const st = step(() => { throw new Error() })
@@ -103,9 +183,58 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err(new Error())
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
+
+            afterEach((done) => {
+                process.env.HERBS_EXCEPTION = null
+                done()
+            })
+
+        })
+
+        context('throwing Exception when not production', () => {
+
+            beforeEach((done) => {
+                process.env.HERBS_EXCEPTION = "dev"
+                done()
+            })
+
+            const givenTheSimplestStepWithException = () => {
+                const st = step(() => { throw new Error() })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenTheSimplestStepWithException()
+                //when
+                const f = async () => { const ret = await st.run() }
+                //then
+                assert.rejects(f(), Error)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenTheSimplestStepWithException()
+                //when
+                try { await st.run() }
+                catch (e) {}
+                //then
+                assert.deepEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined
+                })
+            })
+
+            afterEach((done) => {
+                process.env.HERBS_EXCEPTION = null
+                done()
+            })
+
         })
     })
 
@@ -137,8 +266,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok(1)
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -168,8 +299,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err(1)
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })
@@ -203,8 +336,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -235,8 +370,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })
@@ -269,8 +406,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Ok()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
 
@@ -300,8 +439,10 @@ describe('A step', () => {
                 assert.deepEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     return: Err()
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })

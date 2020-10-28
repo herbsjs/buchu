@@ -1,4 +1,4 @@
-const { Ok, Err } = require('../../../src/grounds');
+const { Ok, Err } = require('../../../src/buchu')
 
 class ItemRepository {
 
@@ -16,4 +16,4 @@ class ItemRepository {
 	async save() { return Ok() }
 }
 
-module.exports.ItemRepository = ItemRepository;
+module.exports.ItemRepository = ItemRepository

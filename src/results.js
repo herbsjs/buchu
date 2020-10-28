@@ -1,7 +1,9 @@
 class Ok {
 
 	constructor(value) {
-		this.value = value;
+		this.value = value
+		if (value instanceof Ok)
+			this.value = value.value
 	}
 
 	get isOk() { return true }
@@ -20,7 +22,9 @@ class Ok {
 class Err {
 
 	constructor(error) {
-		this._error = error;
+		this._error = error
+		if (error instanceof Err)
+			this._error = error._error
 	}
 
 	get isOk() { return false }
@@ -39,4 +43,4 @@ class Err {
 module.exports = {
 	Ok: (value) => new Ok(value),
 	Err: (err) => new Err(err)
-};
+}

@@ -5,7 +5,6 @@ const { Ok, Err } = require('../../src/results')
 const assert = require('assert')
 
 describe('If Else step', () => {
-
     describe('on a use case', () => {
         const givenASimpleUseCase = () => {
             const uc = usecase('A use case', {
@@ -13,7 +12,7 @@ describe('If Else step', () => {
                     'If Step': step(() => { return Ok(true) }),
                     'Then Step': step(() => { return Ok() }),
                     'Else Step': step(() => { return Err() })
-                })
+                }),
             })
             return uc
         }
@@ -33,20 +32,54 @@ describe('If Else step', () => {
             //when
             await uc.run()
             //then
-            assert.deepEqual(uc.auditTrail, {
+            assert.deepStrictEqual(uc.auditTrail, {
                 type: 'use case',
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
+                elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                 return: Ok({}),
                 steps: [
                     {
                         type: 'if else',
                         description: 'A condition',
                         returnIf: Ok(true),
-                        returnThen: Ok()
-                    }
+                        returnThen: Ok(),
+                        elapsedTime: uc._auditTrail.steps[0].elapsedTime,
+                    },
                 ],
             })
+        })
+
+        it('should doc', async () => {
+            //given
+            const uc = givenASimpleUseCase()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepStrictEqual(ret,
+                {
+                    type: 'use case',
+                    description: 'A use case',
+                    steps: [{
+                        description: 'A condition',
+                        type: 'if else',
+                        if: {
+                            type: 'step',
+                            description: 'If Step',
+                            steps: null,
+                        },
+                        then: {
+                            type: 'step',
+                            description: 'Then Step',
+                            steps: null,
+                        },
+                        else: {
+                            type: 'step',
+                            description: 'Else Step',
+                            steps: null,
+                        }
+                    }]
+                })
         })
     })
 
@@ -57,7 +90,7 @@ describe('If Else step', () => {
                     'If Step': step((ctx) => { ctx.ret.IfStep = 10; return Ok(true) }),
                     'Then Step': step((ctx) => { ctx.ret.ThenStep = 20; return Ok() }),
                     'Else Step': step((ctx) => { ctx.ret.ElseStep = 30; return Err() })
-                })
+                }),
             })
             return uc
         }
@@ -69,7 +102,7 @@ describe('If Else step', () => {
             const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
-            assert.deepEqual(ret.value, { IfStep: 10, ThenStep: 20 })
+            assert.deepStrictEqual(ret.value, { IfStep: 10, ThenStep: 20 })
         })
     })
 
@@ -87,7 +120,7 @@ describe('If Else step', () => {
                     }),
                     'Then Step': step((ctx) => { ctx.ret.return1 = 1; return Ok() }),
                     'Else Step': step((ctx) => { ctx.ret.return2 = 2; return Ok() })
-                })
+                }),
             })
             return uc
         }
@@ -118,27 +151,27 @@ describe('If Else step', () => {
             //when
             await uc.run({ param1: 1 })
             //then
-            assert.deepEqual(uc.auditTrail, {
+            assert.deepStrictEqual(uc.auditTrail, {
                 type: 'use case',
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
+                elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                 return: Ok({ return1: 1 }),
                 steps: [
                     {
                         type: 'if else',
                         description: 'A condition',
                         returnIf: Ok(true),
-                        returnThen: Ok()
-                    }
+                        returnThen: Ok(),
+                        elapsedTime: uc._auditTrail.steps[0].elapsedTime,
+                    },
                 ],
             })
         })
     })
 
     describe('simple If Else Then', () => {
-
         context('returning Ok from Then', () => {
-
             const givenAnIfThenStep = () => {
                 const ifElseStep = ifElse({
                     'If Step': step(() => { return Ok(true) }),
@@ -163,12 +196,14 @@ describe('If Else step', () => {
                 //when
                 await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     returnIf: Ok(true),
-                    returnThen: Ok()
+                    returnThen: Ok(),
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
 
             it('should doc', () => {
@@ -177,29 +212,29 @@ describe('If Else step', () => {
                 //when
                 const ret = st.doc()
                 //then
-                assert.deepEqual(ret, {
-                    type: "if else",
+                assert.deepStrictEqual(ret, {
+                    description: undefined,
+                    type: 'if else',
                     if: {
-                        type: "step",
+                        type: 'step',
                         description: 'If Step',
-                        steps: null
+                        steps: null,
                     },
                     then: {
-                        type: "step",
+                        type: 'step',
                         description: 'Then Step',
-                        steps: null
+                        steps: null,
                     },
                     else: {
-                        type: "step",
+                        type: 'step',
                         description: 'Else Step',
-                        steps: null
-                    }
+                        steps: null,
+                    },
                 })
             })
         })
 
         context('returning Ok from Else', () => {
-
             const givenAnIfElseStep = () => {
                 const ifElseStep = ifElse({
                     'If': step(() => { return Ok(false) }),
@@ -224,20 +259,20 @@ describe('If Else step', () => {
                 //when
                 await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
                     returnIf: Ok(false),
-                    returnElse: Ok()
+                    returnElse: Ok(),
                 })
+                assert.ok(st.auditTrail.elapsedTime > 0)
             })
         })
     })
 
     describe('If Else Then with with return value', () => {
-
         context('returning Ok from Then', () => {
-
             const givenAnIfThenStepWithReturn = () => {
                 const ifElseStep = ifElse({
                     'If Step': step(() => { return Ok(true) }),
@@ -254,12 +289,11 @@ describe('If Else step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert.deepEqual(ret.value, 2)
+                assert.deepStrictEqual(ret.value, 2)
             })
         })
 
         context('returning Ok from Else', () => {
-
             const givenAnIfElseStepWithReturn = () => {
                 const ifElseStep = ifElse({
                     'If Step': step(() => { return Ok(false) }),
@@ -276,7 +310,7 @@ describe('If Else step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert.deepEqual(ret.value, 3)
+                assert.deepStrictEqual(ret.value, 3)
             })
         })
     })

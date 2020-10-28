@@ -42,17 +42,19 @@ describe('A use case', () => {
                 //when
                 await uc.run()
                 //then
+
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({}),
                     steps: [
-                        { type: 'step', description: 'A step', return: Ok() },
+                        { type: 'step', description: 'A step', return: Ok(), elapsedTime: uc._auditTrail.steps[0].elapsedTime },
                         {
-                            type: 'step', description: 'A second step', return: Ok({}), steps: [
-                                { type: 'step', description: 'step 1', return: Ok() },
-                                { type: 'step', description: 'step 2', return: Ok() }
+                            type: 'step', description: 'A second step', return: Ok({}), elapsedTime: uc._auditTrail.steps[1].elapsedTime, steps: [
+                                { type: 'step', description: 'step 1', return: Ok(), elapsedTime: uc._auditTrail.steps[1].steps[0].elapsedTime },
+                                { type: 'step', description: 'step 2', return: Ok(), elapsedTime: uc._auditTrail.steps[1].steps[1].elapsedTime }
                             ]
                         }]
                 })
@@ -146,17 +148,106 @@ describe('A use case', () => {
                 assert.deepEqual(uc.auditTrail, {
                     type: 'use case', description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({ step1: 'ret1', step2: 'ret2' }), steps: [
                         {
-                            type: 'step', description: 'Change context', return: Ok({}), steps: [
-                                { type: 'step', description: 'step c1', return: Ok() },
-                                { type: 'step', description: 'step c2', return: Ok() }
+                            type: 'step', description: 'Change context', return: Ok({}), elapsedTime: uc._auditTrail.steps[0].elapsedTime, steps: [
+                                { type: 'step', description: 'step c1', return: Ok(), elapsedTime: uc._auditTrail.steps[0].steps[0].elapsedTime },
+                                { type: 'step', description: 'step c2', return: Ok(), elapsedTime: uc._auditTrail.steps[0].steps[1].elapsedTime }
                             ]
                         },
                         {
-                            type: 'step', description: 'Change return', return: Ok({ step1: 'ret1', step2: 'ret2' }), steps: [
-                                { type: 'step', description: 'step r1', return: Ok() },
-                                { type: 'step', description: 'step r2', return: Ok() }
+                            type: 'step', description: 'Change return', return: Ok({ step1: 'ret1', step2: 'ret2' }), elapsedTime: uc._auditTrail.steps[1].elapsedTime, steps: [
+                                { type: 'step', description: 'step r1', return: Ok(), elapsedTime: uc._auditTrail.steps[1].steps[0].elapsedTime },
+                                { type: 'step', description: 'step r2', return: Ok(), elapsedTime: uc._auditTrail.steps[1].steps[1].elapsedTime }
+                            ]
+                        }]
+                })
+            })
+        })
+    })
+
+
+    describe('the simplest use case with context returning multiple Oks or Errs', () => {
+
+        context('returning Ok', () => {
+
+            const givenAnUseCaseWithOkReturn = () => {
+                const uc = usecase('A use case', {
+                    'Change return': step({
+                        'step r1': step((ctx) => { ctx.ret = Ok('uc ret'); return Ok('step1 ret') }),
+                    })
+                })
+                return uc
+            }
+
+            it('should run', async () => {
+                //given
+                const uc = givenAnUseCaseWithOkReturn()
+                //when
+                const ret = await uc.run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, 'uc ret')
+            })
+
+            it('should audit', async () => {
+                //given
+                const uc = givenAnUseCaseWithOkReturn()
+                //when
+                await uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
+                    return: Ok('uc ret'), steps: [
+                        {
+                            type: 'step', description: 'Change return', return: Ok('uc ret'), elapsedTime: uc._auditTrail.steps[0].elapsedTime, steps: [
+                                { type: 'step', description: 'step r1', return: Ok('step1 ret'), elapsedTime: uc._auditTrail.steps[0].steps[0].elapsedTime },
+                            ]
+                        }]
+                })
+            })
+        })
+
+        context('returning Err', () => {
+
+            const givenAnUseCaseWithErrReturn = () => {
+                const uc = usecase('A use case', {
+                    'Change return': step({
+                        'step r1': step((ctx) => { ctx.ret = Err('uc ret'); return Err('step1 ret') }),
+                    })
+                })
+                return uc
+            }
+
+            it('should run', async () => {
+                //given
+                const uc = givenAnUseCaseWithErrReturn()
+                //when
+                const ret = await uc.run()
+                //then
+                assert.ok(ret.isErr)
+                assert.deepEqual(ret.err, 'step1 ret')
+            })
+
+            it('should audit', async () => {
+                //given
+                const uc = givenAnUseCaseWithErrReturn()
+                //when
+                await uc.run()
+                //then
+                assert.deepEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
+                    return: Err('step1 ret'), steps: [
+                        {
+                            type: 'step', description: 'Change return', return: Err('step1 ret'), elapsedTime: uc._auditTrail.steps[0].elapsedTime, steps: [
+                                { type: 'step', description: 'step r1', return: Err('step1 ret'), elapsedTime: uc._auditTrail.steps[0].steps[0].elapsedTime },
                             ]
                         }]
                 })
@@ -200,9 +291,10 @@ describe('A use case', () => {
                 type: 'use case',
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
+                elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                 return: Ok({ response3: 3 }),
                 steps: [
-                    { type: 'step', description: 'A step', return: Ok() }]
+                    { type: 'step', description: 'A step', return: Ok(), elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
             })
         })
 
@@ -217,7 +309,7 @@ describe('A use case', () => {
                     param1: String,
                     param2: Number
                 },
-                type: "use case", 
+                type: "use case",
                 description: "A use case",
                 steps: [
                     { type: "step", description: "A step", steps: null }
@@ -232,8 +324,13 @@ describe('A use case', () => {
             const ret = await uc.run({ param1: 10, param2: "x" })
             //then
             assert.ok(ret.isErr)
-            assert.equal(ret.err.length, 2)
-            assert.equal(ret.err[0].err.type, 'invalid value')
+            assert.deepEqual(ret.err, {
+                request: [
+                    { param1: [{ wrongType: 'String' }] },
+                    { param2: [{ wrongType: 'Number' }] }
+                ]
+            })
+
         })
 
         it('should not run with invalid request schema', async () => {
@@ -255,8 +352,12 @@ describe('A use case', () => {
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
             assert.ok(ret.isErr)
-            assert.equal(ret.err.length, 2)
-            assert.equal(ret.err[0].err.type, 'invalid schema')
+            assert.deepEqual(ret.err, {
+                request: [
+                    { param1: [{ invalidType: 'String' }] },
+                    { param2: [{ invalidType: 'Number' }] }
+                ]
+            })
         })
 
         it('should not run without request schema', async () => {
@@ -274,10 +375,154 @@ describe('A use case', () => {
             const ret = await uc.run({ param1: "a", param2: 2 })
             //then
             assert.ok(ret.isErr)
-            assert.equal(ret.err.length, 1)
-            assert.equal(ret.err[0].type, 'invalid schema')
+            assert.deepEqual(ret.err, { request: [{ notDefined: true }] })
         })
     })
+
+    describe('the simplest use case with response', () => {
+
+        const givenTheSimplestUseCaseWithSimpleResponse = () => {
+            const uc = usecase('A use case', {
+                request: {
+                    param1: String,
+                    param2: Number
+                },
+                response: { resp: Number },
+                'A step': step((ctx) => {
+                    return (ctx.ret.resp = ctx.req.param2 + 1)
+                })
+            })
+            return uc
+        }
+
+        it('should run', async () => {  
+            //given            
+            const uc = givenTheSimplestUseCaseWithSimpleResponse()
+            //when
+            const ret = await uc.run({ param1: "a", param2: 2 })
+            //then
+            assert.ok(ret.isOk)
+            assert.deepEqual(ret.value, { resp: 3 })
+        })
+
+        it('should doc', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithSimpleResponse()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepEqual(ret, {
+                request: {
+                    param1: String,
+                    param2: Number
+                },
+                response: { resp: Number },
+                type: "use case",
+                description: "A use case",
+                steps: [
+                    { type: "step", description: "A step", steps: null }
+                ]
+            })
+        })
+
+        it('should run with array response', async () => {
+
+            const givenTheSimplestUseCaseWithArrayRequest = () => {
+                const uc = usecase('A use case', {
+                    request: {
+                        numberArray: [Number],
+                        stringArray: [String],
+                        dateArray: [Date],
+                        booleanArray: [Boolean],
+                        objectArray: [Object],
+                    },
+                    response: {
+                        numberArray: [Number],
+                        stringArray: [String],
+                        dateArray: [Date],
+                        booleanArray: [Boolean],
+                        objectArray: [Object],
+                    },
+                    'A step': step((ctx) => {
+                        ctx.ret = Ok(ctx.req)
+                        return Ok()
+                    })
+                })
+                return uc
+            }
+
+            //given
+            const uc = givenTheSimplestUseCaseWithArrayRequest()
+            const input = {
+                numberArray: [1, 2, 3],
+                stringArray: ['a', 'b', 'c'],
+                dateArray: [new Date(2020, 0, 1), new Date(2020, 0, 2)],
+                booleanArray: [true, false, true, false],
+                objectArray: [{ rep: [] }, { rep: [] }],
+            }
+            //when
+            const ret = await uc.run(input)
+            //then
+            assert.deepEqual(ret.ok, {
+                numberArray: [1, 2, 3],
+                stringArray: ['a', 'b', 'c'],
+                dateArray: [new Date(2020, 0, 1), new Date(2020, 0, 2)],
+                booleanArray: [true, false, true, false],
+                objectArray: [{ rep: [] }, { rep: [] }],
+            })
+        })
+
+
+        it('should run with partial valid response schema', async () => {
+
+            const givenTheSimplestUseCaseWithPartialResponse = () => {
+                const uc = usecase('A use case', {
+                    request: {
+                        param1: String,
+                        param2: Number
+                    },
+                    response: {
+                        resp1: String,
+                        resp2: Number
+                    },
+                    'A step': step((ctx) => {
+                        ctx.ret = Ok({ resp1: 'a' })
+                        return Ok()
+                    })
+                })
+                return uc
+            }
+
+            //given
+            const uc = givenTheSimplestUseCaseWithPartialResponse()
+            //when
+            const ret = await uc.run({ param1: "a", param2: 2 })
+            //then
+            assert.ok(ret.isOk)
+            assert.deepEqual(ret.ok, {
+                resp1: 'a'
+            })
+        })
+
+        it('should run without response schema', async () => {
+
+            const givenTheSimplestUseCaseWithNoResponse = () => {
+                const uc = usecase('A use case', {
+                    'A step': step(() => { return Ok() })
+                })
+                return uc
+            }
+
+            //given
+            const uc = givenTheSimplestUseCaseWithNoResponse()
+            //when
+            const ret = await uc.run({ param1: "a", param2: 2 })
+            //then
+            assert.ok(ret.isErr)
+            assert.deepEqual(ret.err, { request: [{ notDefined: true }] })
+        })
+    })
+
 
     describe('the simplest use case with setup function', () => {
 
@@ -347,6 +592,7 @@ describe('A use case', () => {
                     type: 'use case',
                     description: 'A use case',
                     transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     return: Ok({}),
                     authorized: true,
                     user: {
@@ -354,7 +600,7 @@ describe('A use case', () => {
                         id: '923b8b9a',
                         isAdmin: true
                     },
-                    steps: [{ type: 'step', description: 'Step 1', return: Ok() }]
+                    steps: [{ type: 'step', description: 'Step 1', return: Ok(), elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
                 })
             })
         })

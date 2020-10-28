@@ -1,4 +1,4 @@
-const { Ok, Err } = require('../../../src/grounds');
+const { Ok, Err } = require('../../../src/buchu')
 
 class Item {
 
@@ -17,4 +17,4 @@ class Item {
 	}
 }
 
-module.exports.Item = Item;
+module.exports.Item = Item

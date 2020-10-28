@@ -1,8 +1,11 @@
 {
-  "name": "grounds",
-  "version": "1.0.2",
+  "name": "buchu",
+  "version": "1.0.8",
   "description": "Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer",
-  "main": "./src/grounds.js",
+  "main": "./src/buchu.js",
+  "scripts": {
+    "test": "mocha --timeout 999999 --colors --recursive ./test"
+  },
   "directories": {
     "lib": "src",
     "test": "test",
@@ -10,25 +13,34 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dalssoft/grounds.git"
+    "url": "https://github.com/herbsjs/buchu.git"
   },
   "bugs": {
-    "url": "https://github.com/dalssoft/grounds/issues/"
+    "url": "https://github.com/herbsjs/buchu/issues/"
   },
   "engines": {
     "node": ">= 12.3.0"
   },
   "keywords": [
-    "grounds",
+    "buchu",
     "usecase",
     "clean architecture"
   ],
   "author": "David Lojudice Sb",
+  "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
-    "uuid": "^3.3.2"
+    "suma": "^1.0.6",
+    "uuid": "^8.2.0"
   },
   "devDependencies": {
-    "mocha": "^6.2.0"
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "mocha": "^8.1.3",
+    "nyc": "^15.1.0",
+    "prettier": "^2.0.5"
   }
 }

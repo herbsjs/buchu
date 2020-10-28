@@ -23,17 +23,21 @@ class Step {
     }
 
     async run(request) {
+        const startTime = process.hrtime.bigint() /* measure time */
 
         const type = stepTypes.check(this._body)
 
         const _runFunction = async () => {
             if (type != stepTypes.Func) return
-            let ret;
-            try {
-                ret = await this._body(this.context)
-            } catch (error) {
-                ret = Err(error)
+            let ret
+
+            if (process.env.HERBS_EXCEPTION === "audit") {
+                try { ret = await this._body(this.context) }
+                catch (error) { ret = Err(error) }
             }
+            else
+                ret = await this._body(this.context)
+            ret = ret || Ok()
             return ret
         }
 
@@ -48,23 +52,31 @@ class Step {
                 step.description = description
                 step.context = this.context
 
-                const ret = await step.run()
+                let ret = await step.run()
 
                 this._auditTrail.steps.push(step.auditTrail)
 
                 if (ret.isErr) return ret
             }
-            return Ok({ ...this.context.ret })
+            const ret = this.context.ret
+            if (ret.__proto__ === Ok().__proto__)
+                return Ok(ret)
+            else
+                return Ok({ ...ret })
         }
 
         let ret = undefined
         this._auditTrail.description = this.description
 
         ret = this._auditTrail.return = await _runFunction()
-        if (ret) return ret;
+        if (ret) {
+            this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
+            return ret
+        }
 
         ret = this._auditTrail.return = await _runNestedSteps()
-        return ret;
+        this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
+        return ret
     }
 
     doc() {
@@ -81,7 +93,7 @@ class Step {
             }
             docStep.steps = docArray
         }
-        return docStep;
+        return docStep
     }
 
     get auditTrail() {
