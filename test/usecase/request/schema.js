@@ -1,11 +1,18 @@
-const { schema } = require('../../../src/schema')
 const assert = require('assert')
+const {entity, field} = require('gotu')
+
+const { schema } = require('../../../src/schema')
 
 describe('Schema validation', function () {
 
     it('should create schema (flat and simple)', function () {
         // given
-        const descSchema = { name: String, at: Date, able: Boolean, age: Number, meta: Object, many: Array }
+        const anEntity = entity('anEntiy',{
+            stringField: field(String),
+            numberField: field(Number)
+        })
+
+        const descSchema = { name: String, at: Date, able: Boolean, age: Number, meta: Object, many: Array, entity: anEntity }
         const scm = schema(descSchema)
         // when
         const ret = scm.validateSchema()
@@ -15,7 +22,12 @@ describe('Schema validation', function () {
 
     it('should create schema (arrays)', function () {
         // given
-        const descSchema = { name: [String], at: [Date], able: [Boolean], age: [Number], meta: [Object], many: [Array] }
+        const anEntity = entity('anEntiy',{
+            stringField: field(String),
+            numberField: field(Number)
+        })
+        
+        const descSchema = { name: [String], at: [Date], able: [Boolean], age: [Number], meta: [Object], many: [Array], entity: [anEntity] }
         const scm = schema(descSchema)
         // when
         const ret = scm.validateSchema()

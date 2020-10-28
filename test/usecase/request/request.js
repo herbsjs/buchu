@@ -1,5 +1,7 @@
-const { schema } = require('../../../src/schema')
 const assert = require('assert')
+const {entity, field} = require('gotu')
+
+const { schema } = require('../../../src/schema')
 
 describe('Request schema validation', () => {
 
@@ -185,6 +187,45 @@ describe('Request schema validation', () => {
             // then
             assert.equal(ret, false)
             assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'Object' }] }])
+        })
+    })
+
+    describe('Entity', () => {
+
+        it('should validate entity', () => {
+            // given
+            const anEntity = entity('anEntiy',{
+                stringField: field(String),
+                numberField: field(Number)
+            })
+
+            const requestSchema = { o: anEntity }
+            const scm = schema(requestSchema)
+            const request = { o: new anEntity() }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate entity outside base entity', () => {
+            // given
+
+            const anEntity = entity('anEntiy',{
+                stringField: field(String),
+                numberField: field(Number)
+            })
+
+            const anGenericEntity = class{}
+
+            const requestSchema = { o: anEntity }
+            const scm = schema(requestSchema)
+            const request = { o: new anGenericEntity() }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'anEntiy' }] }])
         })
     })
 
