@@ -30,7 +30,6 @@
   "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
-    "gotu": "^1.0.8",
     "suma": "^1.0.7",
     "uuid": "^8.3.1"
   },
@@ -43,5 +42,8 @@
     "mocha": "^8.2.0",
     "nyc": "^15.1.0",
     "prettier": "^2.1.2"
+  },
+  "optionalDependencies": {
+    "gotu": "^1.0.8"
   }
 }
