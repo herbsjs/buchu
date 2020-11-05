@@ -1,7 +1,5 @@
 const suma = require("suma")
-const { BaseEntity } = require('gotu/src/baseEntity')
 
-const { Ok, Err } = require('./results')
 const nativeTypes = [Boolean, Number, String, Array, Object, Date, Function]
 
 const errorCodes = {
@@ -26,8 +24,13 @@ class SchemaValidator {
         return nativeTypes.includes(value)
     }
 
-    static isBaseEntity(value) {        
-        return value.prototype instanceof BaseEntity
+    static isBaseEntity(value) {  
+        try{
+            const { BaseEntity } = require('gotu/src/baseEntity')
+            return value.prototype instanceof BaseEntity
+        }catch{
+            return false
+        }
     }
 }
 
