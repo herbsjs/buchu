@@ -227,6 +227,32 @@ describe('Request schema validation', () => {
             assert.equal(ret, false)
             assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'anEntiy' }] }])
         })
+
+        it('should not validate entity when gotu is not installed', () => {
+            // given
+            const anEntity = entity('anEntiy',{
+                stringField: field(String),
+                numberField: field(Number)
+            })
+
+            const gotuPath = require.resolve('gotu')
+            const tempPath = gotuPath.replace('gotu.js','gotu_temp.js')
+            const fs = require('fs')
+            fs.renameSync(gotuPath,tempPath)
+
+            const requestSchema = { o: anEntity }
+            const scm = schema(requestSchema)
+            const request = { o: anEntity }
+            // when
+            const ret = scm.validate(request)
+
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'anEntiy' }] }])
+            
+            //undo
+            fs.renameSync(tempPath, gotuPath)
+        })
     })
 
     describe('Array', () => {
