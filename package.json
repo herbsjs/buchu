@@ -34,7 +34,7 @@
     "uuid": "^8.3.1"
   },
   "optionalDependencies": {
-    "gotu": "^1.0.8"
+    "gotu": "^1.0.9"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
