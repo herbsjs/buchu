@@ -1,7 +1,10 @@
+const {entity, field} = require('gotu')
+const assert = require('assert')
+
 const { usecase } = require('../../src/usecase')
 const { step } = require('../../src/step')
 const { Ok, Err } = require('../../src/results')
-const assert = require('assert')
+
 
 describe('A use case', () => {
 
@@ -423,6 +426,42 @@ describe('A use case', () => {
                     { type: "step", description: "A step", steps: null }
                 ]
             })
+        })
+
+        it('should run with entity response', async () => {
+
+            const anEntity = entity('anEntiy',{
+                stringField: field(String),
+                numberField: field(Number)
+            })
+
+            const givenTheSimplestUseCaseWithEntityResponse = () => {
+                const uc = usecase('A use case', {
+                    request: {
+                        stringField: String,
+                        numberField: Number
+                    },
+                    response: anEntity,
+                    'A step': step((ctx) => {
+                        const entity = anEntity.fromJSON(ctx.req)
+                        ctx.ret = Ok(entity)
+                        return Ok()
+                    })
+                })
+                return uc
+            }
+
+            //given
+            const uc = givenTheSimplestUseCaseWithEntityResponse()
+            const input = {
+                stringField: 'a',
+                numberField: 102,
+            }
+            //when
+            const ret = await uc.run(input)
+
+            //then
+            assert.strictEqual(ret.ok.__proto__, anEntity.prototype)
         })
 
         it('should run with array response', async () => {
