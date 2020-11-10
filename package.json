@@ -1,6 +1,6 @@
 {
   "name": "buchu",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer",
   "main": "./src/buchu.js",
   "scripts": {
