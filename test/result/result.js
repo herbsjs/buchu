@@ -25,8 +25,8 @@ describe('When I got a result', () => {
             assert.equal(ok.toString(), 'Ok')
         })
 
-        it(`should return "{ ok: undefined }" on "toJSON" method`, async () => {
-            assert.deepEqual(ok.toJSON(), { ok: undefined })
+        it(`should return "{ Ok: undefined }" on "toJSON" method`, async () => {
+            assert.deepEqual(ok.toJSON(), { Ok: undefined })
         })
     })
 
@@ -55,7 +55,7 @@ describe('When I got a result', () => {
         })
 
         it(`should return "{ ok: ${expectedMessage} }" on "toJSON" method`, async () => {
-            assert.deepEqual(ok.toJSON(), { ok: expectedMessage })
+            assert.deepEqual(ok.toJSON(), { Ok: expectedMessage })
         })
     })
 
@@ -84,7 +84,7 @@ describe('When I got a result', () => {
         })
 
         it(`should return "{ error: ${undefined} }" on "toJSON" method`, async () => {
-            assert.deepEqual(error.toJSON(), { error: undefined })
+            assert.deepEqual(error.toJSON(), { Error: undefined })
         })
     })
 
@@ -113,7 +113,7 @@ describe('When I got a result', () => {
         })
 
         it(`should return "{ error: ${expectedMessage} }" on "toJSON" method`, async () => {
-            assert.deepEqual(error.toJSON(), { error: expectedMessage })
+            assert.deepEqual(error.toJSON(), { Error: expectedMessage })
         })
     })
 })
