@@ -1,5 +1,8 @@
-const { schema } = require('../../../src/schema')
 const assert = require('assert')
+const fs = require('fs')
+const {entity, field} = require('gotu')
+
+const { schema } = require('../../../src/schema')
 
 describe('Request schema validation', () => {
 
@@ -211,6 +214,77 @@ describe('Request schema validation', () => {
             // then
             assert.equal(ret, false)
             assert.deepEqual(scm.errors, [{ a: [{ wrongType: 'Array' }] }])
+        })
+    })
+
+    describe('Entity', () =>{
+
+        it('should validate entity', () => {
+            // given
+            const anEntity = entity('anEntiy',{
+                stringField: field(String),
+                numberField: field(Number)
+            })
+
+            const requestSchema = { o: anEntity }
+            const scm = schema(requestSchema)
+            const request = { o: new anEntity() }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, true)
+        })
+
+        it('should validate entity outside base entity', () => {
+            // given
+
+            const anEntity = entity('anEntiy',{
+                stringField: field(String),
+                numberField: field(Number)
+            })
+
+            const anGenericEntity = class{}
+
+            const requestSchema = { o: anEntity }
+            const scm = schema(requestSchema)
+            const request = { o: new anGenericEntity() }
+            // when
+            const ret = scm.validate(request)
+            // then
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'anEntiy' }] }])
+        })
+    })
+
+    describe('Not installed Gotu optional dependency', () =>{
+
+        it('should not validate entity when gotu is not installed', () => {
+            // given uninstalled context            
+            const baseEntityPath = require.resolve('gotu/src/baseEntity')
+            const tempPath = baseEntityPath.replace('baseEntity.js','baseEntity_temp')  
+            const storedCache = require.cache[baseEntityPath]
+            fs.renameSync(baseEntityPath,tempPath)
+            delete require.cache[baseEntityPath]
+
+            // when
+            const anEntity = entity('anEntiy',{
+                stringField: field(String),
+                numberField: field(Number)
+            })
+
+            const requestSchema = { o: anEntity }
+            const scm = schema(requestSchema)
+
+            const request = { o: anEntity.fromJSON({stringField: 'string', numberField: 1234}) }
+            const ret = scm.validate(request)
+            
+            //undo uninstall
+            fs.renameSync(tempPath, baseEntityPath)
+            require.cache[baseEntityPath] = storedCache
+
+            //then assert
+            assert.equal(ret, false)
+            assert.deepEqual(scm.errors, [{ o: [{ invalidType: anEntity.prototype.constructor }] }])            
         })
     })
 })

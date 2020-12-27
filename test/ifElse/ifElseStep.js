@@ -32,7 +32,7 @@ describe('If Else step', () => {
             //when
             await uc.run()
             //then
-            assert.deepEqual(uc.auditTrail, {
+            assert.deepStrictEqual(uc.auditTrail, {
                 type: 'use case',
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
@@ -48,6 +48,38 @@ describe('If Else step', () => {
                     },
                 ],
             })
+        })
+
+        it('should doc', async () => {
+            //given
+            const uc = givenASimpleUseCase()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepStrictEqual(ret,
+                {
+                    type: 'use case',
+                    description: 'A use case',
+                    steps: [{
+                        description: 'A condition',
+                        type: 'if else',
+                        if: {
+                            type: 'step',
+                            description: 'If Step',
+                            steps: null,
+                        },
+                        then: {
+                            type: 'step',
+                            description: 'Then Step',
+                            steps: null,
+                        },
+                        else: {
+                            type: 'step',
+                            description: 'Else Step',
+                            steps: null,
+                        }
+                    }]
+                })
         })
     })
 
@@ -70,7 +102,7 @@ describe('If Else step', () => {
             const ret = await uc.run()
             //then
             assert.ok(ret.isOk)
-            assert.deepEqual(ret.value, { IfStep: 10, ThenStep: 20 })
+            assert.deepStrictEqual(ret.value, { IfStep: 10, ThenStep: 20 })
         })
     })
 
@@ -119,7 +151,7 @@ describe('If Else step', () => {
             //when
             await uc.run({ param1: 1 })
             //then
-            assert.deepEqual(uc.auditTrail, {
+            assert.deepStrictEqual(uc.auditTrail, {
                 type: 'use case',
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
@@ -164,7 +196,7 @@ describe('If Else step', () => {
                 //when
                 await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
@@ -180,7 +212,8 @@ describe('If Else step', () => {
                 //when
                 const ret = st.doc()
                 //then
-                assert.deepEqual(ret, {
+                assert.deepStrictEqual(ret, {
+                    description: undefined,
                     type: 'if else',
                     if: {
                         type: 'step',
@@ -226,7 +259,7 @@ describe('If Else step', () => {
                 //when
                 await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'if else',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
@@ -256,7 +289,7 @@ describe('If Else step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert.deepEqual(ret.value, 2)
+                assert.deepStrictEqual(ret.value, 2)
             })
         })
 
@@ -277,7 +310,7 @@ describe('If Else step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert.deepEqual(ret.value, 3)
+                assert.deepStrictEqual(ret.value, 3)
             })
         })
     })
