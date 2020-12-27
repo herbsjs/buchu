@@ -16,7 +16,7 @@ class Ok {
 		else
 			return 'Ok'
 	}
-	toJSON() { return { ok: this.value } }
+	toJSON() { return { Ok: this.value } }
 }
 
 class Err {
@@ -35,9 +35,9 @@ class Err {
 		if (this._error)
 			return `Error: ${JSON.stringify(this._error)}`
 		else
-			return "Error"
+			return 'Error'
 	}
-	toJSON() { return { error: this._error } }
+	toJSON() { return { Error: this._error } }
 }
 
 module.exports = {
