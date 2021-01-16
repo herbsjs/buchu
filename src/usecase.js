@@ -49,7 +49,7 @@ class UseCase {
     }
 
     setContext(context) {
-        Object.assign(this._mainStep.context.ret, context);
+        Object.assign(this._mainStep.context.ret, context)
         this._setup(this._mainStep.context)
         return this
     }
@@ -67,7 +67,7 @@ class UseCase {
             this._mainStep.context.req = request
         }
 
-        Object.assign(this._mainStep.context.ret, context);
+        Object.assign(this._mainStep.context.ret, context)
         this._setup(this._mainStep.context)
 
         return this._mainStep.run()
