@@ -17,6 +17,7 @@ usecases/addOrUpdateItem.js:
 
 ```javascript
 const { entity, field } = require('gotu')
+
 const Item = entity('Item', {
   id: field(Number),
   description: field(String),
@@ -84,6 +85,10 @@ app.put('/items/:item', function (req, res) {
     const uc = addOrUpdateItem()
     uc.authorize(user)
     const ret = await uc.run(request)
+    // or
+    // const ret = await uc.setContext({ token: 'example' }).run(request)
+    // or
+    // const ret = await uc.run(request, { yourContext: 'here' })
     res.send(ret)
 })
 ```
@@ -259,6 +264,7 @@ References:
 - [ ] Deal with no default results (Ok/Err)
 - [X] Deal with async / await steps
 - [X] Use case examples
+- [ ] Doc - Create a session exclusive to explain the context
 - [ ] Doc - Documentation and samples for each feature
 
 ### Contribute
