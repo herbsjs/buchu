@@ -48,7 +48,13 @@ class UseCase {
         return this._auditTrail.authorized = this._hasAuthorization
     }
 
-    async run(request) {
+    setContext(context) {
+        Object.assign(this._mainStep.context.ret, context);
+        this._setup(this._mainStep.context)
+        return this
+    }
+
+    async run(request, context = {}) {
 
         if ((this._hasAuthorization === false) ||
             (this._authorize && this._hasAuthorization === null))
@@ -61,6 +67,7 @@ class UseCase {
             this._mainStep.context.req = request
         }
 
+        Object.assign(this._mainStep.context.ret, context);
         this._setup(this._mainStep.context)
 
         return this._mainStep.run()

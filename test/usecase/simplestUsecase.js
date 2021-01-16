@@ -86,6 +86,7 @@ describe('A use case', () => {
                 })
             })
         })
+        
 
         context('returning Err', () => {
 
@@ -140,6 +141,30 @@ describe('A use case', () => {
                 //then
                 assert.ok(ret.isOk)
                 assert.deepEqual(ret.value, { step1: 'ret1', step2: 'ret2' })
+            })
+
+            it('should receive preContext by run method', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithContext()
+                const ctx = { expectedProp: 'expectedProp' }
+
+                //when
+                const ret = await uc.run(null, ctx)
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, { step1: 'ret1', step2: 'ret2', expectedProp: 'expectedProp' })
+            })
+
+
+            it('should receive preContext by run setContext method', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithContext()
+                const ctx = { expectedProp: 'expectedProp' }
+                //when
+                const ret = await uc.setContext(ctx).run()
+                //then
+                assert.ok(ret.isOk)
+                assert.deepEqual(ret.value, { step1: 'ret1', step2: 'ret2', expectedProp: 'expectedProp' })
             })
 
             it('should audit', async () => {
