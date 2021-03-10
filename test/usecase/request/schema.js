@@ -44,7 +44,7 @@ describe('Schema validation',  () => {
         const ret = scm.validateSchema()
         // then
         assert.equal(ret, false)
-        assert.deepEqual(scm.errors, [{ name: [{ invalidType: 'Polly' }] }])
+        assert.deepStrictEqual(scm.errors, [{ name: [{ invalidType: 'Polly' }] }])
     })
 
     it('should not create schema (wrong value array)',  () => {
@@ -55,7 +55,7 @@ describe('Schema validation',  () => {
         const ret = scm.validateSchema()
         // then
         assert.equal(ret, false)
-        assert.deepEqual(scm.errors, [{ name: [{ invalidType: ['Polly'] }] }])
+        assert.deepStrictEqual(scm.errors, [{ name: [{ invalidType: ['Polly'] }] }])
     })
 
     it('should not create schema (wrong value in array)',  () => {
@@ -66,7 +66,7 @@ describe('Schema validation',  () => {
         const ret = scm.validateSchema()
         // then
         assert.equal(ret, false)
-        assert.deepEqual(scm.errors, [{ legs: [{ invalidType: [10] }] }])
+        assert.deepStrictEqual(scm.errors, [{ legs: [{ invalidType: [10] }] }])
     })
 
     it('should not create schema (empty value)',  () => {
@@ -77,7 +77,7 @@ describe('Schema validation',  () => {
         const ret = scm.validateSchema()
         // then
         assert.equal(ret, false)
-        assert.deepEqual(scm.errors, [{ notDefined: true }])
+        assert.deepStrictEqual(scm.errors, [{ notDefined: true }])
     })
 
     it('should not create schema (deep nesting)',  () => {

@@ -38,7 +38,7 @@ describe('Request schema validation', () => {
         const ret = scm.validate(request)
         // then
         assert.equal(ret, false)
-        assert.deepEqual(scm.errors, [{ able: [{ invalidKey: true }] }, { meta: [{ invalidKey: true }] }])
+        assert.deepStrictEqual(scm.errors, [{ able: [{ invalidKey: true }] }, { meta: [{ invalidKey: true }] }])
     })
 
     it('should validate request (empty)', () => {
@@ -83,7 +83,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ n: [{ wrongType: 'Number' }] }])
+            assert.deepStrictEqual(scm.errors, [{ n: [{ wrongType: 'Number' }] }])
         })
     })
 
@@ -109,7 +109,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ s: [{ wrongType: 'String' }] }])
+            assert.deepStrictEqual(scm.errors, [{ s: [{ wrongType: 'String' }] }])
         })
     })
 
@@ -135,7 +135,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ b: [{ wrongType: 'Boolean' }] }])
+            assert.deepStrictEqual(scm.errors, [{ b: [{ wrongType: 'Boolean' }] }])
         })
     })
 
@@ -161,7 +161,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ d: [{ wrongType: 'Date' }] }])
+            assert.deepStrictEqual(scm.errors, [{ d: [{ wrongType: 'Date' }] }])
         })
     })
 
@@ -187,7 +187,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'Object' }] }])
+            assert.deepStrictEqual(scm.errors, [{ o: [{ wrongType: 'Object' }] }])
         })
     })
 
@@ -213,7 +213,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ a: [{ wrongType: 'Array' }] }])
+            assert.deepStrictEqual(scm.errors, [{ a: [{ wrongType: 'Array' }] }])
         })
     })
 
@@ -252,7 +252,7 @@ describe('Request schema validation', () => {
             const ret = scm.validate(request)
             // then
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ o: [{ wrongType: 'anEntiy' }] }])
+            assert.deepStrictEqual(scm.errors, [{ o: [{ wrongType: 'anEntiy' }] }])
         })
     })
 
@@ -284,7 +284,7 @@ describe('Request schema validation', () => {
 
             //then assert
             assert.equal(ret, false)
-            assert.deepEqual(scm.errors, [{ o: [{ invalidType: anEntity.prototype.constructor }] }])            
+            assert.deepStrictEqual(scm.errors, [{ o: [{ invalidType: anEntity.prototype.constructor }] }])            
         })
     })
 })
