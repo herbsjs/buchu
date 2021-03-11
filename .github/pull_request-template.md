@@ -2,7 +2,7 @@
 <!-- Link to issue if there is one -->
 <!-- markdownlint-disable -->
 
-Fixes #
+Fixes and changes #
 
 <!-- markdownlint-restore -->
 
