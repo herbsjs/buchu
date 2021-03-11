@@ -162,8 +162,8 @@ describe('A step', () => {
             const givenTheSimplestStepWithException = () => {
                 class MyError extends Error {
                     constructor(message) {
-                        super(message);
-                        this.name = 'MyError';
+                        super(message)
+                        this.name = 'MyError'
                     }
                 }
                 const st = step(() => { throw new MyError('An error XYZ') })
