@@ -16,7 +16,7 @@ class Ok {
 		else
 			return 'Ok'
 	}
-	toJSON() { return { 'Ok': this.value } }
+	toJSON() { return { 'Ok': (this.value === undefined ? '' : this.value) } }
 }
 
 class Err {
@@ -37,7 +37,11 @@ class Err {
 		else
 			return "Error"
 	}
-	toJSON() { return { 'Error': this._error } }
+	toJSON() {
+		let error = (this._error === undefined ? '' : this._error)
+		error = error instanceof Error ? error.toString() : error
+		return { 'Error': error }
+	}
 }
 
 module.exports = {

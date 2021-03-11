@@ -1,6 +1,5 @@
 const suma = require("suma")
 
-const { Ok, Err } = require('./results')
 const nativeTypes = [Boolean, Number, String, Array, Object, Date, Function]
 
 const errorCodes = {
@@ -12,8 +11,8 @@ class SchemaValidator {
 
     static isValid(key, value) {
         const isArrayWithType = this.isArrayWithType(value)
-        if (isArrayWithType) value = value[0]
-        if (!this.isNativeType(value))
+        if (isArrayWithType) value = value[0]        
+        if (!this.isNativeType(value) && !this.isBaseEntity(value))
             return { [key]: [{ [errorCodes.invalidType]: isArrayWithType ? [value] : value }] }
     }
 
@@ -23,6 +22,15 @@ class SchemaValidator {
 
     static isNativeType(value) {
         return nativeTypes.includes(value)
+    }
+
+    static isBaseEntity(value) {  
+        try{
+            const { BaseEntity } = require('gotu/src/baseEntity')
+            return value.prototype instanceof BaseEntity
+        }catch{
+            return false
+        }
     }
 }
 

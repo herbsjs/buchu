@@ -37,7 +37,7 @@ describe('If Else step', () => {
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
                 elapsedTime: uc._mainStep._auditTrail.elapsedTime,
-                return: Ok({}),
+                return: { Ok: {} },
                 steps: [
                     {
                         type: 'if else',
@@ -156,7 +156,7 @@ describe('If Else step', () => {
                 description: 'A use case',
                 transactionId: uc._mainStep._auditTrail.transactionId,
                 elapsedTime: uc._mainStep._auditTrail.elapsedTime,
-                return: Ok({ return1: 1 }),
+                return: { Ok: { return1: 1 } },
                 steps: [
                     {
                         type: 'if else',

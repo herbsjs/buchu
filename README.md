@@ -16,6 +16,14 @@ Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/
 usecases/addOrUpdateItem.js:
 
 ```javascript
+const { entity, field } = require('gotu')
+const Item = entity('Item', {
+  id: field(Number),
+  description: field(String),
+  isDone: field(Boolean),
+  position: field(Number)
+})
+
 const { Ok, Err, usecase, step, ifElse } = require('../../../src/buchu')
 const dependency = {
     ItemRepository: require('../repositories/ItemRepository').ItemRepository,
@@ -27,7 +35,7 @@ const addOrUpdateItem = (injection) =>
     usecase('Add or Update an Item on a to-do List', {
 
         // Input/Request type validation 
-        request: { listId: Number, item: Object },
+        request: { listId: Number, item: Item },
 
         // Authorization Audit  
         authorize: (user) => user.isAdmin ? Ok() : Err(),
@@ -85,7 +93,7 @@ app.put('/items/:item', function (req, res) {
 {
   type: 'use case',
   description: 'Add or Update an Item on a to-do List',
-  request: { listId: Number, item: Object },
+  request: { listId: Number, item: Item },
   response: String,
   steps: [
     { type: 'step', description: 'Check if the Item is valid', steps: null },
@@ -146,7 +154,7 @@ const addOrUpdateItem = (injection) =>
 ```
 #### Request types
 
-A field in a request can be of basic types, the same as those used by JavaScript:
+A field in a request can be basic types from Javascript or entities created from gotu herbs lib:
 
 `Number`: double-precision 64-bit binary format IEEE 754 value
 
@@ -159,6 +167,8 @@ A field in a request can be of basic types, the same as those used by JavaScript
 `Object`: the Object class represents one of JavaScript's data types.
 
 `Array`: the Array class is a object that is used in the construction of arrays.
+
+`Entity`: entity object represents an gotu base entity.
 
 ### Motivations
 
@@ -270,4 +280,4 @@ https://en.wikipedia.org/wiki/Agathosma_betulina
 ### License
 
 **Buchu** is released under the
-[MIT license](https://github.com/herbsjs/buchu/blob/master/LICENSE.md).
+[MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE.md).

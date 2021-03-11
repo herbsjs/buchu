@@ -58,23 +58,23 @@ class Step {
 
                 if (ret.isErr) return ret
             }
-            const ret = this.context.ret
-            if (ret.__proto__ === Ok().__proto__)
-                return Ok(ret)
-            else
-                return Ok({ ...ret })
+            let ret = this.context.ret
+            return Ok(ret)
         }
 
         let ret = undefined
         this._auditTrail.description = this.description
-
-        ret = this._auditTrail.return = await _runFunction()
+        this._auditTrail.return = ""
+        
+        ret = await _runFunction()
+        if (ret !== undefined) this._auditTrail.return = JSON.parse(JSON.stringify(ret))
         if (ret) {
             this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
             return ret
         }
 
-        ret = this._auditTrail.return = await _runNestedSteps()
+        ret = await _runNestedSteps()
+        this._auditTrail.return = JSON.parse(JSON.stringify(ret))
         this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
         return ret
     }
