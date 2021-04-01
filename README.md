@@ -38,7 +38,7 @@ const addOrUpdateItem = (injection) =>
         request: { listId: Number, item: Item },
 
         // Output/Response type
-        request: { item: Item },
+        response: { item: Item },
 
         // Authorization Audit  
         authorize: (user) => user.isAdmin ? Ok() : Err(),
