@@ -37,6 +37,9 @@ const addOrUpdateItem = (injection) =>
         // Input/Request type validation 
         request: { listId: Number, item: Item },
 
+        // Output/Response type
+        response: { item: Item },
+
         // Authorization Audit  
         authorize: (user) => user.isAdmin ? Ok() : Err(),
 
@@ -245,7 +248,7 @@ References:
 - [ ] Use usecase as a step
 - [X] Doc Step - Get description and structure from use case and its steps
 - [X] Request - Be able to describe and validate the use case request object
-- [ ] Response - Be able to describe and validate the use case response object
+- [X] Response - Be able to describe and validate the use case response object
 - [X] Dependency Injection (removed)
 - [X] `ctx` var - Share context between Steps
 - [X] Conditional Steps - Enable a If/Else constructor for steps
