@@ -25,6 +25,6 @@ describe('List Items Use Case', () => {
 
         // Then
         assert.ok(ret.isOk)
-        assert.deepEqual(ret.value.items, itemList)
+        assert.deepStrictEqual(ret.value.items, itemList)
     })
 })

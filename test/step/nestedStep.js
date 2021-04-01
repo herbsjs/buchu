@@ -32,16 +32,16 @@ describe('A step', () => {
                 //when
                 await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
-                        { type: 'step', description: 'step 1', return: Ok(), elapsedTime: st._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', return: Ok(), elapsedTime: st._auditTrail.steps[1].elapsedTime },
-                        { type: 'step', description: 'step 3', return: Ok(), elapsedTime: st._auditTrail.steps[2].elapsedTime }
+                        { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
+                        { type: 'step', description: 'step 2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 3', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].elapsedTime }
                     ],
-                    return: Ok({})
+                    return: { Ok: {} }
                 })
                 assert.ok(st.auditTrail.elapsedTime > 0)
             })
@@ -52,7 +52,7 @@ describe('A step', () => {
                 //when
                 const ret = st.doc()
                 //then
-                assert.deepEqual(ret, {
+                assert.deepStrictEqual(ret, {
                     type: "step",
                     description: undefined,
                     steps: [
@@ -62,6 +62,48 @@ describe('A step', () => {
                     ]
                 })
             })
+        })
+
+        context('returning a value', () => {
+
+            const givenNestedStepsWithNoReturn = () => {
+                const st = step({
+                    'step 1': step(() => { return Ok(1) }),
+                    'step 2': step(() => { return 2 }),
+                    'step 3': step(() => { return [3] })
+                })
+                return st
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenNestedStepsWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isOk)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenNestedStepsWithNoReturn()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepStrictEqual(st.auditTrail, {
+                    type: 'step',
+                    description: undefined,
+                    elapsedTime: st.auditTrail.elapsedTime,
+                    steps: [
+                        { type: 'step', description: 'step 1', return: { Ok: 1 }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
+                        { type: 'step', description: 'step 2', return: 2, elapsedTime: st._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 3', return: [3], elapsedTime: st._auditTrail.steps[2].elapsedTime }
+                    ],
+                    return: { Ok: {} }
+                })
+                assert.ok(st.auditTrail.elapsedTime > 0)
+            })
+
         })
 
         context('returning Err', () => {
@@ -90,16 +132,16 @@ describe('A step', () => {
                 //when
                 const ret = await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
-                        { type: 'step', description: 'step 1', return: Ok(), elapsedTime: st._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', return: Ok(), elapsedTime: st._auditTrail.steps[1].elapsedTime },
-                        { type: 'step', description: 'step 3', return: Err(), elapsedTime: st._auditTrail.steps[2].elapsedTime }
+                        { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
+                        { type: 'step', description: 'step 2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 3', return: { Error: '' }, elapsedTime: st._auditTrail.steps[2].elapsedTime }
                     ],
-                    return: Err()
+                    return: { Error: '' }
                 })
                 assert.ok(st.auditTrail.elapsedTime > 0)
             })
@@ -132,16 +174,16 @@ describe('A step', () => {
                 //when
                 const ret = await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
-                        { type: 'step', description: 'step 1', return: Ok(), elapsedTime: st._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', return: Ok(), elapsedTime: st._auditTrail.steps[1].elapsedTime },
-                        { type: 'step', description: 'step 3', return: Ok(), elapsedTime: st._auditTrail.steps[2].elapsedTime }
+                        { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
+                        { type: 'step', description: 'step 2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 3', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].elapsedTime }
                     ],
-                    return: Ok({})
+                    return: { Ok: {} }
                 })
                 assert.ok(st.auditTrail.elapsedTime > 0)
             })
@@ -190,32 +232,32 @@ describe('A step', () => {
                 //when
                 const ret = await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
-                    return: Ok({}),
+                    return: { Ok: {} },
                     steps: [
                         {
-                            type: 'step', description: 'step 1', return: Ok({}), elapsedTime: st._auditTrail.steps[0].elapsedTime, steps: [
-                                { type: 'step', description: 'step 1.1', return: Ok(), elapsedTime: st._auditTrail.steps[0].steps[0].elapsedTime }
+                            type: 'step', description: 'step 1', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[0].elapsedTime, steps: [
+                                { type: 'step', description: 'step 1.1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].steps[0].elapsedTime }
                             ]
                         },
                         {
-                            type: 'step', description: 'step 2', return: Ok({}), elapsedTime: st._auditTrail.steps[1].elapsedTime, steps: [
-                                { type: 'step', description: 'step 2.1', return: Ok(), elapsedTime: st._auditTrail.steps[1].steps[0].elapsedTime },
-                                { type: 'step', description: 'step 2.2', return: Ok(), elapsedTime: st._auditTrail.steps[1].steps[1].elapsedTime }
+                            type: 'step', description: 'step 2', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[1].elapsedTime, steps: [
+                                { type: 'step', description: 'step 2.1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].steps[0].elapsedTime },
+                                { type: 'step', description: 'step 2.2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].steps[1].elapsedTime }
                             ]
                         },
                         {
-                            type: 'step', description: 'step 3', return: Ok({}), elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
-                                { type: 'step', description: 'step 3.1', return: Ok(), elapsedTime: st._auditTrail.steps[2].steps[0].elapsedTime },
-                                { type: 'step', description: 'step 3.2', return: Ok(), elapsedTime: st._auditTrail.steps[2].steps[1].elapsedTime },
+                            type: 'step', description: 'step 3', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
+                                { type: 'step', description: 'step 3.1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[0].elapsedTime },
+                                { type: 'step', description: 'step 3.2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[1].elapsedTime },
                                 {
-                                    type: 'step', description: 'step 3.3', return: Ok({}), elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
-                                        { type: 'step', description: 'step 3.3.1', return: Ok(), elapsedTime: st._auditTrail.steps[2].steps[2].steps[0].elapsedTime },
-                                        { type: 'step', description: 'step 3.3.2', return: Ok(), elapsedTime: st._auditTrail.steps[2].steps[2].steps[1].elapsedTime },
-                                        { type: 'step', description: 'step 3.3.3', return: Ok(), elapsedTime: st._auditTrail.steps[2].steps[2].steps[2].elapsedTime }
+                                    type: 'step', description: 'step 3.3', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
+                                        { type: 'step', description: 'step 3.3.1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[0].elapsedTime },
+                                        { type: 'step', description: 'step 3.3.2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[1].elapsedTime },
+                                        { type: 'step', description: 'step 3.3.3', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[2].elapsedTime }
                                     ]
                                 }
                             ]
@@ -230,7 +272,7 @@ describe('A step', () => {
                 //when
                 const ret = st.doc()
                 //then
-                assert.deepEqual(ret, {
+                assert.deepStrictEqual(ret, {
                     type: "step",
                     description: undefined,
                     steps: [
@@ -340,7 +382,7 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert.deepEqual(ret.value, {})
+                assert.deepStrictEqual(ret.value, {})
             })
 
             it('should audit', async () => {
@@ -349,32 +391,32 @@ describe('A step', () => {
                 //when
                 const ret = await st.run()
                 //then
-                assert.deepEqual(st.auditTrail, {
+                assert.deepStrictEqual(st.auditTrail, {
                     type: 'step',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
-                    return: Ok({}),
+                    return: { Ok: {} },
                     steps: [
                         {
-                            type: 'step', description: 'step 1', return: Ok({}), elapsedTime: st._auditTrail.steps[0].elapsedTime, steps: [
-                                { type: 'step', description: 'step 1.1', return: Ok(1), elapsedTime: st._auditTrail.steps[0].steps[0].elapsedTime }
+                            type: 'step', description: 'step 1', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[0].elapsedTime, steps: [
+                                { type: 'step', description: 'step 1.1', return: { Ok: 1 }, elapsedTime: st._auditTrail.steps[0].steps[0].elapsedTime }
                             ]
                         },
                         {
-                            type: 'step', description: 'step 2', return: Ok({}), elapsedTime: st._auditTrail.steps[1].elapsedTime, steps: [
-                                { type: 'step', description: 'step 2.1', return: Ok(2), elapsedTime: st._auditTrail.steps[1].steps[0].elapsedTime },
-                                { type: 'step', description: 'step 2.2', return: Ok(3), elapsedTime: st._auditTrail.steps[1].steps[1].elapsedTime }
+                            type: 'step', description: 'step 2', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[1].elapsedTime, steps: [
+                                { type: 'step', description: 'step 2.1', return: { Ok: 2 }, elapsedTime: st._auditTrail.steps[1].steps[0].elapsedTime },
+                                { type: 'step', description: 'step 2.2', return: { Ok: 3 }, elapsedTime: st._auditTrail.steps[1].steps[1].elapsedTime }
                             ]
                         },
                         {
-                            type: 'step', description: 'step 3', return: Ok({}), elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
-                                { type: 'step', description: 'step 3.1', return: Ok(4), elapsedTime: st._auditTrail.steps[2].steps[0].elapsedTime },
-                                { type: 'step', description: 'step 3.2', return: Ok(5), elapsedTime: st._auditTrail.steps[2].steps[1].elapsedTime },
+                            type: 'step', description: 'step 3', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
+                                { type: 'step', description: 'step 3.1', return: { Ok: 4 }, elapsedTime: st._auditTrail.steps[2].steps[0].elapsedTime },
+                                { type: 'step', description: 'step 3.2', return: { Ok: 5 }, elapsedTime: st._auditTrail.steps[2].steps[1].elapsedTime },
                                 {
-                                    type: 'step', description: 'step 3.3', return: Ok({}), elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
-                                        { type: 'step', description: 'step 3.3.1', return: Ok(6), elapsedTime: st._auditTrail.steps[2].steps[2].steps[0].elapsedTime },
-                                        { type: 'step', description: 'step 3.3.2', return: Ok(7), elapsedTime: st._auditTrail.steps[2].steps[2].steps[1].elapsedTime },
-                                        { type: 'step', description: 'step 3.3.3', return: Ok(8), elapsedTime: st._auditTrail.steps[2].steps[2].steps[2].elapsedTime }
+                                    type: 'step', description: 'step 3.3', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
+                                        { type: 'step', description: 'step 3.3.1', return: { Ok: 6 }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[0].elapsedTime },
+                                        { type: 'step', description: 'step 3.3.2', return: { Ok: 7 }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[1].elapsedTime },
+                                        { type: 'step', description: 'step 3.3.3', return: { Ok: 8 }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[2].elapsedTime }
                                     ]
                                 }
                             ]
@@ -417,7 +459,7 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isErr)
-                assert.deepEqual(ret.err, 9)
+                assert.deepStrictEqual(ret.err, 9)
             })
         })
     })
