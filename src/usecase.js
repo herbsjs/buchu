@@ -36,6 +36,9 @@ class UseCase {
         this._auditTrail.type = this.type
         this._auditTrail.description = description
         this._auditTrail.transactionId = uuidv4()
+
+        // run flag
+        this._hasRun = false
     }
 
     authorize(user) {
@@ -49,6 +52,10 @@ class UseCase {
     }
 
     async run(request) {
+
+        if (this._hasRun)
+            return Err('Cannot run use case more than once. Try to instantiate a new object before run this use case.')
+        this._hasRun = true
 
         if ((this._hasAuthorization === false) ||
             (this._authorize && this._hasAuthorization === null))
