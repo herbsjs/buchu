@@ -2,6 +2,7 @@ const { step } = require('./step')
 const { schema } = require('./schema')
 const { v4: uuidv4 } = require('uuid')
 const { Ok, Err } = require('./results')
+const { isAsyncFunction } = require('./helpers/functionHelper')
 
 class UseCase {
 
@@ -38,12 +39,16 @@ class UseCase {
         this._auditTrail.transactionId = uuidv4()
     }
 
-    authorize(user) {
+    async authorize(user) {
         this._hasAuthorization = false
         this._auditTrail.user = { ...user }
         if (this._authorize) {
-            const ret = this._authorize(user)
+           try {
+            const ret = isAsyncFunction(this._authorize) ? await this._authorize(user) : this._authorize(user)
             if (ret.isOk) this._hasAuthorization = true
+           } catch (err) {
+            this._hasAuthorization = false
+           }
         }
         return this._auditTrail.authorized = this._hasAuthorization
     }

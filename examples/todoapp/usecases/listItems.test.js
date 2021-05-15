@@ -4,7 +4,7 @@ const assert = require('assert')
 
 describe('List Items Use Case', () => {
 
-    it('Should Return Items ', async () => {
+    it.only('Should Return Items', async () => {
 
         // Given
         const itemList = [
@@ -20,11 +20,12 @@ describe('List Items Use Case', () => {
 
         // When
         const uc = listItems(injection)
-        uc.authorize(user)
+        await uc.authorize(user)
         const ret = await uc.run(req)
 
         // Then
         assert.ok(ret.isOk)
         assert.deepStrictEqual(ret.value.items, itemList)
-    })
+    })    
+
 })
