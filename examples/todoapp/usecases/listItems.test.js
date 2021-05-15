@@ -4,7 +4,7 @@ const assert = require('assert')
 
 describe('List Items Use Case', () => {
 
-    it.only('Should Return Items', async () => {
+    it('Should Return Items', async () => {
 
         // Given
         const itemList = [
