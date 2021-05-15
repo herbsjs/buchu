@@ -23,7 +23,7 @@ describe('Add Or Update Item Use Case', () => {
 
             // When
             const uc = addOrUpdateItem(injection)
-            uc.authorize(user)
+            await uc.authorize(user)
             const ret = await uc.run(req)
 
             // Then
@@ -52,7 +52,7 @@ describe('Add Or Update Item Use Case', () => {
 
             // When
             const uc = addOrUpdateItem(injection)
-            uc.authorize(user)
+            await uc.authorize(user)
             const ret = await uc.run(req)
 
             // Then
