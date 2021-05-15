@@ -104,6 +104,19 @@ describe('A use case', () => {
                 assert.ok(ret.isErr)
             })
         })
+
+        it('should not run more than once', async () => {
+            //given
+            const uc = givenTheSimplestUseCase()
+            const ret1 = await uc.run()
+
+            //when
+            const ret2 = await uc.run()
+
+            //then
+            assert.ok(ret1.isOk)
+            assert.ok(ret2.isErr)
+        })
     })
 
     describe('the simplest use case with context', () => {
