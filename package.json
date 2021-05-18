@@ -32,11 +32,11 @@
   "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
-    "suma": "^1.0.7",
+    "suma": "^1.0.10",
     "uuid": "^8.3.1"
   },
   "optionalDependencies": {
-    "gotu": "^1.0.9"
+    "gotu": "^1.0.20"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
