@@ -124,7 +124,6 @@ describe('A use case', () => {
             }
             it('should run with Ok result', async () => {
                 //given
-
                 const uc = givenAMultiStepUseCase()
                 //when
                 const ret = await uc.run()
@@ -135,7 +134,6 @@ describe('A use case', () => {
 
             it('should run with Err result', async () => {
                 //given
-
                 const uc = givenAMultiStepUseCaseWithError()
                 //when
                 const ret = await uc.run()
