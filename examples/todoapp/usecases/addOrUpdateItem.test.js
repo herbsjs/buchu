@@ -28,8 +28,8 @@ describe('Add Or Update Item Use Case', () => {
 
             // Then
             assert.ok(ret.isOk)
-            assert.equal(ret.value.item.id, 100)
-            assert.equal(ret.value.item.name, "Do not forget this")
+            assert.strictEqual(ret.value.item.id, 100)
+            assert.strictEqual(ret.value.item.name, "Do not forget this")
         })
     })
 
@@ -57,8 +57,8 @@ describe('Add Or Update Item Use Case', () => {
 
             // Then
             assert.ok(ret.isOk)
-            assert.equal(ret.value.item.id, 200)
-            assert.equal(ret.value.item.name, "Do not forget this")
+            assert.strictEqual(ret.value.item.id, 200)
+            assert.strictEqual(ret.value.item.name, "Do not forget this")
         })
     })
 })
