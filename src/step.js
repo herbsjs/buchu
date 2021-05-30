@@ -57,12 +57,15 @@ class Step {
                 step.context = this.context
 
                 let ret = await step.run()
-  
+
+                if (step.context._stopExecution) 
+                    step.auditTrail.wasStopped = true
+                
                 this._auditTrail.steps.push(step.auditTrail)
 
                 if (ret.isErr) return ret
 
-                if(step.context._stopExecution ) break
+                if(step.context._stopExecution) break
             }
             let ret = this.context.ret
             return Ok(ret)
