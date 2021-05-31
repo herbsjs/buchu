@@ -202,7 +202,7 @@ describe('A use case', () => {
                     return: { Ok: { sucess: true }},
                     steps: [
                         { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', wasStopped: true, return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 2', stopped: true, return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[1].elapsedTime },
                     ]
                 })
             })
@@ -221,7 +221,7 @@ describe('A use case', () => {
                     return: { Error: 'sucess' },
                     steps: [
                         { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', wasStopped: true, return: { Error: 'sucess' }, elapsedTime: uc._auditTrail.steps[1].elapsedTime }
+                        { type: 'step', description: 'step 2', stopped: true, return: { Error: 'sucess' }, elapsedTime: uc._auditTrail.steps[1].elapsedTime }
                     ]
                 })
             })

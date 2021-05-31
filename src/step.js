@@ -59,7 +59,7 @@ class Step {
                 let ret = await step.run()
 
                 if (step.context._stopExecution) 
-                    step.auditTrail.wasStopped = true
+                    step.auditTrail.stopped = true
                 
                 this._auditTrail.steps.push(step.auditTrail)
 

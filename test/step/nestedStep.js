@@ -503,7 +503,7 @@ describe('A step', () => {
                     elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
                         { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', wasStopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 2', stopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
                     ],
                     return: { Ok: {stoped: true} }
                 })
@@ -591,12 +591,12 @@ describe('A step', () => {
                             ]
                         },
                         {
-                            type: 'step', description: 'step 3', wasStopped: true, return: { Ok: {'stoped': true} }, elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
+                            type: 'step', description: 'step 3', stopped: true, return: { Ok: {'stoped': true} }, elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
                                 { type: 'step', description: 'step 3.1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[0].elapsedTime },
                                 { type: 'step', description: 'step 3.2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[1].elapsedTime },
                                 {
-                                    type: 'step', description: 'step 3.3', wasStopped: true, return: { Ok: {'stoped': true} }, elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
-                                        { type: 'step', description: 'step 3.3.1', wasStopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[0].elapsedTime }
+                                    type: 'step', description: 'step 3.3', stopped: true, return: { Ok: {'stoped': true} }, elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
+                                        { type: 'step', description: 'step 3.3.1', stopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[0].elapsedTime }
                                     ]
                                 }
                             ]
@@ -688,7 +688,7 @@ describe('A step', () => {
                     elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
                         { type: 'step', description: 'step 1', return: { Ok: 1 }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', wasStopped: true, return: 2, elapsedTime: st._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 2', stopped: true, return: 2, elapsedTime: st._auditTrail.steps[1].elapsedTime },
                     ],
                     return: { Ok: {} }
                 })
@@ -732,7 +732,7 @@ describe('A step', () => {
                     elapsedTime: st.auditTrail.elapsedTime,
                     steps: [
                         { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
-                        { type: 'step', description: 'step 2', wasStopped: true, return: { Error: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
+                        { type: 'step', description: 'step 2', stopped: true, return: { Error: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
                     ],
                     return: { Error: '' }
                 })
@@ -776,7 +776,7 @@ describe('A step', () => {
                     steps: [
                         { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
                         { type: 'step', description: 'step 2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
-                        { type: 'step', description: 'step 3', wasStopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].elapsedTime }
+                        { type: 'step', description: 'step 3', stopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].elapsedTime }
                     ],
                     return: { Ok: {} }
                 })
