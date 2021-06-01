@@ -45,12 +45,8 @@ class UseCase {
         this._hasAuthorization = false
         this._auditTrail.user = { ...user }
         if (this._authorize) {
-           try {
             const ret = await this._authorize(user)
             if (ret.isOk) this._hasAuthorization = true
-           } catch (err) {
-            this._hasAuthorization = false
-           }
         }
         return this._auditTrail.authorized = this._hasAuthorization
     }
