@@ -31,7 +31,7 @@ describe('A use case', () => {
                 //given
                 const uc = givenAMultiStepUseCase()
                 //when
-                const ret = await uc.run()
+                await uc.run()
                 //then
                 assert.deepStrictEqual(uc.auditTrail, {
                     type: 'use case',
@@ -72,7 +72,7 @@ describe('A use case', () => {
                 //given
                 const uc = givenAMultiStepUseCaseWithError()
                 //when
-                const ret = await uc.run()
+                await uc.run()
                 //then
                 assert.deepStrictEqual(uc.auditTrail, {
                     type: 'use case',
