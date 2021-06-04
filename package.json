@@ -1,12 +1,13 @@
 {
   "name": "buchu",
-  "version": "1.0.13",
+  "version": "0.0.1",
   "description": "Uniform, auditable and secure use case javascript library",
   "main": "./src/buchu.js",
   "scripts": {
     "test": "mocha --timeout 999999 --colors --recursive ./test",
     "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
-    "lint:fix": "npx eslint \"**/*.{js,jsx}\" --fix"
+    "lint:fix": "npx eslint \"**/*.{js,jsx}\" --fix",
+    "semantic-release": "semantic-release"
   },
   "directories": {
     "lib": "src",
@@ -32,6 +33,11 @@
   "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/npm": "^7.1.3",
+    "@semantic-release/release-notes-generator": "^9.0.2",
     "suma": "^1.0.10",
     "uuid": "^8.3.1"
   },
@@ -46,6 +52,22 @@
     "eslint-plugin-prettier": "^3.1.4",
     "mocha": "^8.2.0",
     "nyc": "^15.1.0",
-    "prettier": "^2.1.2"
+    "prettier": "^2.1.2",
+    "semantic-release": "^17.4.3"
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      [
+        "@semantic-release/npm",
+        {
+          "npmPublish": false
+        }
+      ],
+      "@semantic-release/changelog",
+      "@semantic-release/git"
+    ],
+    "branch": "semantic_version"
   }
 }
