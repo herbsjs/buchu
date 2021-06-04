@@ -33,11 +33,6 @@
   "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/commit-analyzer": "^8.0.1",
-    "@semantic-release/git": "^9.0.0",
-    "@semantic-release/npm": "^7.1.3",
-    "@semantic-release/release-notes-generator": "^9.0.2",
     "suma": "^1.0.10",
     "uuid": "^8.3.2"
   },
@@ -45,6 +40,12 @@
     "gotu": "^1.0.21"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/commit-analyzer": "^8.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@semantic-release/npm": "^7.1.3",
+    "@semantic-release/release-notes-generator": "^9.0.2",
+    "@semantic-release/github": "^7.2.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.27.0",
     "eslint-config-prettier": "^8.3.0",
@@ -66,8 +67,16 @@
         }
       ],
       "@semantic-release/changelog",
-      "@semantic-release/git"
+      "@semantic-release/git",
+      "@semantic-release/github"
     ],
-    "branch": "semantic_version"
+    "branches": [
+      "master",
+      {
+        "name": "semantic_version",
+        "prerelease": true
+      }
+    ],
+    "repositoryUrl": "https://github.com/herbsjs/buchu"
   }
 }
