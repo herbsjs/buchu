@@ -1,3 +1,15 @@
+# [1.1.0](https://github.com/jhomarolo/buchu/compare/v1.0.0...v1.1.0) (2021-06-04)
+
+
+### Bug Fixes
+
+* this is a new fix of bug ([f6791f7](https://github.com/jhomarolo/buchu/commit/f6791f7f8c73199b4e8142a24147a9f84985e0cb))
+
+
+### Features
+
+* this is a new feature ([4e62902](https://github.com/jhomarolo/buchu/commit/4e62902aa24b0dc70dabee1daa1039704b10a3a5))
+
 # 1.0.0 (2021-06-04)
 
 
