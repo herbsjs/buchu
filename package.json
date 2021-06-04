@@ -73,9 +73,9 @@
       "master",
       {
         "name": "semantic_version",
-        "prerelease": true
+        "prerelease": false
       }
     ],
-    "repositoryUrl": "https://github.com/herbsjs/buchu"
+    "repositoryUrl": "https://github.com/jhomarolo/buchu"
   }
 }
