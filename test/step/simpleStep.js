@@ -108,7 +108,7 @@ describe('A step', () => {
                 //given
                 const st = givenTheSimplestStepWithError()
                 //when
-                const ret = await st.run()
+                await st.run()
                 //then
                 assert.deepStrictEqual(st.auditTrail, {
                     type: 'step',
