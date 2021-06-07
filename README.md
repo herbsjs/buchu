@@ -41,7 +41,7 @@ const addOrUpdateItem = (injection) =>
         response: { item: Item },
 
         // Authorization Audit  
-        authorize: (user) => user.isAdmin ? Ok() : Err(),
+        authorize: async (user) => user.isAdmin ? Ok() : Err(),
 
         // Dependency Injection control
         setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
@@ -85,7 +85,7 @@ app.put('/items/:item', function (req, res) {
     const user = { name: 'John', id: '923b8b9a', isAdmin: true } // from session
 
     const uc = addOrUpdateItem()
-    uc.authorize(user)
+    await uc.authorize(user)
     const ret = await uc.run(request)
     res.send(ret)
 })

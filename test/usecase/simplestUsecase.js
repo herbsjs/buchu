@@ -654,7 +654,7 @@ describe('A use case', () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithAuthorization()
                 //when
-                uc.authorize({ user: "John", id: '923b8b9a', isAdmin: true })
+                await uc.authorize({ user: "John", id: '923b8b9a', isAdmin: true })
                 const ret = await uc.run()
                 //then
                 assert.ok(ret.isOk)
@@ -664,7 +664,7 @@ describe('A use case', () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithAuthorization()
                 //when
-                uc.authorize({ user: "John", id: '923b8b9a', isAdmin: true })
+                await uc.authorize({ user: "John", id: '923b8b9a', isAdmin: true })
                 await uc.run()
                 //then
                 assert.deepStrictEqual(uc.auditTrail, {
@@ -697,7 +697,7 @@ describe('A use case', () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithAuthorization()
                 //when
-                uc.authorize({ user: "Bob", id: '923b8b9a', isAdmin: false })
+                await uc.authorize({ user: "Bob", id: '923b8b9a', isAdmin: false })
                 const ret = await uc.run()
                 //then
                 assert.ok(ret.isErr)
@@ -716,7 +716,7 @@ describe('A use case', () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithAuthorization()
                 //when
-                uc.authorize({ user: "Bob", id: '923b8b9a', isAdmin: false })
+                await uc.authorize({ user: "Bob", id: '923b8b9a', isAdmin: false })
                 await uc.run()
                 //then
                 assert.deepStrictEqual(uc.auditTrail, {
