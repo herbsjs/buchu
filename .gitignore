@@ -115,3 +115,4 @@ dist
 .pnp.*
 .editorconfig
 .prettierrc
+.vscode/settings.json
