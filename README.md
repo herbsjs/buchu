@@ -41,7 +41,7 @@ const addOrUpdateItem = (injection) =>
         response: { item: Item },
 
         // Authorization Audit  
-        authorize: (user) => user.isAdmin ? Ok() : Err(),
+        authorize: async (user) => user.isAdmin ? Ok() : Err(),
 
         // Dependency Injection control
         setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
