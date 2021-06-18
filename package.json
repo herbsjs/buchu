@@ -1,6 +1,6 @@
 {
   "name": "buchu",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "Uniform, auditable and secure use case javascript library",
   "main": "./src/buchu.js",
   "scripts": {
@@ -33,19 +33,19 @@
   "license": "MIT",
   "dependencies": {
     "suma": "^1.0.10",
-    "uuid": "^8.3.1"
+    "uuid": "^8.3.2"
   },
   "optionalDependencies": {
     "gotu": "^1.0.21"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.12.1",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-prettier": "^3.1.4",
-    "mocha": "^8.2.0",
+    "eslint": "^7.28.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-prettier": "^3.4.0",
+    "mocha": "^9.0.1",
     "nyc": "^15.1.0",
-    "prettier": "^2.1.2"
+    "prettier": "^2.3.1"
   }
 }
