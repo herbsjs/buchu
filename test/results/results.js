@@ -282,7 +282,18 @@ describe('Err',  () => {
         
     })
 
+    it('should to return a custom Err',  () => {
+        // given
+        const result = Err.buildCustomErr('CUSTOM_ERR', 'message', { entity: 'user' }, {foo: 'bar'}, 'Custom')
 
-
-  
+        // then
+        assert.deepStrictEqual(result.err, {
+            payload: { entity: 'user' },
+            stackTrace: {foo: 'bar'},
+            code: 'CUSTOM_ERR',
+            message: 'message'
+        })
+        assert.deepStrictEqual(result.isCustomError, true)
+        
+    })
 })

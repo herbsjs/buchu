@@ -46,38 +46,38 @@ class Err {
 	}
 
 	static _notFound ({ message = 'Not Found', payload, stackTrace } = {}){ 
-		return _buildErr('NOT_FOUND', message, payload, stackTrace, 'NotFound', 'notFound')
+		return Err._buildCustomErr('NOT_FOUND', message, payload, stackTrace, 'NotFound', 'notFound')
 	}
 	
 	static _alreadyExists ({ message = 'Entity already exists', payload, stackTrace } = {}) { 
-		return _buildErr('ALREADY_EXISTS', message, payload, stackTrace, 'AlreadyExists')
+		return Err._buildCustomErr('ALREADY_EXISTS', message, payload, stackTrace, 'AlreadyExists')
 	}
 	
 	static _invalidEntity ({ message = 'Invalid entity', payload, stackTrace } = {}) { 
-		return _buildErr('INVALID_ENTITY', message, payload, stackTrace, 'InvalidEntity')
+		return Err._buildCustomErr('INVALID_ENTITY', message, payload, stackTrace, 'InvalidEntity')
 	}
 	
 	static _invalidArguments ({ message = 'Invalid arguments', payload, stackTrace } = {}) { 
-		return _buildErr('INVALID_ARGUMENTS', message, payload, stackTrace, 'InvalidArguments')
+		return Err._buildCustomErr('INVALID_ARGUMENTS', message, payload, stackTrace, 'InvalidArguments')
 	}
 	
 	static _permissionDenied ({ message = 'Permission denied', payload, stackTrace } = {}) { 
-		return _buildErr('PERMISSION_DENIED', message, payload, stackTrace, 'PermissionDenied')
+		return Err._buildCustomErr('PERMISSION_DENIED', message, payload, stackTrace, 'PermissionDenied')
 	}
 	
 	static _unknown ({ message = 'Unknown Error', payload, stackTrace } = {}) { 
-		return _buildErr('UNKNOWN', message, payload, stackTrace, 'Unknown')
+		return Err._buildCustomErr('UNKNOWN', message, payload, stackTrace, 'Unknown')
 	}
 	
 	static _unimplemented ({ message = 'Unimplemented', payload, stackTrace } = {}) { 
-		return _buildErr('UNIMPLEMENTED', message, payload, stackTrace, 'Unimplemented')
+		return Err._buildCustomErr('UNIMPLEMENTED', message, payload, stackTrace, 'Unimplemented')
 	}
-}
 
-function _buildErr(code, message, payload, stackTrace, caller) {
-	const err = new Err({ payload, stackTrace, code, message })
-	err[`is${caller}Error`] = true
-	return err
+	static _buildCustomErr(code, message, payload, stackTrace, caller) {
+		const err = new Err({ payload, stackTrace, code, message })
+		err[`is${caller}Error`] = true
+		return err
+	}
 }
 
 const _exports = {
@@ -92,5 +92,6 @@ _exports.Err.invalidArguments = Err._invalidArguments
 _exports.Err.permissionDenied= Err._permissionDenied
 _exports.Err.unknown = Err._unknown
 _exports.Err.unimplemented = Err._unimplemented
+_exports.Err.buildCustomErr = Err._buildCustomErr
 
 module.exports = _exports
