@@ -1,6 +1,6 @@
 const assert = require('assert')
 const fs = require('fs')
-const {entity, field} = require('gotu')
+const {entity, field} = require('@herbsjs/gotu')
 
 const { schema } = require('../../../src/schema')
 
@@ -259,9 +259,9 @@ describe('Request schema validation', () => {
     describe('Not installed Gotu optional dependency', () =>{
 
         it('should not validate entity when gotu is not installed', () => {
-            // given uninstalled context            
-            const baseEntityPath = require.resolve('gotu/src/baseEntity')
-            const tempPath = baseEntityPath.replace('baseEntity.js','baseEntity_temp')  
+            // given uninstalled context
+            const baseEntityPath = require.resolve('@herbsjs/gotu/src/baseEntity')
+            const tempPath = baseEntityPath.replace('baseEntity.js','baseEntity_temp')
             const storedCache = require.cache[baseEntityPath]
             fs.renameSync(baseEntityPath,tempPath)
             delete require.cache[baseEntityPath]
@@ -277,14 +277,14 @@ describe('Request schema validation', () => {
 
             const request = { o: anEntity.fromJSON({stringField: 'string', numberField: 1234}) }
             const ret = scm.validate(request)
-            
+
             //undo uninstall
             fs.renameSync(tempPath, baseEntityPath)
             require.cache[baseEntityPath] = storedCache
 
             //then assert
             assert.equal(ret, false)
-            assert.deepStrictEqual(scm.errors, [{ o: [{ invalidType: anEntity.prototype.constructor }] }])            
+            assert.deepStrictEqual(scm.errors, [{ o: [{ invalidType: anEntity.prototype.constructor }] }])
         })
     })
 })

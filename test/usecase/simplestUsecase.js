@@ -1,4 +1,4 @@
-const { entity, field } = require('gotu')
+const { entity, field } = require('@herbsjs/gotu')
 const assert = require('assert')
 
 const { usecase } = require('../../src/usecase')
@@ -414,7 +414,7 @@ describe('A use case', () => {
         }
 
         it('should run', async () => {
-            //given            
+            //given
             const uc = givenTheSimplestUseCaseWithSimpleResponse()
             //when
             const ret = await uc.run({ param1: "a", param2: 2 })
