@@ -1,6 +1,6 @@
 {
   "name": "buchu",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Uniform, auditable and secure use case javascript library",
   "main": "./src/buchu.js",
   "scripts": {
