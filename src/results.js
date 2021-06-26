@@ -57,7 +57,8 @@ class Err {
 		return Err._buildCustomErr('INVALID_ENTITY', message, payload, stackTrace, 'InvalidEntity')
 	}
 	
-	static _invalidArguments ({ message = 'Invalid arguments', payload, stackTrace } = {}) { 
+	static _invalidArguments ({ message = 'Invalid arguments', args, payload = {}, stackTrace } = {}) { 
+		payload.invalidArgs = args
 		return Err._buildCustomErr('INVALID_ARGUMENTS', message, payload, stackTrace, 'InvalidArguments')
 	}
 	
