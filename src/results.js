@@ -45,37 +45,37 @@ class Err {
 		return { 'Error': error }
 	}
 
-	static _notFound ({ message = 'Not Found', payload, stackTrace } = {}){ 
-		return Err._buildCustomErr('NOT_FOUND', message, payload, stackTrace, 'NotFound', 'notFound')
+	static _notFound ({ message = 'Not Found', payload, innerErr } = {}){ 
+		return Err._buildCustomErr('NOT_FOUND', message, payload, innerErr, 'NotFound', 'notFound')
 	}
 	
-	static _alreadyExists ({ message = 'Entity already exists', payload, stackTrace } = {}) { 
-		return Err._buildCustomErr('ALREADY_EXISTS', message, payload, stackTrace, 'AlreadyExists')
+	static _alreadyExists ({ message = 'Already exists', payload, innerErr } = {}) { 
+		return Err._buildCustomErr('ALREADY_EXISTS', message, payload, innerErr, 'AlreadyExists')
 	}
 	
-	static _invalidEntity ({ message = 'Invalid entity', payload, stackTrace } = {}) { 
-		return Err._buildCustomErr('INVALID_ENTITY', message, payload, stackTrace, 'InvalidEntity')
+	static _invalidEntity ({ message = 'Invalid entity', payload, innerErr } = {}) { 
+		return Err._buildCustomErr('INVALID_ENTITY', message, payload, innerErr, 'InvalidEntity')
 	}
 	
-	static _invalidArguments ({ message = 'Invalid arguments', args, payload = {}, stackTrace } = {}) { 
+	static _invalidArguments ({ message = 'Invalid arguments', args, payload = {}, innerErr } = {}) { 
 		payload.invalidArgs = args
-		return Err._buildCustomErr('INVALID_ARGUMENTS', message, payload, stackTrace, 'InvalidArguments')
+		return Err._buildCustomErr('INVALID_ARGUMENTS', message, payload, innerErr, 'InvalidArguments')
 	}
 	
-	static _permissionDenied ({ message = 'Permission denied', payload, stackTrace } = {}) { 
-		return Err._buildCustomErr('PERMISSION_DENIED', message, payload, stackTrace, 'PermissionDenied')
+	static _permissionDenied ({ message = 'Permission denied', payload, innerErr } = {}) { 
+		return Err._buildCustomErr('PERMISSION_DENIED', message, payload, innerErr, 'PermissionDenied')
 	}
 	
-	static _unknown ({ message = 'Unknown Error', payload, stackTrace } = {}) { 
-		return Err._buildCustomErr('UNKNOWN', message, payload, stackTrace, 'Unknown')
+	static _unknown ({ message = 'Unknown Error', payload, innerErr } = {}) { 
+		return Err._buildCustomErr('UNKNOWN', message, payload, innerErr, 'Unknown')
 	}
 	
-	static _unimplemented ({ message = 'Unimplemented', payload, stackTrace } = {}) { 
-		return Err._buildCustomErr('UNIMPLEMENTED', message, payload, stackTrace, 'Unimplemented')
+	static _unimplemented ({ message = 'Unimplemented', payload, innerErr } = {}) { 
+		return Err._buildCustomErr('UNIMPLEMENTED', message, payload, innerErr, 'Unimplemented')
 	}
 
-	static _buildCustomErr(code, message, payload, stackTrace, caller) {
-		const err = new Err({ payload, stackTrace, code, message })
+	static _buildCustomErr(code, message, payload, innerErr, caller) {
+		const err = new Err({ payload, innerErr, code, message })
 		err[`is${caller}Error`] = true
 		return err
 	}
