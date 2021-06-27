@@ -7,8 +7,8 @@
 Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer
 
 ### Installing
+``` $ npm install @herbsjs/buchu ```
 
-$ npm install buchu
 ### Using
 
 Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/examples) or for a complete solution using herbsJS [here](https://github.com/herbsjs/todolist-on-herbs).
@@ -16,7 +16,7 @@ Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/
 usecases/addOrUpdateItem.js:
 
 ```javascript
-const { entity, field } = require('gotu')
+const { entity, field } = require('@herbsjs/gotu')
 const Item = entity('Item', {
   id: field(Number),
   description: field(String),
@@ -24,7 +24,7 @@ const Item = entity('Item', {
   position: field(Number)
 })
 
-const { Ok, Err, usecase, step, ifElse } = require('../../../src/buchu')
+const { Ok, Err, usecase, step, ifElse } = require('@herbsjs/buchu')
 const dependency = {
     ItemRepository: require('../repositories/ItemRepository').ItemRepository,
     ...
@@ -34,18 +34,18 @@ const addOrUpdateItem = (injection) =>
 
     usecase('Add or Update an Item on a to-do List', {
 
-        // Input/Request type validation 
+        // Input/Request type validation
         request: { listId: Number, item: Item },
 
         // Output/Response type
         response: { item: Item },
 
-        // Authorization Audit  
-        authorize: (user) => user.isAdmin ? Ok() : Err(),
+        // Authorization Audit
+        authorize: async (user) => user.isAdmin ? Ok() : Err(),
 
         // Dependency Injection control
         setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
-      
+
         // Step audit and description
         'Check if the Item is valid': step((ctx) => {
             ...
@@ -87,7 +87,7 @@ app.put('/items/:item', function (req, res) {
     const user = { name: 'John', id: '923b8b9a', isAdmin: true } // from session
 
     const uc = addOrUpdateItem()
-    uc.authorize(user)
+    await uc.authorize(user)
     const ret = await uc.run(request)
     res.send(ret)
 })
@@ -103,7 +103,7 @@ app.put('/items/:item', function (req, res) {
   steps: [
     { type: 'step', description: 'Check if the Item is valid', steps: null },
     { type: 'step', description: 'Check if the List exists', steps: null },
-    { 
+    {
         type: 'if else',
         if: { type: 'step', description: 'If the Item exists', steps: null },
         then: { type: 'step', description: 'Then: Add a new Item to the List', steps: null },
@@ -133,7 +133,7 @@ It is possible to retrieve the audit trail of an use case after its execution
         { type: 'step', description: 'Check if the Item is valid', elapsedTime: 208201n , return: {} },
         { type: 'step', description: 'Check if the List exists', elapsedTime: 114300n , return: {}  },
         {
-            type: 'if else', 
+            type: 'if else',
             description: 'Add or Update the Item',
             returnIf: { Ok: true },
             returnThen: {}
@@ -152,7 +152,7 @@ const addOrUpdateItem = (injection) =>
 
     usecase('Add or Update an Item on a to-do List', {
 
-        // Input/Request type validation 
+        // Input/Request type validation
         request: { listId: Number, item: Object },
 
     ...
