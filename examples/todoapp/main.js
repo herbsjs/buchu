@@ -12,7 +12,7 @@ void async function main() {
     const uc = addOrUpdateItem()
     console.log("------ doc: ------\n", uc.doc())
 
-    uc.authorize(user)
+    await uc.authorize(user)
     await uc.run(req)
     console.log("------ audit: ------\n", uc.auditTrail)
 

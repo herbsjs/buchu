@@ -1,6 +1,6 @@
 const assert = require('assert')
 const fs = require('fs')
-const {entity, field} = require('gotu')
+const {entity, field} = require('@herbsjs/gotu')
 
 const { schema } = require('../../../src/schema')
 
@@ -27,7 +27,7 @@ describe('Schema validation',  () => {
             stringField: field(String),
             numberField: field(Number)
         })
-        
+
         const descSchema = { name: [String], at: [Date], able: [Boolean], age: [Number], meta: [Object], many: [Array], entity: [anEntity] }
         const scm = schema(descSchema)
         // when
@@ -91,12 +91,12 @@ describe('Schema validation',  () => {
         // then
         assert.strictEqual(ret, false)
     })
-    
 
-    it('should not create schema with entity when gotu is not installed',  () => {        
-        // given uninstalled context            
-        const baseEntityPath = require.resolve('gotu/src/baseEntity')
-        const tempPath = baseEntityPath.replace('baseEntity.js','baseEntity_temp')  
+
+    it('should not create schema with entity when gotu is not installed',  () => {
+        // given uninstalled context
+        const baseEntityPath = require.resolve('@herbsjs/gotu/src/baseEntity')
+        const tempPath = baseEntityPath.replace('baseEntity.js','baseEntity_temp')
         const storedCache = require.cache[baseEntityPath]
         fs.renameSync(baseEntityPath,tempPath)
         delete require.cache[baseEntityPath]
@@ -109,13 +109,13 @@ describe('Schema validation',  () => {
 
         const descSchema = { entity: anEntity, manyEntity: [anEntity] }
         const scm = schema(descSchema)
-        const ret = scm.validateSchema()    
+        const ret = scm.validateSchema()
 
-        
+
             //undo uninstall
         fs.renameSync(tempPath, baseEntityPath)
         require.cache[baseEntityPath] = storedCache
-        
+
         //then assert
         assert.strictEqual(ret, false)
     })
