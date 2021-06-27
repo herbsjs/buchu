@@ -472,7 +472,7 @@ describe('A step', () => {
                 const st = step({
                     'step 1': step(() => { return Ok() }),
                     'step 2': step((ctx) => { 
-                        ctx.ret = {stoped: true}
+                        ctx.ret = {stopped: true}
                         ctx.stop()                        
                         return Ok() 
                     }),
@@ -488,7 +488,7 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert(ret.ok.stoped === true)
+                assert(ret.ok.stopped === true)
             })
 
             it('should audit', async () => {
@@ -505,7 +505,7 @@ describe('A step', () => {
                         { type: 'step', description: 'step 1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[0].elapsedTime },
                         { type: 'step', description: 'step 2', stopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[1].elapsedTime },
                     ],
-                    return: { Ok: {stoped: true} }
+                    return: { Ok: {stopped: true} }
                 })
                 assert.ok(st.auditTrail.elapsedTime > 0)
             })
@@ -545,7 +545,7 @@ describe('A step', () => {
                         'step 3.2': step(() => { return Ok() }),
                         'step 3.3': step({
                             'step 3.3.1': step((ctx) => {
-                                ctx.ret = {stoped: true}
+                                ctx.ret = {stopped: true}
                                 ctx.stop()
                                 return Ok() 
                             }),
@@ -564,7 +564,7 @@ describe('A step', () => {
                 const ret = await st.run()
                 //then
                 assert.ok(ret.isOk)
-                assert(ret.ok.stoped === true)
+                assert(ret.ok.stopped === true)
             })
 
             it('should audit', async () => {
@@ -577,7 +577,7 @@ describe('A step', () => {
                     type: 'step',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
-                    return: { Ok: {'stoped': true} },
+                    return: { Ok: {'stopped': true} },
                     steps: [
                         {
                             type: 'step', description: 'step 1', return: { Ok: {} }, elapsedTime: st._auditTrail.steps[0].elapsedTime, steps: [
@@ -591,11 +591,11 @@ describe('A step', () => {
                             ]
                         },
                         {
-                            type: 'step', description: 'step 3', stopped: true, return: { Ok: {'stoped': true} }, elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
+                            type: 'step', description: 'step 3', stopped: true, return: { Ok: {'stopped': true} }, elapsedTime: st._auditTrail.steps[2].elapsedTime, steps: [
                                 { type: 'step', description: 'step 3.1', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[0].elapsedTime },
                                 { type: 'step', description: 'step 3.2', return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[1].elapsedTime },
                                 {
-                                    type: 'step', description: 'step 3.3', stopped: true, return: { Ok: {'stoped': true} }, elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
+                                    type: 'step', description: 'step 3.3', stopped: true, return: { Ok: {'stopped': true} }, elapsedTime: st._auditTrail.steps[2].steps[2].elapsedTime, steps: [
                                         { type: 'step', description: 'step 3.3.1', stopped: true, return: { Ok: '' }, elapsedTime: st._auditTrail.steps[2].steps[2].steps[0].elapsedTime }
                                     ]
                                 }
