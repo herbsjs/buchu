@@ -18,7 +18,7 @@ describe('Schema validation',  () => {
         // when
         const ret = scm.validateSchema()
         // then
-        assert.equal(ret, true)
+        assert.strictEqual(ret, true)
     })
 
     it('should create schema (arrays)',  () => {
@@ -33,7 +33,7 @@ describe('Schema validation',  () => {
         // when
         const ret = scm.validateSchema()
         // then
-        assert.equal(ret, true)
+        assert.strictEqual(ret, true)
     })
 
     it('should not create schema (wrong value)',  () => {
@@ -43,7 +43,7 @@ describe('Schema validation',  () => {
         // when
         const ret = scm.validateSchema()
         // then
-        assert.equal(ret, false)
+        assert.strictEqual(ret, false)
         assert.deepStrictEqual(scm.errors, [{ name: [{ invalidType: 'Polly' }] }])
     })
 
@@ -54,7 +54,7 @@ describe('Schema validation',  () => {
         // when
         const ret = scm.validateSchema()
         // then
-        assert.equal(ret, false)
+        assert.strictEqual(ret, false)
         assert.deepStrictEqual(scm.errors, [{ name: [{ invalidType: ['Polly'] }] }])
     })
 
@@ -65,7 +65,7 @@ describe('Schema validation',  () => {
         // when
         const ret = scm.validateSchema()
         // then
-        assert.equal(ret, false)
+        assert.strictEqual(ret, false)
         assert.deepStrictEqual(scm.errors, [{ legs: [{ invalidType: [10] }] }])
     })
 
@@ -76,7 +76,7 @@ describe('Schema validation',  () => {
         // when
         const ret = scm.validateSchema()
         // then
-        assert.equal(ret, false)
+        assert.strictEqual(ret, false)
         assert.deepStrictEqual(scm.errors, [{ notDefined: true }])
     })
 
@@ -89,7 +89,7 @@ describe('Schema validation',  () => {
         // when
         const ret = scm.validateSchema()
         // then
-        assert.equal(ret, false)
+        assert.strictEqual(ret, false)
     })
 
 
@@ -117,6 +117,6 @@ describe('Schema validation',  () => {
         require.cache[baseEntityPath] = storedCache
 
         //then assert
-        assert.equal(ret, false)
+        assert.strictEqual(ret, false)
     })
 })
