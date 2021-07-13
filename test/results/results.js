@@ -256,4 +256,77 @@ describe('Err',  () => {
         assert.deepStrictEqual(result.isCustomError, true)
         
     })
+
+    it('should run the same error many time without bug',  () => {
+        const scenarios = [
+            {
+                ret: Err.alreadyExists({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
+                type: 'isAlreadyExistsError',
+                expect: {
+                    payload: { entity: 'user' },
+                    cause: {foo: 'bar'},
+                    code: 'ALREADY_EXISTS',
+                    message: 'Already exists'
+                  }
+            },
+            {
+                ret: Err.invalidEntity({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
+                type: 'isInvalidEntityError',
+                expect: {
+                    payload: { entity: 'user' },
+                    cause: {foo: 'bar'},
+                    code: 'INVALID_ENTITY',
+                    message: 'Invalid entity'
+                  }
+            },
+            {
+                ret: Err.invalidArguments({payload: { entity: 'user' }, args: { foo: 'bar'}, cause: {foo: 'bar'} }),
+                type: 'isInvalidArgumentsError',
+                expect: {
+                    payload: { entity: 'user', invalidArgs: { foo: 'bar'} },
+                    cause: {foo: 'bar'},
+                    code: 'INVALID_ARGUMENTS',
+                    message: 'Invalid arguments'
+                  }
+            },
+            {
+                ret: Err.permissionDenied({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
+                type: 'isPermissionDeniedError',
+                expect: {
+                    payload: { entity: 'user' },
+                    cause: {foo: 'bar'},
+                    code: 'PERMISSION_DENIED',
+                    message: 'Permission denied'
+                  }
+            },
+            {
+                ret: Err.unknown(),
+                type: 'isUnknownError',
+                expect: {
+                    payload: undefined,
+                    cause: undefined,
+                    code: 'UNKNOWN',
+                    message: 'Unknown Error'
+                  }
+            },
+            {
+                ret: Err.notFound(),
+                type: 'isNotFoundError',
+                expect: {
+                    payload: undefined,
+                    cause: undefined,
+                    code: 'NOT_FOUND',
+                    message: 'Not Found'
+                  }
+            }
+        ]
+
+        // then
+        for(const scenario of scenarios) {
+            assert.deepStrictEqual(scenario.ret.err, scenario.expect)
+            assert.deepStrictEqual(scenario.ret[scenario.type], true)
+        }
+        
+        
+    })
 })
