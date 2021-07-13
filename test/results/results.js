@@ -6,19 +6,19 @@ describe('Err',  () => {
         // given
         const scenarios = [
             {
-                ret: Err.notFound({payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.notFound({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'NOT_FOUND',
                     message: 'Not Found'
                   }
             },
             {
-                ret: Err.notFound({ message: 'message', payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.notFound({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'NOT_FOUND',
                     message: 'message'
                   }
@@ -27,7 +27,7 @@ describe('Err',  () => {
                 ret: Err.notFound(),
                 expect: {
                     payload: undefined,
-                    innerErr: undefined,
+                    cause: undefined,
                     code: 'NOT_FOUND',
                     message: 'Not Found'
                   }
@@ -46,19 +46,19 @@ describe('Err',  () => {
         // given
         const scenarios = [
             {
-                ret: Err.alreadyExists({payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.alreadyExists({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'ALREADY_EXISTS',
                     message: 'Already exists'
                   }
             },
             {
-                ret: Err.alreadyExists({ message: 'message', payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.alreadyExists({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'ALREADY_EXISTS',
                     message: 'message'
                   }
@@ -67,7 +67,7 @@ describe('Err',  () => {
                 ret: Err.alreadyExists(),
                 expect: {
                     payload: undefined,
-                    innerErr: undefined,
+                    cause: undefined,
                     code: 'ALREADY_EXISTS',
                     message: 'Already exists'
                   }
@@ -86,19 +86,19 @@ describe('Err',  () => {
         // given
         const scenarios = [
             {
-                ret: Err.invalidEntity({payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.invalidEntity({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'INVALID_ENTITY',
                     message: 'Invalid entity'
                   }
             },
             {
-                ret: Err.invalidEntity({ message: 'message', payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.invalidEntity({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'INVALID_ENTITY',
                     message: 'message'
                   }
@@ -107,7 +107,7 @@ describe('Err',  () => {
                 ret: Err.invalidEntity(),
                 expect: {
                     payload: undefined,
-                    innerErr: undefined,
+                    cause: undefined,
                     code: 'INVALID_ENTITY',
                     message: 'Invalid entity'
                   }
@@ -126,19 +126,19 @@ describe('Err',  () => {
         // given
         const scenarios = [
             {
-                ret: Err.invalidArguments({payload: { entity: 'user' }, args: { foo: 'bar'}, innerErr: {foo: 'bar'} }),
+                ret: Err.invalidArguments({payload: { entity: 'user' }, args: { foo: 'bar'}, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user', invalidArgs: { foo: 'bar'} },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'INVALID_ARGUMENTS',
                     message: 'Invalid arguments'
                   }
             },
             {
-                ret: Err.invalidArguments({ message: 'message', payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.invalidArguments({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user', invalidArgs: undefined },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'INVALID_ARGUMENTS',
                     message: 'message'
                   }
@@ -147,7 +147,7 @@ describe('Err',  () => {
                 ret: Err.invalidArguments(),
                 expect: {
                     payload: { invalidArgs: undefined },
-                    innerErr: undefined,
+                    cause: undefined,
                     code: 'INVALID_ARGUMENTS',
                     message: 'Invalid arguments'
                   }
@@ -166,19 +166,19 @@ describe('Err',  () => {
         // given
         const scenarios = [
             {
-                ret: Err.permissionDenied({payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.permissionDenied({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'PERMISSION_DENIED',
                     message: 'Permission denied'
                   }
             },
             {
-                ret: Err.permissionDenied({ message: 'message', payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.permissionDenied({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'PERMISSION_DENIED',
                     message: 'message'
                   }
@@ -187,7 +187,7 @@ describe('Err',  () => {
                 ret: Err.permissionDenied(),
                 expect: {
                     payload: undefined,
-                    innerErr: undefined,
+                    cause: undefined,
                     code: 'PERMISSION_DENIED',
                     message: 'Permission denied'
                   }
@@ -206,19 +206,19 @@ describe('Err',  () => {
         // given
         const scenarios = [
             {
-                ret: Err.unknown({payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.unknown({payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'UNKNOWN',
                     message: 'Unknown Error'
                   }
             },
             {
-                ret: Err.unknown({ message: 'message', payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
+                ret: Err.unknown({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),
                 expect: {
                     payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
+                    cause: {foo: 'bar'},
                     code: 'UNKNOWN',
                     message: 'message'
                   }
@@ -227,7 +227,7 @@ describe('Err',  () => {
                 ret: Err.unknown(),
                 expect: {
                     payload: undefined,
-                    innerErr: undefined,
+                    cause: undefined,
                     code: 'UNKNOWN',
                     message: 'Unknown Error'
                   }
@@ -242,46 +242,6 @@ describe('Err',  () => {
         
     })
 
-    it('should to return a unimplemented Err',  () => {
-        // given
-        const scenarios = [
-            {
-                ret: Err.unimplemented({payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
-                expect: {
-                    payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
-                    code: 'UNIMPLEMENTED',
-                    message: 'Unimplemented'
-                }
-            },
-            {
-                ret: Err.unimplemented({ message: 'message', payload: { entity: 'user' }, innerErr: {foo: 'bar'} }),
-                expect: {
-                    payload: { entity: 'user' },
-                    innerErr: {foo: 'bar'},
-                    code: 'UNIMPLEMENTED',
-                    message: 'message'
-                  }
-            },
-            {
-                ret: Err.unimplemented(),
-                expect: {
-                    payload: undefined,
-                    innerErr: undefined,
-                    code: 'UNIMPLEMENTED',
-                    message: 'Unimplemented'
-                  }
-            }
-        ]
-
-        // then
-        for(const scenario of scenarios) {
-            assert.deepStrictEqual(scenario.ret.err, scenario.expect)
-            assert.deepStrictEqual(scenario.ret.isUnimplementedError, true)
-        }
-        
-    })
-
     it('should to return a custom Err',  () => {
         // given
         const result = Err.buildCustomErr('CUSTOM_ERR', 'message', { entity: 'user' }, {foo: 'bar'}, 'Custom')
@@ -289,7 +249,7 @@ describe('Err',  () => {
         // then
         assert.deepStrictEqual(result.err, {
             payload: { entity: 'user' },
-            innerErr: {foo: 'bar'},
+            cause: {foo: 'bar'},
             code: 'CUSTOM_ERR',
             message: 'message'
         })
