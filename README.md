@@ -278,7 +278,7 @@ or you can create your own structured Err
 ``` js
 Err._buildCustomErr('ERROR_CODE', message, payload, cause)
 ```
-<br class="Apple-interchange-newline">
+
 ### To Do
 
 - [X] Base - Run a use case
