@@ -44,50 +44,34 @@ class Err {
 		error = error instanceof Error ? error.toString() : error
 		return { 'Error': error }
 	}
+}
 
-	static _notFound ({ message = 'Not Found', payload, cause } = {}){ 
-		return Err._buildCustomErr('NOT_FOUND', message, payload, cause, 'NotFound', 'notFound')
-	}
-	
-	static _alreadyExists ({ message = 'Already exists', payload, cause } = {}) { 
-		return Err._buildCustomErr('ALREADY_EXISTS', message, payload, cause, 'AlreadyExists')
-	}
-	
-	static _invalidEntity ({ message = 'Invalid entity', payload, cause } = {}) { 
-		return Err._buildCustomErr('INVALID_ENTITY', message, payload, cause, 'InvalidEntity')
-	}
-	
-	static _invalidArguments ({ message = 'Invalid arguments', args, payload = {}, cause } = {}) { 
-		payload.invalidArgs = args
-		return Err._buildCustomErr('INVALID_ARGUMENTS', message, payload, cause, 'InvalidArguments')
-	}
-	
-	static _permissionDenied ({ message = 'Permission denied', payload, cause } = {}) { 
-		return Err._buildCustomErr('PERMISSION_DENIED', message, payload, cause, 'PermissionDenied')
-	}
-	
-	static _unknown ({ message = 'Unknown Error', payload, cause } = {}) { 
-		return Err._buildCustomErr('UNKNOWN', message, payload, cause, 'Unknown')
-	}
 
-	static _buildCustomErr(code, message, payload, cause, caller) {
+const ErrBuilder = (err) => new Err(err)
+
+Object.assign(ErrBuilder, {
+	buildCustomErr: (code, message, payload, cause, caller) => {
 		const err = new Err({ payload, cause, code, message })
 		err[`is${caller}Error`] = true
 		return err
-	}
-}
+	},
+	notFound: ({ message = 'Not Found', payload, cause } = {}) =>
+		ErrBuilder.buildCustomErr('NOT_FOUND', message, payload, cause, 'NotFound'),
+	alreadyExists: ({ message = 'Already exists', payload, cause } = {}) =>
+		ErrBuilder.buildCustomErr('ALREADY_EXISTS', message, payload, cause, 'AlreadyExists'),
+	invalidEntity: ({ message = 'Invalid entity', payload, cause } = {}) =>
+		ErrBuilder.buildCustomErr('INVALID_ENTITY', message, payload, cause, 'InvalidEntity'),
+	invalidArguments: ({ message = 'Invalid arguments', args, payload = {}, cause } = {}) => {
+		payload.invalidArgs = args
+		return ErrBuilder.buildCustomErr('INVALID_ARGUMENTS', message, payload, cause, 'InvalidArguments')
+	},
+	permissionDenied: ({ message = 'Permission denied', payload, cause } = {}) =>
+		ErrBuilder.buildCustomErr('PERMISSION_DENIED', message, payload, cause, 'PermissionDenied'),
+	unknown: ({ message = 'Unknown Error', payload, cause } = {}) =>
+		ErrBuilder.buildCustomErr('UNKNOWN', message, payload, cause, 'Unknown')
+})
 
-const _exports = {
+module.exports = {
 	Ok: (value) => new Ok(value),
-	Err: (err) => new Err(err),
+	Err: ErrBuilder,
 }
-
-_exports.Err.notFound = Err._notFound
-_exports.Err.alreadyExists = Err._alreadyExists
-_exports.Err.invalidEntity  = Err._invalidEntity
-_exports.Err.invalidArguments = Err._invalidArguments
-_exports.Err.permissionDenied= Err._permissionDenied
-_exports.Err.unknown = Err._unknown
-_exports.Err.buildCustomErr = Err._buildCustomErr
-
-module.exports = _exports
