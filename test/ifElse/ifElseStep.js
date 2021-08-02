@@ -132,7 +132,7 @@ describe('If Else step', () => {
             const ret = await uc.run({ param1: 1 })
             //then
             assert.ok(ret.isOk)
-            assert.equal(ret.value.return1, 1)
+            assert.strictEqual(ret.value.return1, 1)
         })
 
         it('should run - else', async () => {
@@ -142,7 +142,7 @@ describe('If Else step', () => {
             const ret = await uc.run({ param1: 2 })
             //then
             assert.ok(ret.isOk)
-            assert.equal(ret.value.return2, 2)
+            assert.strictEqual(ret.value.return2, 2)
         })
 
         it('should audit', async () => {
@@ -271,7 +271,7 @@ describe('If Else step', () => {
         })
     })
 
-    describe('If Else Then with with return value', () => {
+    describe('If Else Then with return value', () => {
         context('returning Ok from Then', () => {
             const givenAnIfThenStepWithReturn = () => {
                 const ifElseStep = ifElse({
@@ -312,6 +312,60 @@ describe('If Else step', () => {
                 assert.ok(ret.isOk)
                 assert.deepStrictEqual(ret.value, 3)
             })
+        })
+    })
+
+    describe('on a use case with context use stop function', () => {
+        const givenASimpleUseCaseWithContext = () => {
+            const uc = usecase('A use case', {
+                'A condition': ifElse({
+                    'If Step': step((ctx) => { ctx.ret.stopStatus = false; return Ok(true) }),
+                    'Then Step': step((ctx) => {
+                        ctx.ret.stopStatus = true
+                        ctx.stop()
+                        return Ok() 
+                    }),
+                    'Else Step': step((ctx) => { ctx.ret.stopStatus = false; return Err() })
+                }),
+                'Step after condition': step ((ctx) => { ctx.ret.stopStatus = false; return Ok()})
+            })
+            return uc
+        }
+
+        it('should run and stop', async () => {
+            //given
+            const uc = givenASimpleUseCaseWithContext()
+            //when
+            const ret = await uc.run()
+            //then
+            assert.ok(ret.isOk)
+            assert(ret.value.stopStatus)
+        })
+    })
+
+    describe('on a use case use stop function inside condition step', () => {
+        const givenASimpleUseCaseWithContext = () => {
+            const uc = usecase('A use case', {
+                'A condition': ifElse({
+                    'If Step with stop function': step((ctx) => {
+                        ctx.stop()
+                        ctx.ret.IfStep = 10 
+                        return Ok(true) }),
+                    'Then Step': step((ctx) => { ctx.ret.ThenStep = 20; return Ok() }),
+                    'Else Step': step((ctx) => { ctx.ret.ElseStep = 30; return Err() })
+                }),
+            })
+            return uc
+        }
+
+        it('should run without stop', async () => {
+            //given
+            const uc = givenASimpleUseCaseWithContext()
+            //when
+            const ret = await uc.run()
+            //then
+            assert.ok(ret.isOk)
+            assert.deepStrictEqual(ret.value, { IfStep: 10, ThenStep: 20 })
         })
     })
 })

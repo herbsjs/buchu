@@ -1,5 +1,4 @@
 const { listItems } = require('./listItems')
-const { Ok, Err } = require('../../../src/buchu')
 const assert = require('assert')
 
 describe('List Items Use Case', () => {
@@ -26,6 +25,6 @@ describe('List Items Use Case', () => {
         // Then
         assert.ok(ret.isOk)
         assert.deepStrictEqual(ret.value.items, itemList)
-    })    
+    })
 
 })

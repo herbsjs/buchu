@@ -97,6 +97,8 @@ const addOrUpdateItem = (injection) =>
         })
     })
 ```
+to another resources like, `ctx.stop()` used to stop a use case next steps execution, look [here](https://github.com/herbsjs/buchu/tree/master/examples)    
+
 controler/addOrUpdateItem.js:
 
 ```javascript
