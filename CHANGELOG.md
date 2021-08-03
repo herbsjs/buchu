@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/herbsjs/buchu/compare/v1.1.0...v1.2.0) (2021-08-03)
+
+
+### Features
+
+* **feature:** added structured common errors into err ([a781163](https://github.com/herbsjs/buchu/commit/a7811636b3a84c562f68225c9fe0ef40252a4d12))
+
 # [1.1.0](https://github.com/herbsjs/buchu/compare/v1.0.1...v1.1.0) (2021-06-29)
 
 
