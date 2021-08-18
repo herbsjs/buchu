@@ -72,7 +72,7 @@ class Step {
         }
 
         let circularStructureCache = []
-        const _circularStructureHandling = (key, value) => {
+        const _circularStructureHandling = (_, value) => {
             if (typeof value === 'object' && value !== null) {
                 if (circularStructureCache.includes(value)) return
                 circularStructureCache.push(value)
