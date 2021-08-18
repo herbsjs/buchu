@@ -71,19 +71,32 @@ class Step {
             return Ok(ret)
         }
 
+        let circularStructureCache = []
+        const _circularStructureHandling = (key, value) => {
+            if (typeof value === 'object' && value !== null) {
+                if (circularStructureCache.includes(value)) return
+                circularStructureCache.push(value)
+            }
+            return value
+        }
+
         let ret = undefined
         this._auditTrail.description = this.description
         this._auditTrail.return = ""
         
         ret = await _runFunction()
-        if (ret !== undefined) this._auditTrail.return = JSON.parse(JSON.stringify(ret))
+        if (ret !== undefined) { 
+            this._auditTrail.return = JSON.parse(JSON.stringify(ret, _circularStructureHandling))
+            circularStructureCache = []
+        }
+
         if (ret) {
             this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
             return ret
         }
 
         ret = await _runNestedSteps()
-        this._auditTrail.return = JSON.parse(JSON.stringify(ret))
+        this._auditTrail.return = JSON.parse(JSON.stringify(ret, _circularStructureHandling))
         this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
         return ret
     }
