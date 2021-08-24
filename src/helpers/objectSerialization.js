@@ -1,4 +1,4 @@
-const pullOutValues = (data) => {
+const objectSerialization = (data) => {
 
     const circularStructureCache = []
     return JSON.parse(JSON.stringify(data, (_, value) => {
@@ -10,4 +10,4 @@ const pullOutValues = (data) => {
     }))
 }
 
-module.exports = pullOutValues
+module.exports = objectSerialization
