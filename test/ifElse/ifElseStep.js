@@ -42,8 +42,18 @@ describe('If Else step', () => {
                     {
                         type: 'if else',
                         description: 'A condition',
-                        returnIf: Ok(true),
-                        returnThen: Ok(),
+                        returnIf: {
+                            description: 'If Step',
+                            elapsedTime: uc._auditTrail.steps[0].returnIf.elapsedTime,
+                            type: 'step',
+                            return: { Ok: true }
+                        },
+                        returnThen: {
+                            description: "Then Step",
+                            elapsedTime: uc._auditTrail.steps[0].returnThen.elapsedTime,
+                            return: { Ok: '' },
+                            type: "step"
+                        },
                         elapsedTime: uc._auditTrail.steps[0].elapsedTime,
                     },
                 ],
@@ -161,8 +171,18 @@ describe('If Else step', () => {
                     {
                         type: 'if else',
                         description: 'A condition',
-                        returnIf: Ok(true),
-                        returnThen: Ok(),
+                        returnIf: {
+                            description: 'If Step',
+                            elapsedTime: uc._auditTrail.steps[0].returnIf.elapsedTime,
+                            type: 'step',
+                            return: { Ok: true }
+                        },
+                        returnThen: {
+                            description: "Then Step",
+                            elapsedTime: uc._auditTrail.steps[0].returnThen.elapsedTime,
+                            return: { Ok: '' },
+                            type: "step"
+                        },
                         elapsedTime: uc._auditTrail.steps[0].elapsedTime,
                     },
                 ],
@@ -200,8 +220,18 @@ describe('If Else step', () => {
                     type: 'if else',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
-                    returnIf: Ok(true),
-                    returnThen: Ok(),
+                    returnIf: {
+                        description: 'If Step',
+                        elapsedTime: st.auditTrail.returnIf.elapsedTime,
+                        type: 'step',
+                        return: { Ok: true }
+                    },
+                    returnThen: {
+                        description: "Then Step",
+                        elapsedTime: st.auditTrail.returnThen.elapsedTime,
+                        return: { Ok: '' },
+                        type: "step"
+                    },
                 })
                 assert.ok(st.auditTrail.elapsedTime > 0)
             })
@@ -263,8 +293,18 @@ describe('If Else step', () => {
                     type: 'if else',
                     description: undefined,
                     elapsedTime: st.auditTrail.elapsedTime,
-                    returnIf: Ok(false),
-                    returnElse: Ok(),
+                    returnIf: {
+                        description: 'If',
+                        elapsedTime: st.auditTrail.returnIf.elapsedTime,
+                        type: 'step',
+                        return: { Ok: false }
+                    },
+                    returnElse: {
+                        description: "Else",
+                        elapsedTime: st.auditTrail.returnElse.elapsedTime,
+                        return: { Ok: '' },
+                        type: "step"
+                    },
                 })
                 assert.ok(st.auditTrail.elapsedTime > 0)
             })
@@ -323,11 +363,11 @@ describe('If Else step', () => {
                     'Then Step': step((ctx) => {
                         ctx.ret.stopStatus = true
                         ctx.stop()
-                        return Ok() 
+                        return Ok()
                     }),
                     'Else Step': step((ctx) => { ctx.ret.stopStatus = false; return Err() })
                 }),
-                'Step after condition': step ((ctx) => { ctx.ret.stopStatus = false; return Ok()})
+                'Step after condition': step((ctx) => { ctx.ret.stopStatus = false; return Ok() })
             })
             return uc
         }
@@ -349,8 +389,9 @@ describe('If Else step', () => {
                 'A condition': ifElse({
                     'If Step with stop function': step((ctx) => {
                         ctx.stop()
-                        ctx.ret.IfStep = 10 
-                        return Ok(true) }),
+                        ctx.ret.IfStep = 10
+                        return Ok(true)
+                    }),
                     'Then Step': step((ctx) => { ctx.ret.ThenStep = 20; return Ok() }),
                     'Else Step': step((ctx) => { ctx.ret.ElseStep = 30; return Err() })
                 }),
@@ -366,6 +407,308 @@ describe('If Else step', () => {
             //then
             assert.ok(ret.isOk)
             assert.deepStrictEqual(ret.value, { IfStep: 10, ThenStep: 20 })
+        })
+    })
+
+    describe('using nested steps', () => {
+        context('returning Ok from Then', () => {
+            const givenAnIfThenStepUc = () => {
+                const ifElseStep = ifElse({
+                    'If Step': step((ctx) => { return Ok(true) }),
+                    'Then Step': step({
+                        'nested step 1': step(() => { return Ok('response nestedstep 1') }),
+                        'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                    }),
+                    'Else Step': step({
+                        'nested step 1': step(() => { return Err('response nestedstep 1') }),
+                        'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                    })
+                })
+
+                return ifElseStep
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenAnIfThenStepUc()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isOk)
+            })
+
+            it('should doc', () => {
+                //given
+                const st = givenAnIfThenStepUc()
+                //when
+                const ret = st.doc()
+                //then
+                assert.deepStrictEqual(ret, {
+                    description: undefined,
+                    type: "if else",
+                    else: {
+                        description: "Else Step",
+                        steps: [
+                            {
+                                description: "nested step 1",
+                                steps: null,
+                                type: "step"
+                            },
+                            {
+                                description: "nested step 2",
+                                steps: null,
+                                type: "step"
+                            }
+                        ],
+                        type: "step"
+                    },
+                    if: {
+                        description: "If Step",
+                        steps: null,
+                        type: "step"
+                    },
+                    then: {
+                        description: "Then Step",
+                        steps: [
+                            {
+                                description: "nested step 1",
+                                steps: null,
+                                type: "step"
+                            },
+                            {
+                                description: "nested step 2",
+                                steps: null,
+                                type: "step"
+                            }
+                        ],
+                        type: "step"
+                    }
+                })
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenAnIfThenStepUc()
+                //when
+                await st.run()
+                //then
+                assert.deepStrictEqual(st.auditTrail, {
+                    type: 'if else',
+                    description: undefined,
+                    returnIf: {
+                        description: "If Step",
+                        type: "step",
+                        elapsedTime: st.auditTrail.returnIf.elapsedTime,
+                        return: { Ok: true },
+                    },
+                    returnThen: {
+                        description: "Then Step",
+                        type: "step",
+                        elapsedTime: st.auditTrail.returnThen.elapsedTime,
+                        return: {
+                            Ok: {}
+                        },
+                        steps: [
+                            {
+                                description: "nested step 1",
+                                type: "step",
+                                elapsedTime: st.auditTrail.returnThen.steps[0].elapsedTime,
+                                return: {
+                                    Ok: "response nestedstep 1"
+                                }
+                            },
+                            {
+                                description: "nested step 2",
+                                type: "step",
+                                elapsedTime: st.auditTrail.returnThen.steps[1].elapsedTime,
+                                return: {
+                                    Ok: "response nestedstep 2"
+                                }
+                            }
+                        ]
+                    },
+                    elapsedTime: st.auditTrail.elapsedTime
+                })
+                assert.ok(st.auditTrail.elapsedTime > 0)
+            })
+        })
+
+        context('returning Ok from Else', () => {
+            const givenAnIfElseStep = () => {
+                const ifElseStep = ifElse({
+                    'If Step': step((ctx) => { return Ok(false) }),
+                    'Then Step': step({
+                        'nested step 1': step(() => { return Ok('response nestedstep 1') }),
+                        'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                    }),
+                    'Else Step': step({
+                        'nested step 1': step(() => { return Err('response nestedstep 1') }),
+                        'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                    })
+                })
+                return ifElseStep
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenAnIfElseStep()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isErr)
+            })
+
+            it('should audit', async () => {
+                //given
+                const st = givenAnIfElseStep()
+                //when
+                await st.run()
+                //then
+                assert.deepStrictEqual(st.auditTrail, {
+                    type: 'if else',
+                    description: undefined,
+                    returnIf: {
+                        description: "If Step",
+                        type: "step",
+                        elapsedTime: st.auditTrail.returnIf.elapsedTime,
+                        return: { Ok: false },
+                    },
+                    returnElse: {
+                        description: "Else Step",
+                        type: "step",
+                        elapsedTime: st.auditTrail.returnElse.elapsedTime,
+                        return: {
+                            Error: "response nestedstep 1"
+                        },
+                        steps: [
+                            {
+                                description: "nested step 1",
+                                type: "step",
+                                elapsedTime: st.auditTrail.returnElse.steps[0].elapsedTime,
+                                return: {
+                                    Error: "response nestedstep 1"
+                                }
+                            }
+                        ]
+                    },
+                    elapsedTime: st.auditTrail.elapsedTime
+                })
+                assert.ok(st.auditTrail.elapsedTime > 0)
+            })
+        })
+    })
+
+    describe('using nested steps with context', () => {
+        context('returning Ok from nestedstep', () => {
+            const givenAnIfThenStepUc = () => {
+                const ifElseStep = usecase('A use case', {
+                    'A condition': ifElse({
+                        'If Step': step((ctx) => { return Ok(true) }),
+                        'Then Step': step({
+                            'nested step 1': step(() => { return Ok('response nestedstep 1') }),
+                            'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                        }),
+                        'Else Step': step({
+                            'nested step 1': step(() => { return Err('response nestedstep 1') }),
+                            'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                        })
+                    }),
+                })
+
+                return ifElseStep
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenAnIfThenStepUc()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isOk)
+            })
+
+            it('should doc', () => {
+                //given
+                const st = givenAnIfThenStepUc()
+                //when
+                const ret = st.doc()
+                //then
+                assert.deepStrictEqual(ret, {
+                    description: "A use case",
+                    type: "use case",
+                    steps: [
+                        {
+                            description: "A condition",
+                            else: {
+                                description: "Else Step",
+                                steps: [
+                                    {
+                                        description: "nested step 1",
+                                        steps: null,
+                                        type: "step"
+                                    },
+                                    {
+                                        description: "nested step 2",
+                                        steps: null,
+                                        type: "step"
+                                    }
+                                ],
+                                type: "step"
+                            },
+                            if: {
+                                description: "If Step",
+                                steps: null,
+                                type: "step"
+                            },
+                            then: {
+                                description: "Then Step",
+                                steps: [
+                                    {
+                                        description: "nested step 1",
+                                        steps: null,
+                                        type: "step"
+                                    },
+                                    {
+                                        description: "nested step 2",
+                                        steps: null,
+                                        type: "step"
+                                    }
+                                ],
+                                type: "step"
+                            },
+                            type: "if else"
+                        }
+                    ]
+                })
+            })
+        })
+
+        context('returning Err from nestedstep', () => {
+            const givenAnIfElseStepUc = () => {
+                const ifElseStep = usecase('A use case', {
+                    'A condition': ifElse({
+                        'If Step': step((ctx) => { return Ok(false) }),
+                        'Then Step': step({
+                            'nested step 1': step(() => { return Ok('response nestedstep 1') }),
+                            'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                        }),
+                        'Else Step': step({
+                            'nested step 1': step(() => { return Err('response nestedstep 1') }),
+                            'nested step 2': step(() => { return Ok('response nestedstep 2') })
+                        })
+                    }),
+                })
+                return ifElseStep
+            }
+
+            it('should run', async () => {
+                //given
+                const st = givenAnIfElseStepUc()
+                //when
+                const ret = await st.run()
+                //then
+                assert.ok(ret.isErr)
+            })
         })
     })
 })
