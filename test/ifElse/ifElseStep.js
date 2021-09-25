@@ -533,7 +533,7 @@ describe('If Else step', () => {
             })
         })
 
-        context('returning Ok from Else', () => {
+        context('returning Err from Else', () => {
             const givenAnIfElseStep = () => {
                 const ifElseStep = ifElse({
                     'If Step': step((ctx) => { return Ok(false) }),
