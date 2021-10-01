@@ -70,6 +70,7 @@ describe('A use case', () => {
                 //then
                 assert.deepStrictEqual(ret, {
                     type: "use case",
+                    identifier: "aUseCase",
                     description: "A use case",
                     steps: [
                         { type: "step", description: "A step", steps: null },
@@ -142,8 +143,34 @@ describe('A use case', () => {
             assert.ok(ret1.isOk)
             assert.ok(ret2.isErr)
         })
-    })
 
+        context('using a custom identifier', () =>{
+            const givenTheSimplestUseCase = () => {
+                const uc = usecase('A use case', {
+                    identifier: 'myCustomIdentifier',
+                    'A step': step(() => { return Ok() })
+                })
+                return uc
+            }
+
+            it('should doc', () => {
+                //given
+                const uc = givenTheSimplestUseCase()
+                //when
+                const ret = uc.doc()
+                //then
+                assert.deepStrictEqual(ret, {
+                    type: "use case",
+                    identifier: "myCustomIdentifier",
+                    description: "A use case",
+                    steps: [
+                        { type: "step", description: "A step", steps: null }
+                    ]
+                })
+            })
+        })
+    })
+   
     describe('the simplest use case with context', () => {
 
         const givenTheSimplestUseCaseWithContext = () => {
@@ -207,7 +234,6 @@ describe('A use case', () => {
             })
         })
     })
-
 
     describe('the simplest use case with context returning multiple Oks or Errs', () => {
 
@@ -353,6 +379,7 @@ describe('A use case', () => {
                     param2: Number
                 },
                 type: "use case",
+                identifier: "aUseCase",
                 description: "A use case",
                 steps: [
                     { type: "step", description: "A step", steps: null }
@@ -461,6 +488,7 @@ describe('A use case', () => {
                 },
                 response: { resp: Number },
                 type: "use case",
+                identifier: "aUseCase",
                 description: "A use case",
                 steps: [
                     { type: "step", description: "A step", steps: null }
@@ -626,7 +654,6 @@ describe('A use case', () => {
             assert.deepStrictEqual(ret.err, { request: [{ notDefined: true }] })
         })
     })
-
 
     describe('the simplest use case with setup function', () => {
 

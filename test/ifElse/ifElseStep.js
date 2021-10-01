@@ -59,6 +59,7 @@ describe('If Else step', () => {
             assert.deepStrictEqual(ret,
                 {
                     type: 'use case',
+                    identifier: "aUseCase",
                     description: 'A use case',
                     steps: [{
                         description: 'A condition',

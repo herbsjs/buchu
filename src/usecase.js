@@ -2,12 +2,21 @@ const { step } = require('./step')
 const { Err } = require('./results')
 const { schema } = require('./schema')
 const { v4: uuidv4 } = require('uuid')
+const stringToCamelCase = require('./helpers/stringToCamelCase')
 
 class UseCase {
 
     constructor(description, body) {
         this.type = "use case"
         this.description = description
+
+        //identification
+        if(body.identifier){
+            this._identifier = body.identifier
+            delete body.identifier 
+        } else {
+            this._identifier = stringToCamelCase(description)
+        }
 
         //request schema
         this._requestSchema = body.request
@@ -77,6 +86,7 @@ class UseCase {
         const docStep = this._mainStep.doc()
         if (this._requestSchema) docStep.request = this._requestSchema
         if (this._responseSchema) docStep.response = this._responseSchema
+        if (this._identifier) docStep.identifier = this._identifier
         return docStep
     }
 
