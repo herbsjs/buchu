@@ -683,7 +683,6 @@ describe('A use case', () => {
         })
     })
 
-
     describe('the simplest use case with authorization request', () => {
         const givenTheSimplestUseCaseWithAuthorizationRequest = () => {
             const uc = usecase('A use case', {
