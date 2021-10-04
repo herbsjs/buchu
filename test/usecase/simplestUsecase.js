@@ -110,7 +110,7 @@ describe('A use case', () => {
 
             const givenTheSimplestUseCaseWithError = () => {
                 const uc = usecase('A use case', {
-                    'A misstep': step(() => { return Err.notFound(Err.notFound({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),) })
+                    'A misstep': step(() => { return Err.notFound(Err.notFound({ message: 'message', payload: { entity: 'user' }, cause: { foo: 'bar' } }),) })
                 })
                 return uc
             }
@@ -124,10 +124,10 @@ describe('A use case', () => {
                 assert.ok(ret.isErr)
                 assert.notDeepStrictEqual(ret.err, {
                     payload: { entity: 'user' },
-                    cause: {foo: 'bar'},
+                    cause: { foo: 'bar' },
                     code: 'NOT_FOUND',
                     message: 'message'
-                  })
+                })
             })
         })
 
@@ -144,7 +144,7 @@ describe('A use case', () => {
             assert.ok(ret2.isErr)
         })
 
-        context('using a custom identifier', () =>{
+        context('using a custom identifier', () => {
             const givenTheSimplestUseCase = () => {
                 const uc = usecase('A use case', {
                     identifier: 'myCustomIdentifier',
@@ -170,7 +170,7 @@ describe('A use case', () => {
             })
         })
     })
-   
+
     describe('the simplest use case with context', () => {
 
         const givenTheSimplestUseCaseWithContext = () => {
@@ -680,6 +680,66 @@ describe('A use case', () => {
             //then
             assert.ok(ret.isOk)
             assert.deepStrictEqual(ret.value, { step1: 1 })
+        })
+    })
+
+
+    describe('the simplest use case with authorization request', () => {
+        const givenTheSimplestUseCaseWithAuthorizationRequest = () => {
+            const uc = usecase('A use case', {
+                authorizeRequest: { user: String },
+                'Step 1': step(() => { return Ok() })
+            })
+            return uc
+        }
+
+        it('should initiate', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
+            //then
+            assert.deepStrictEqual(uc.description, 'A use case')
+        })
+
+        it('should run', async () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
+            //when
+            const ret = await uc.run()
+            //then
+            assert.ok(ret.isOk)
+        })
+
+        it('should audit', async () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
+            //when
+            await uc.run()
+            //then
+            assert.deepStrictEqual(uc.auditTrail, {
+                type: 'use case',
+                description: 'A use case',
+                transactionId: uc._mainStep._auditTrail.transactionId,
+                elapsedTime: uc._mainStep._auditTrail.elapsedTime,
+                return: { Ok: {} },
+                steps: [{ type: 'step', description: 'Step 1', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
+            })
+        })
+
+        it('should doc', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepStrictEqual(ret, {
+                type: "use case",
+                identifier: "aUseCase",
+                description: "A use case",
+                authorizeRequest: { user: String },
+                steps: [
+                    { type: "step", description: "Step 1", steps: null }
+                ]
+            })
         })
     })
 
