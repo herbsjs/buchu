@@ -9,21 +9,25 @@ Uniform, auditable and secure use case javascript library. Influenced by Clean A
 
 ## index
 
-- [Installing](#installing)
-- [Using](#using)
-- [Motivations](#motivations)
-    - [Maintainability](#maintainability)
-    - [Metadata for system intent](#metadata-for-system-intent)
-    - [Auditable and Secure](#auditable-and-ecure)
-- [Audit](#audit)
-- [Request Validation](#request-validation)
-- [Use Case](#use-case)
-    - [What is it?](#what-is-it?)
-    - [Best-pratices](#best-pratices)
-- [Errors](#errors)
-- [Contribute](#contribute)
-- [The Herb](#the-herb)
-- [License](#license)
+- [buchu](#buchu)
+  - [index](#index)
+    - [Installing](#installing)
+    - [Using](#using)
+    - [Motivations](#motivations)
+      - [Maintainability](#maintainability)
+      - [Metadata for system intent](#metadata-for-system-intent)
+      - [Auditable and Secure](#auditable-and-secure)
+    - [Audit](#audit)
+    - [Request Validation](#request-validation)
+      - [Request types](#request-types)
+    - [Use Case](#use-case)
+      - [What is it?](#what-is-it)
+      - [Best pratices](#best-pratices)
+    - [Errors](#errors)
+    - [To Do](#to-do)
+    - [Contribute](#contribute)
+    - [The Herb](#the-herb)
+    - [License](#license)
 
 
 ### Installing
@@ -53,12 +57,18 @@ const dependency = {
 const addOrUpdateItem = (injection) =>
 
     usecase('Add or Update an Item on a to-do List', {
+        
+        // Indentifier
+        indentifier: "upsertItem",
 
         // Input/Request type validation
         request: { listId: Number, item: Item },
 
         // Output/Response type
         response: { item: Item },
+
+        // Authorization request
+        authorizeRequest: { user: User }
 
         // Authorization Audit
         authorize: async (user) => user.isAdmin ? Ok() : Err(),
@@ -116,9 +126,11 @@ app.put('/items/:item', function (req, res) {
 
 ```javascript
 {
+  indentifier: 'upsertItem',
   type: 'use case',
   description: 'Add or Update an Item on a to-do List',
   request: { listId: Number, item: Item },
+  authorizeRequest: { user: User }
   response: String,
   steps: [
     { type: 'step', description: 'Check if the Item is valid', steps: null },
