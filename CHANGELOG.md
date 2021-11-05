@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/herbsjs/buchu/compare/v1.3.0...v1.3.1) (2021-11-05)
+
+
+### Bug Fixes
+
+* **ifstep audit trail:** fix of ifstep audit trail and context when use nestedsteps ([8c8b2d1](https://github.com/herbsjs/buchu/commit/8c8b2d1aecdd7a2b243cd6d2e5476c750e21b96e)), closes [#51](https://github.com/herbsjs/buchu/issues/51)
+
 # [1.3.0](https://github.com/herbsjs/buchu/compare/v1.2.0...v1.3.0) (2021-08-25)
 
 
