@@ -683,65 +683,6 @@ describe('A use case', () => {
         })
     })
 
-    describe('the simplest use case with authorization request', () => {
-        const givenTheSimplestUseCaseWithAuthorizationRequest = () => {
-            const uc = usecase('A use case', {
-                authorizeRequest: { user: String },
-                'Step 1': step(() => { return Ok() })
-            })
-            return uc
-        }
-
-        it('should initiate', () => {
-            //given
-            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
-            //then
-            assert.deepStrictEqual(uc.description, 'A use case')
-        })
-
-        it('should run', async () => {
-            //given
-            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
-            //when
-            const ret = await uc.run()
-            //then
-            assert.ok(ret.isOk)
-        })
-
-        it('should audit', async () => {
-            //given
-            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
-            //when
-            await uc.run()
-            //then
-            assert.deepStrictEqual(uc.auditTrail, {
-                type: 'use case',
-                description: 'A use case',
-                transactionId: uc._mainStep._auditTrail.transactionId,
-                elapsedTime: uc._mainStep._auditTrail.elapsedTime,
-                return: { Ok: {} },
-                steps: [{ type: 'step', description: 'Step 1', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
-            })
-        })
-
-        it('should doc', () => {
-            //given
-            const uc = givenTheSimplestUseCaseWithAuthorizationRequest()
-            //when
-            const ret = uc.doc()
-            //then
-            assert.deepStrictEqual(ret, {
-                type: "use case",
-                identifier: "aUseCase",
-                description: "A use case",
-                authorizeRequest: { user: String },
-                steps: [
-                    { type: "step", description: "Step 1", steps: null }
-                ]
-            })
-        })
-    })
-
     describe('the simplest use case with authorization', () => {
 
         const givenTheSimplestUseCaseWithAuthorization = () => {

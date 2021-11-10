@@ -26,10 +26,6 @@ class UseCase {
         this._responseSchema = body.response
         delete body.response
 
-        //authorization request
-        this._authorizeRequest = body.authorizeRequest
-        delete body.authorizeRequest
-
         //authotization function
         this._authorize = body.authorize
         this._hasAuthorization = null
@@ -91,7 +87,6 @@ class UseCase {
         if (this._requestSchema) docStep.request = this._requestSchema
         if (this._responseSchema) docStep.response = this._responseSchema
         if (this._identifier) docStep.identifier = this._identifier
-        if (this._authorizeRequest) docStep.authorizeRequest = this._authorizeRequest
         return docStep
     }
 

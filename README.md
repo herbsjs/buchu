@@ -67,9 +67,6 @@ const addOrUpdateItem = (injection) =>
         // Output/Response type
         response: { item: Item },
 
-        // Authorization request
-        authorizeRequest: { user: User }
-
         // Authorization Audit
         authorize: async (user) => user.isAdmin ? Ok() : Err(),
 
@@ -130,7 +127,6 @@ app.put('/items/:item', function (req, res) {
   type: 'use case',
   description: 'Add or Update an Item on a to-do List',
   request: { listId: Number, item: Item },
-  authorizeRequest: { user: User }
   response: String,
   steps: [
     { type: 'step', description: 'Check if the Item is valid', steps: null },
