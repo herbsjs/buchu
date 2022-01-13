@@ -326,4 +326,4 @@ https://en.wikipedia.org/wiki/Agathosma_betulina
 ### License
 
 **Buchu** is released under the
-[MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE.md).
+[MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE).
