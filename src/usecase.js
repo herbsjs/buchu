@@ -3,6 +3,7 @@ const { Err } = require('./results')
 const { schema } = require('./schema')
 const { v4: uuidv4 } = require('uuid')
 const objectSerialization = require('./helpers/objectSerialization')
+const crypto = require('crypto')
 
 class UseCase {
 
@@ -36,8 +37,8 @@ class UseCase {
         this._auditTrail = this._mainStep._auditTrail
         this._auditTrail.type = this.type
         this._auditTrail.description = description
-        this._auditTrail.transactionId = uuidv4()
         this._auditTrail.request = null
+        this._auditTrail.transactionId = crypto.randomUUID()
 
         // run flag
         this._hasRun = false
