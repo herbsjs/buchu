@@ -30,7 +30,6 @@ describe('A use case', () => {
             it('should audit', async () => {
                 //given
                 const uc = givenAMultiStepUseCase()
-                console.log(uc);
                 //when
                 await uc.run()
                 //then
