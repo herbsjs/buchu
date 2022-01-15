@@ -1,4 +1,5 @@
 const { Ok, Err } = require('./results')
+const objectSerialization = require('./helpers/objectSerialization')
 
 const stepTypes = Object.freeze({
     Func: 1,
@@ -76,14 +77,15 @@ class Step {
         this._auditTrail.return = ""
         
         ret = await _runFunction()
-        if (ret !== undefined) this._auditTrail.return = JSON.parse(JSON.stringify(ret))
+        if (ret !== undefined) this._auditTrail.return = objectSerialization(ret)
+
         if (ret) {
             this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
             return ret
         }
 
         ret = await _runNestedSteps()
-        this._auditTrail.return = JSON.parse(JSON.stringify(ret))
+        this._auditTrail.return = objectSerialization(ret)
         this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
         return ret
     }
