@@ -2,6 +2,7 @@ const { step } = require('./step')
 const { Err } = require('./results')
 const { schema } = require('./schema')
 const { v4: uuidv4 } = require('uuid')
+const objectSerialization = require('./helpers/objectSerialization')
 
 class UseCase {
 
@@ -36,6 +37,7 @@ class UseCase {
         this._auditTrail.type = this.type
         this._auditTrail.description = description
         this._auditTrail.transactionId = uuidv4()
+        this._auditTrail.request = null
 
         // run flag
         this._hasRun = false
@@ -62,6 +64,7 @@ class UseCase {
             return Err('Not Authorized')
 
         if (request) {
+            this._auditTrail.request = objectSerialization(request)
             const requestSchema = schema(this._requestSchema)
             requestSchema.validate(request)
             if (!requestSchema.isValid) return Err({ request: requestSchema.errors })
