@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/herbsjs/buchu/compare/v1.3.1...v1.3.2) (2022-01-15)
+
+
+### Bug Fixes
+
+* update gotu and suma dependencies ([f9707a8](https://github.com/herbsjs/buchu/commit/f9707a89d3f77f4038d64cf940eab55168afc313))
+
 ## [1.3.1](https://github.com/herbsjs/buchu/compare/v1.3.0...v1.3.1) (2021-11-05)
 
 
