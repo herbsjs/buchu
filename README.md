@@ -283,7 +283,7 @@ Err._buildCustomErr('ERROR_CODE', message, payload, cause)
 
 ### To Do
 
-- [X] Base - Run a use case
+- [X] Base - Run a use case 
 - [X] Use Case Error - Ok or Error results for a use case (Rust inspired)
 - [X] Steps - Enable multiple steps for a use case
 - [X] Nested Steps - Enable multiple steps for a parent step
