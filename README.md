@@ -220,7 +220,7 @@ A Use Case reflects a single action exposed by the Domain to the end user. Ex: _
 
 Internaly a Use Case control the interaction between Entities, Repositories (infrastructure) and other Domain components.
 
-It should:
+It should: 
 
 - Be modeled around business
 - Be reusable
