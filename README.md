@@ -322,7 +322,7 @@ https://www.herbslist.net/
 
 https://en.wikipedia.org/wiki/Agathosma_betulina
 
-### License
+### License 
 
 **Buchu** is released under the
 [MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE).
