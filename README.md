@@ -305,7 +305,6 @@ Err._buildCustomErr('ERROR_CODE', message, payload, cause)
 - [ ] Deal with no default results (Ok/Err)
 - [X] Deal with async / await steps
 - [X] Use case examples
-- [ ] Doc - Documentation and samples for each feature
 
 ### Contribute
 
