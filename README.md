@@ -314,7 +314,7 @@ Now, if you do not have technical knowledge and also have intend to help us, do 
 
 If you would like to help contribute to this repository, please see [CONTRIBUTING](https://github.com/herbsjs/buchu/blob/master/.github/CONTRIBUTING.md)
 
-### The Herb
+### The Herbs
 
 Buchu is most often used as a stimulating tonic and a diuretic. It is now commonly used to treat urinary tract infections. In the past, this herb has also been used to treat arthritis, kidney stones and gout. It can also be used externally for bruises and sprains.
 
