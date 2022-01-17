@@ -27,7 +27,7 @@ class Step {
         }
     }
 
-    async run(request) {
+    async run() {
         const startTime = process.hrtime.bigint() /* measure time */
 
         const type = stepTypes.check(this._body)
