@@ -220,7 +220,7 @@ A Use Case reflects a single action exposed by the Domain to the end user. Ex: _
 
 Internaly a Use Case control the interaction between Entities, Repositories (infrastructure) and other Domain components.
 
-It should:
+It should: 
 
 - Be modeled around business
 - Be reusable
@@ -283,7 +283,7 @@ Err._buildCustomErr('ERROR_CODE', message, payload, cause)
 
 ### To Do
 
-- [X] Base - Run a use case
+- [X] Base - Run a use case 
 - [X] Use Case Error - Ok or Error results for a use case (Rust inspired)
 - [X] Steps - Enable multiple steps for a use case
 - [X] Nested Steps - Enable multiple steps for a parent step
@@ -305,7 +305,6 @@ Err._buildCustomErr('ERROR_CODE', message, payload, cause)
 - [ ] Deal with no default results (Ok/Err)
 - [X] Deal with async / await steps
 - [X] Use case examples
-- [ ] Doc - Documentation and samples for each feature
 
 ### Contribute
 
@@ -323,7 +322,7 @@ https://www.herbslist.net/
 
 https://en.wikipedia.org/wiki/Agathosma_betulina
 
-### License
+### License 
 
 **Buchu** is released under the
 [MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE).
