@@ -428,6 +428,83 @@ describe('A use case', () => {
             assert.ok(ret.isErr)
             assert.deepStrictEqual(ret.err, { request: [{ notDefined: true }] })
         })
+
+        describe('as an entity', () => {
+            const aSecondaryEntity = entity('aSecondaryEntity',{
+                param1: field(Number)
+            })
+    
+            const aPrimaryEntity = entity('aPrimaryEntity',{
+                secondaryEntity: field(aSecondaryEntity)
+            })
+    
+            const givenASimpleUseCaseWithEntityInsideEntityRequest = () => {
+                const uc = usecase('A use case', {
+                    request: {
+                        secondaryEntity: aSecondaryEntity
+                    },
+                    'A step': step((ctx) => {
+                        ctx.ret.response = ctx.req.secondaryEntity
+                        return Ok()
+                    }),
+                })
+                return uc
+            }
+
+            it('should audit the entity', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithRequest()
+                const anEntity = entity('anEntiy',{
+                    param1: field(String),
+                    param2: field(Number)
+                })
+
+                const anInstantiatedEntity = new anEntity()
+                anInstantiatedEntity.param1 = 'test'
+                anInstantiatedEntity.param2 = 2
+
+                //when
+                await uc.run(anInstantiatedEntity)
+                //then
+                assert.deepStrictEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
+                    request: {
+                        param1: 'test',
+                        param2: 2
+                    },
+                    return: { Ok: { response3: 3 } },
+                    steps: [
+                        { type: 'step', description: 'A step', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
+                })
+            })
+
+            it('should audit the entity inside the entity cicularly', async () => {
+                //given
+                const uc = givenASimpleUseCaseWithEntityInsideEntityRequest()
+
+                const anInstantiatedPrimaryEntity = new aPrimaryEntity()
+                const anInstantiatedSecondaryEntity = new aSecondaryEntity()
+                anInstantiatedSecondaryEntity.param1 = 1
+                anInstantiatedPrimaryEntity.secondaryEntity = anInstantiatedSecondaryEntity              
+
+                //when
+                await uc.run(anInstantiatedPrimaryEntity)
+                //then
+                assert.deepStrictEqual(uc.auditTrail, {
+                    type: 'use case',
+                    description: 'A use case',
+                    transactionId: uc._mainStep._auditTrail.transactionId,
+                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
+                    request: { secondaryEntity: { param1: 1 } },
+                    return: { Ok: { response: { param1: 1 } } },
+                    steps: [
+                        { type: 'step', description: 'A step', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
+                })
+            })
+        })
     })
 
     describe('the simplest use case with response', () => {

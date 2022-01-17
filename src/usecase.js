@@ -1,7 +1,6 @@
 const { step } = require('./step')
 const { Err } = require('./results')
 const { schema } = require('./schema')
-const { v4: uuidv4 } = require('uuid')
 const objectSerialization = require('./helpers/objectSerialization')
 const crypto = require('crypto')
 

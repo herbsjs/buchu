@@ -137,32 +137,6 @@ describe('If Else step', () => {
             return uc
         }
 
-        const aSecondaryEntity = entity('aSecondaryEntity',{
-            param1: field(Number)
-        })
-
-        const aPrimaryEntity = entity('aPrimaryEntity',{
-            secondaryEntity: field(aSecondaryEntity)
-        })
-
-        const givenASimpleUseCaseWithEntityInsideEntityRequest = () => {
-            const uc = usecase('A use case', {
-                request: {
-                    secondaryEntity: aSecondaryEntity
-                },
-                'A condition': ifElse({
-                    'If Step': step((ctx) => {
-                        if (ctx.req.secondaryEntity.param1 == 1) return Ok(true)
-                        if (ctx.req.secondaryEntity.param1 == 2) return Ok(false)
-                        return Err()
-                    }),
-                    'Then Step': step((ctx) => { ctx.ret.return1 = 1; return Ok() }),
-                    'Else Step': step((ctx) => { ctx.ret.return2 = 2; return Ok() })
-                }),
-            })
-            return uc
-        }
-
         it('should run - then', async () => {
             //given
             const uc = givenASimpleUseCaseWithRequest()
@@ -215,93 +189,6 @@ describe('If Else step', () => {
                         elapsedTime: uc._auditTrail.steps[0].elapsedTime,
                     },
                 ],
-            })
-        })
-
-        describe('as an entity', () => {
-            it('should audit the entity', async () => {
-                //given
-                const uc = givenASimpleUseCaseWithRequest()
-                const anEntity = entity('anEntiy',{
-                    param1: field(Number)
-                })
-
-                const anInstantiatedEntity = new anEntity()
-                anInstantiatedEntity.param1 = 1                
-
-                //when
-                await uc.run(anInstantiatedEntity)
-                //then
-                assert.deepStrictEqual(uc.auditTrail, {
-                    type: 'use case',
-                    description: 'A use case',
-                    transactionId: uc._mainStep._auditTrail.transactionId,
-                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
-                    request: {
-                        param1: 1
-                    },
-                    return: { Ok: { return1: 1 } },
-                    steps: [
-                        {
-                            type: 'if else',
-                            description: 'A condition',
-                            returnIf: {
-                                description: 'If Step',
-                                elapsedTime: uc._auditTrail.steps[0].returnIf.elapsedTime,
-                                type: 'step',
-                                return: { Ok: true }
-                            },
-                            returnThen: {
-                                description: "Then Step",
-                                elapsedTime: uc._auditTrail.steps[0].returnThen.elapsedTime,
-                                return: { Ok: '' },
-                                type: "step"
-                            },
-                            elapsedTime: uc._auditTrail.steps[0].elapsedTime,
-                        },
-                    ],
-                })
-            })
-
-            it('should audit the entity inside the entity cicularly', async () => {
-                //given
-                const uc = givenASimpleUseCaseWithEntityInsideEntityRequest()
-
-                const anInstantiatedPrimaryEntity = new aPrimaryEntity()
-                const anInstantiatedSecondaryEntity = new aSecondaryEntity()
-                anInstantiatedSecondaryEntity.param1 = 1
-                anInstantiatedPrimaryEntity.secondaryEntity = anInstantiatedSecondaryEntity              
-
-                //when
-                await uc.run(anInstantiatedPrimaryEntity)
-                //then
-                assert.deepStrictEqual(uc.auditTrail, {
-                    type: 'use case',
-                    description: 'A use case',
-                    transactionId: uc._mainStep._auditTrail.transactionId,
-                    elapsedTime: uc._mainStep._auditTrail.elapsedTime,
-                    request: { secondaryEntity: { param1: 1 } },
-                    return: { Ok: { return1: 1 } },
-                    steps: [
-                        {
-                            type: 'if else',
-                            description: 'A condition',
-                            returnIf: {
-                                description: 'If Step',
-                                elapsedTime: uc._auditTrail.steps[0].returnIf.elapsedTime,
-                                type: 'step',
-                                return: { Ok: true }
-                            },
-                            returnThen: {
-                                description: "Then Step",
-                                elapsedTime: uc._auditTrail.steps[0].returnThen.elapsedTime,
-                                return: { Ok: '' },
-                                type: "step"
-                            },
-                            elapsedTime: uc._auditTrail.steps[0].elapsedTime,
-                        },
-                    ],
-                })
             })
         })
     })
