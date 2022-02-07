@@ -1,7 +1,9 @@
 const { step } = require('./step')
 const { Err } = require('./results')
 const { schema } = require('./schema')
+const objectSerialization = require('./helpers/objectSerialization')
 const crypto = require('crypto')
+
 class UseCase {
 
     constructor(description, body) {
@@ -34,6 +36,7 @@ class UseCase {
         this._auditTrail = this._mainStep._auditTrail
         this._auditTrail.type = this.type
         this._auditTrail.description = description
+        this._auditTrail.request = null
         this._auditTrail.transactionId = crypto.randomUUID()
 
         // run flag
@@ -61,6 +64,7 @@ class UseCase {
             return Err('Not Authorized')
 
         if (request) {
+            this._auditTrail.request = objectSerialization(request)
             const requestSchema = schema(this._requestSchema)
             requestSchema.validate(request)
             if (!requestSchema.isValid) return Err({ request: requestSchema.errors })
