@@ -1,4 +1,5 @@
 const { Ok, Err } = require('./results')
+const objectSerialization = require('./helpers/objectSerialization')
 
 const stepTypes = Object.freeze({
     Func: 1,
@@ -18,11 +19,15 @@ class Step {
         this._auditTrail = { type: this.type }
         this.context = {
             ret: {},
-            req: {}
+            req: {},
+            _stopExecution: undefined,
+            stop() {
+                this._stopExecution = true
+            }
         }
     }
 
-    async run(request) {
+    async run() {
         const startTime = process.hrtime.bigint() /* measure time */
 
         const type = stepTypes.check(this._body)
@@ -54,9 +59,14 @@ class Step {
 
                 let ret = await step.run()
 
+                if (step.context._stopExecution) 
+                    step.auditTrail.stopped = true
+                
                 this._auditTrail.steps.push(step.auditTrail)
 
                 if (ret.isErr) return ret
+
+                if(step.context._stopExecution) break
             }
             let ret = this.context.ret
             return Ok(ret)
@@ -67,14 +77,15 @@ class Step {
         this._auditTrail.return = ""
         
         ret = await _runFunction()
-        if (ret !== undefined) this._auditTrail.return = JSON.parse(JSON.stringify(ret))
+        if (ret !== undefined) this._auditTrail.return = objectSerialization(ret)
+
         if (ret) {
             this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
             return ret
         }
 
         ret = await _runNestedSteps()
-        this._auditTrail.return = JSON.parse(JSON.stringify(ret))
+        this._auditTrail.return = objectSerialization(ret)
         this._auditTrail.elapsedTime = process.hrtime.bigint() - startTime
         return ret
     }

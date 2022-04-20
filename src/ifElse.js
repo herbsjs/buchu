@@ -11,7 +11,10 @@ class IfElse {
     _addMeta(info) {
         const [description, step] = info
         step.description = description
-        step.context = this.context
+
+        if(this.context)
+            step.context = this.context
+
         return step
     }
 
@@ -26,13 +29,17 @@ class IfElse {
         const thenStep = this._addMeta(thenInfo)
         const elseStep = this._addMeta(elseInfo)
 
-        const ifRet = this._auditTrail.returnIf = await ifStep.run()
+        const ifRet = await ifStep.run()
+        this._auditTrail.returnIf = ifStep.auditTrail
+
         let ret
         if (ifRet && ifRet.isOk && ifRet.value === true) {
-            ret = this._auditTrail.returnThen = await thenStep.run()
+            ret = await thenStep.run()
+            this._auditTrail.returnThen = thenStep.auditTrail
         }
         else if (ifRet && ifRet.isOk && ifRet.value === false) {
-            ret = this._auditTrail.returnElse = await elseStep.run()
+            ret = await elseStep.run()
+            this._auditTrail.returnElse = elseStep.auditTrail
         }
         else
             ret = this._auditTrail.returnIf = Err({ value: ifRet, msg: 'Invalid ifElse' })

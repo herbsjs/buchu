@@ -10,7 +10,7 @@ const listItems = (injection) =>
 
         request: { listId: Number },
 
-        authorize: (user) => user.isAdmin ? Ok() : Err(),
+        authorize: async (user) => user.isAdmin ? Ok() : Err(),
 
         setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
 

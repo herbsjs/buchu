@@ -1,28 +1,25 @@
 {
-  "name": "buchu",
-  "version": "1.1.1",
+  "name": "@herbsjs/buchu",
+  "version": "1.4.0",
   "description": "Uniform, auditable and secure use case javascript library",
   "main": "./src/buchu.js",
   "scripts": {
     "test": "mocha --timeout 999999 --colors --recursive ./test",
     "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
     "lint:fix": "npx eslint \"**/*.{js,jsx}\" --fix",
-    "semantic-release": "semantic-release"
+    "semantic-release": "semantic-release",
+    "commit": "cz"
   },
   "directories": {
     "lib": "src",
     "test": "test",
     "example": "examples"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/herbsjs/buchu.git"
-  },
   "bugs": {
     "url": "https://github.com/herbsjs/buchu/issues/"
   },
   "engines": {
-    "node": ">= 12.3.0"
+    "node": ">= 14.x"
   },
   "keywords": [
     "buchu",
@@ -33,49 +30,40 @@
   "homepage": "https://github.com/herbsjs/buchu#readme",
   "license": "MIT",
   "dependencies": {
-    "suma": "^1.0.10",
-    "uuid": "^8.3.2"
+    "@herbsjs/suma": "^1.2.0"
   },
   "optionalDependencies": {
-    "gotu": "^1.0.21"
+    "@herbsjs/gotu": "^1.1.0"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^5.0.1",
-    "@semantic-release/commit-analyzer": "^8.0.1",
-    "@semantic-release/git": "^9.0.0",
-    "@semantic-release/npm": "^7.1.3",
-    "@semantic-release/release-notes-generator": "^9.0.2",
-    "@semantic-release/github": "^7.2.3",
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.2",
+    "@semantic-release/npm": "^8.0.3",
+    "@semantic-release/release-notes-generator": "^10.0.3",
     "babel-eslint": "^10.1.0",
-    "eslint": "^7.27.0",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.6.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.23.4",
-    "eslint-plugin-prettier": "^3.4.0",
-    "mocha": "^8.4.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-prettier": "^4.0.0",
+    "mocha": "^9.1.4",
     "nyc": "^15.1.0",
-    "prettier": "^2.3.0",
-    "semantic-release": "^17.4.3"
+    "@babel/eslint-parser": "^7.16.5",
+    "prettier": "^2.5.1",
+    "semantic-release": "^18.0.1"
   },
-  "release": {
-    "plugins": [
-      "@semantic-release/commit-analyzer",
-      "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/npm",
-        {
-          "npmPublish": false
-        }
-      ],
-      "@semantic-release/changelog",
-      "@semantic-release/git"
-    ],
-    "branches": [
-      "master",
-      {
-        "name": "semantic_version",
-        "prerelease": false
-      }
-    ],
-    "repositoryUrl": "https://github.com/jhomarolo/buchu"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/herbsjs/buchu.git"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -1,5 +1,5 @@
 const { addOrUpdateItem } = require('./addOrUpdateItem')
-const { Ok, Err } = require('../../../src/buchu')
+const { Ok } = require('../../../src/buchu')
 const assert = require('assert')
 
 describe('Add Or Update Item Use Case', () => {
@@ -23,13 +23,13 @@ describe('Add Or Update Item Use Case', () => {
 
             // When
             const uc = addOrUpdateItem(injection)
-            uc.authorize(user)
+            await uc.authorize(user)
             const ret = await uc.run(req)
 
             // Then
             assert.ok(ret.isOk)
-            assert.equal(ret.value.item.id, 100)
-            assert.equal(ret.value.item.name, "Do not forget this")
+            assert.strictEqual(ret.value.item.id, 100)
+            assert.strictEqual(ret.value.item.name, "Do not forget this")
         })
     })
 
@@ -52,13 +52,13 @@ describe('Add Or Update Item Use Case', () => {
 
             // When
             const uc = addOrUpdateItem(injection)
-            uc.authorize(user)
+            await uc.authorize(user)
             const ret = await uc.run(req)
 
             // Then
             assert.ok(ret.isOk)
-            assert.equal(ret.value.item.id, 200)
-            assert.equal(ret.value.item.name, "Do not forget this")
+            assert.strictEqual(ret.value.item.id, 200)
+            assert.strictEqual(ret.value.item.name, "Do not forget this")
         })
     })
 })

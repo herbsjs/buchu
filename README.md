@@ -6,9 +6,29 @@
 
 Uniform, auditable and secure use case javascript library. Influenced by Clean Architecture and Trailblazer
 
-### Installing
 
-$ npm install buchu
+## index
+
+- [Installing](#installing)
+- [Using](#using)
+- [Motivations](#motivations)
+    - [Maintainability](#maintainability)
+    - [Metadata for system intent](#metadata-for-system-intent)
+    - [Auditable and Secure](#auditable-and-ecure)
+- [Audit](#audit)
+- [Request Validation](#request-validation)
+- [Use Case](#use-case)
+    - [What is it?](#what-is-it?)
+    - [Best-pratices](#best-pratices)
+- [Errors](#errors)
+- [Contribute](#contribute)
+- [The Herb](#the-herb)
+- [License](#license)
+
+
+### Installing
+``` $ npm install @herbsjs/buchu ```
+
 ### Using
 
 Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/examples) or for a complete solution using herbsJS [here](https://github.com/herbsjs/todolist-on-herbs).
@@ -16,7 +36,7 @@ Check the complete examples [here](https://github.com/herbsjs/buchu/tree/master/
 usecases/addOrUpdateItem.js:
 
 ```javascript
-const { entity, field } = require('gotu')
+const { entity, field } = require('@herbsjs/gotu')
 const Item = entity('Item', {
   id: field(Number),
   description: field(String),
@@ -24,7 +44,7 @@ const Item = entity('Item', {
   position: field(Number)
 })
 
-const { Ok, Err, usecase, step, ifElse } = require('../../../src/buchu')
+const { Ok, Err, usecase, step, ifElse } = require('@herbsjs/buchu')
 const dependency = {
     ItemRepository: require('../repositories/ItemRepository').ItemRepository,
     ...
@@ -34,18 +54,18 @@ const addOrUpdateItem = (injection) =>
 
     usecase('Add or Update an Item on a to-do List', {
 
-        // Input/Request type validation 
+        // Input/Request type validation
         request: { listId: Number, item: Item },
 
         // Output/Response type
         response: { item: Item },
 
-        // Authorization Audit  
-        authorize: (user) => user.isAdmin ? Ok() : Err(),
+        // Authorization Audit
+        authorize: async (user) => user.isAdmin ? Ok() : Err(),
 
         // Dependency Injection control
         setup: (ctx) => ctx.di = Object.assign({}, dependency, injection),
-      
+
         // Step audit and description
         'Check if the Item is valid': step((ctx) => {
             ...
@@ -77,6 +97,8 @@ const addOrUpdateItem = (injection) =>
         })
     })
 ```
+to another resources like, `ctx.stop()` used to stop a use case next steps execution, look [here](https://github.com/herbsjs/buchu/tree/master/examples)    
+
 controler/addOrUpdateItem.js:
 
 ```javascript
@@ -85,7 +107,7 @@ app.put('/items/:item', function (req, res) {
     const user = { name: 'John', id: '923b8b9a', isAdmin: true } // from session
 
     const uc = addOrUpdateItem()
-    uc.authorize(user)
+    await uc.authorize(user)
     const ret = await uc.run(request)
     res.send(ret)
 })
@@ -101,7 +123,7 @@ app.put('/items/:item', function (req, res) {
   steps: [
     { type: 'step', description: 'Check if the Item is valid', steps: null },
     { type: 'step', description: 'Check if the List exists', steps: null },
-    { 
+    {
         type: 'if else',
         if: { type: 'step', description: 'If the Item exists', steps: null },
         then: { type: 'step', description: 'Then: Add a new Item to the List', steps: null },
@@ -110,6 +132,22 @@ app.put('/items/:item', function (req, res) {
   ]
 }
 ```
+### Motivations
+
+#### Maintainability
+
+"Programs must be written for people to read, and only incidentally for machines to execute" - Harold Abelson, Structure and Interpretation of Computer Programs
+
+Understanding what a software is doing from a business perspective is a must in order to be able to change it quickly and in a sustainable way.
+
+#### Metadata for system intent
+
+It should be easy to retrieve a system's metadata for all its use cases and steps. This info could be used to leverage innovative interfaces (ex: dynamic admin pages, use case documentations, etc), helping narrow the gap between developers, testers and product managers.
+
+#### Auditable and Secure
+
+It should be easy to have enterprise grade features even for simple applications. Authorization and auditing, for instance, should be available out of the box. Not using should be opt-in.
+
 ### Audit
 
 It is possible to retrieve the audit trail of an use case after its execution
@@ -131,7 +169,7 @@ It is possible to retrieve the audit trail of an use case after its execution
         { type: 'step', description: 'Check if the Item is valid', elapsedTime: 208201n , return: {} },
         { type: 'step', description: 'Check if the List exists', elapsedTime: 114300n , return: {}  },
         {
-            type: 'if else', 
+            type: 'if else',
             description: 'Add or Update the Item',
             returnIf: { Ok: true },
             returnThen: {}
@@ -140,6 +178,7 @@ It is possible to retrieve the audit trail of an use case after its execution
 }
 ```
 TIP: If you need to audit the exceptions thrown by the use case use `process.env.HERBS_EXCEPTION = "audit"`. This will swallow the exceptions and return a Err on the step. Recommended for production environments.
+
 
 ### Request Validation
 
@@ -150,7 +189,7 @@ const addOrUpdateItem = (injection) =>
 
     usecase('Add or Update an Item on a to-do List', {
 
-        // Input/Request type validation 
+        // Input/Request type validation
         request: { listId: Number, item: Object },
 
     ...
@@ -173,22 +212,6 @@ A field in a request can be basic types from Javascript or entities created from
 
 `Entity`: entity object represents an gotu base entity.
 
-### Motivations
-
-#### Maintainability
-
-"Programs must be written for people to read, and only incidentally for machines to execute" - Harold Abelson, Structure and Interpretation of Computer Programs
-
-Understanding what a software is doing from a business perspective is a must in order to be able to change it quickly and in a sustainable way.
-
-#### Metadata for system intent
-
-It should be easy to retrieve a system's metadata for all its use cases and steps. This info could be used to leverage innovative interfaces (ex: dynamic admin pages, use case documentations, etc), helping narrow the gap between developers, testers and product managers.
-
-#### Auditable and Secure
-
-It should be easy to have enterprise grade features even for simple applications. Authorization and auditing, for instance, should be available out of the box. Not using should be opt-in.
-
 ### Use Case
 
 #### What is it?
@@ -197,7 +220,7 @@ A Use Case reflects a single action exposed by the Domain to the end user. Ex: _
 
 Internaly a Use Case control the interaction between Entities, Repositories (infrastructure) and other Domain components.
 
-It should:
+It should: 
 
 - Be modeled around business
 - Be reusable
@@ -238,9 +261,29 @@ References:
 - Use Case diagram [link](http://www.agilemodeling.com/artifacts/useCaseDiagram.htm)
 - Service Layer [link](https://martinfowler.com/eaaCatalog/serviceLayer.html)
 
+### Errors
+
+As you noted into [example](#using) session you can return an Err object, this class can be an generic Err as can be a structured Err too
+
+``` js 
+const options = { message: 'message', payload: { entity: 'user' }, cause: Err("my message") || new Error() }
+Err.notFound(options),
+Err.alreadyExists(options),
+Err.invalidEntity(options),
+Err.invalidArguments({ ...options, args: { name: 'cant be empty' }}),
+Err.permissionDenied(options),
+Err.unknown(options),
+Err.buildCustomErr(options),
+```
+or you can create your own structured Err
+
+``` js
+Err._buildCustomErr('ERROR_CODE', message, payload, cause)
+```
+
 ### To Do
 
-- [X] Base - Run a use case
+- [X] Base - Run a use case 
 - [X] Use Case Error - Ok or Error results for a use case (Rust inspired)
 - [X] Steps - Enable multiple steps for a use case
 - [X] Nested Steps - Enable multiple steps for a parent step
@@ -262,7 +305,6 @@ References:
 - [ ] Deal with no default results (Ok/Err)
 - [X] Deal with async / await steps
 - [X] Use case examples
-- [ ] Doc - Documentation and samples for each feature
 
 
 ### Contribute
@@ -281,7 +323,7 @@ https://www.herbslist.net/
 
 https://en.wikipedia.org/wiki/Agathosma_betulina
 
-### License
+### License 
 
 **Buchu** is released under the
-[MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE.md).
+[MIT license](https://github.com/herbsjs/buchu/blob/development/LICENSE).
