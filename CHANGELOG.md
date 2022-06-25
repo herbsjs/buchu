@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/herbsjs/buchu/compare/v1.5.1...v1.6.0) (2022-06-25)
+
+
+### Features
+
+* **add request.from() feature:** add request.from() feature which receives an object and settings ([98fdda7](https://github.com/herbsjs/buchu/commit/98fdda79fdeff0c51401f8fb9ad0233d53f53b9f)), closes [#53](https://github.com/herbsjs/buchu/issues/53)
+
 ## [1.5.1](https://github.com/herbsjs/buchu/compare/v1.5.0...v1.5.1) (2022-04-21)
 
 
