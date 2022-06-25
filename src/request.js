@@ -1,23 +1,21 @@
-class Request {
-    from(requestInputObject, settings) {
-        const objectInstance = new requestInputObject()
-        const objectProperties =  Object.getOwnPropertyNames(objectInstance)
-        const requestResultObject = {}
-        const requestSchemaClone = { ...requestInputObject.prototype.meta.schema }
+const request = {
+    from: (entity, settings) => {
+        const instance = new entity()
+        const properties =  Object.getOwnPropertyNames(instance)
+        const result = {}
+        const schema = { ...entity.prototype.meta.schema }
 
-        objectProperties.forEach (property => {
+        properties.forEach (property => {
             if (settings && settings.ignore && settings.ignore.includes(property)) return
 
-            requestResultObject[property] = requestSchemaClone[property].type
+            result[property] = schema[property].type
         })
 
         if (settings && settings.ignoreIDs)
-            delete requestResultObject.id
+            delete result.id
 
-        return requestResultObject
+        return result
     }
 }
-
-const request = new Request()
 
 module.exports = { request }
