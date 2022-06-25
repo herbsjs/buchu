@@ -13,7 +13,7 @@ const anEntityWithEntityField = entity('anEntityWithEntityField',{
     entityField: field(anEntity)
 })
 
-describe.only('Request from', () => {
+describe('Request from', () => {
     it('should extract class schema with whole structure', () => {
         //given
         const schemaExpected = {
