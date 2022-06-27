@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/herbsjs/buchu/compare/v1.6.0...v1.6.1) (2022-06-27)
+
+
+### Bug Fixes
+
+* **herbs:** update herbs dependencies ([feef52a](https://github.com/herbsjs/buchu/commit/feef52a218f4d00e212981c637c4196f8101f55e))
+
 # [1.6.0](https://github.com/herbsjs/buchu/compare/v1.5.1...v1.6.0) (2022-06-25)
 
 
