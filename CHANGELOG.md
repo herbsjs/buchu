@@ -1,3 +1,10 @@
+## [1.6.2](https://github.com/herbsjs/buchu/compare/v1.6.1...v1.6.2) (2022-07-27)
+
+
+### Bug Fixes
+
+* **deps:** bump @herbsjs/gotu from 1.1.2 to 1.2.0 ([5582a4d](https://github.com/herbsjs/buchu/commit/5582a4d62578601fea1098242f324ad41fb59567))
+
 ## [1.6.1](https://github.com/herbsjs/buchu/compare/v1.6.0...v1.6.1) (2022-06-27)
 
 
