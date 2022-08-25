@@ -110,7 +110,7 @@ describe('A use case', () => {
 
             const givenTheSimplestUseCaseWithError = () => {
                 const uc = usecase('A use case', {
-                    'A misstep': step(() => { return Err.notFound(Err.notFound({ message: 'message', payload: { entity: 'user' }, cause: {foo: 'bar'} }),) })
+                    'A misstep': step(() => { return Err.notFound(Err.notFound({ message: 'message', payload: { entity: 'user' }, cause: { foo: 'bar' } }),) })
                 })
                 return uc
             }
@@ -124,10 +124,10 @@ describe('A use case', () => {
                 assert.ok(ret.isErr)
                 assert.notDeepStrictEqual(ret.err, {
                     payload: { entity: 'user' },
-                    cause: {foo: 'bar'},
+                    cause: { foo: 'bar' },
                     code: 'NOT_FOUND',
                     message: 'message'
-                  })
+                })
             })
         })
 
@@ -430,14 +430,14 @@ describe('A use case', () => {
         })
 
         describe('as an entity', () => {
-            const aSecondaryEntity = entity('aSecondaryEntity',{
+            const aSecondaryEntity = entity('aSecondaryEntity', {
                 param1: field(Number)
             })
-    
-            const aPrimaryEntity = entity('aPrimaryEntity',{
+
+            const aPrimaryEntity = entity('aPrimaryEntity', {
                 secondaryEntity: field(aSecondaryEntity)
             })
-    
+
             const givenASimpleUseCaseWithEntityInsideEntityRequest = () => {
                 const uc = usecase('A use case', {
                     request: {
@@ -454,7 +454,7 @@ describe('A use case', () => {
             it('should audit the entity', async () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithRequest()
-                const anEntity = entity('anEntiy',{
+                const anEntity = entity('anEntiy', {
                     param1: field(String),
                     param2: field(Number)
                 })
@@ -488,7 +488,7 @@ describe('A use case', () => {
                 const anInstantiatedPrimaryEntity = new aPrimaryEntity()
                 const anInstantiatedSecondaryEntity = new aSecondaryEntity()
                 anInstantiatedSecondaryEntity.param1 = 1
-                anInstantiatedPrimaryEntity.secondaryEntity = anInstantiatedSecondaryEntity              
+                anInstantiatedPrimaryEntity.secondaryEntity = anInstantiatedSecondaryEntity
 
                 //when
                 await uc.run(anInstantiatedPrimaryEntity)
@@ -746,7 +746,7 @@ describe('A use case', () => {
         const givenTheSimplestUseCaseWithAuthorization = () => {
             const uc = usecase('A use case', {
                 authorize: (user) => { return user.isAdmin ? Ok() : Err() },
-                'Step 1': step(() => { return Ok() })
+                'Step 1': step((ctx) => { return Ok(ctx.ret = ctx.user) })
             })
             return uc
         }
@@ -770,6 +770,17 @@ describe('A use case', () => {
                 assert.ok(ret.isOk)
             })
 
+            it('Should return the user of authorization', async () => {
+                //given
+                const uc = givenTheSimplestUseCaseWithAuthorization()
+                const user = { user: "John", id: '923b8b9a', isAdmin: true }
+                //when
+                await uc.authorize(user)
+                const ret = await uc.run()
+                //then
+                assert.deepStrictEqual(ret.value, user)
+            })
+
             it('should audit', async () => {
                 //given
                 const uc = givenTheSimplestUseCaseWithAuthorization()
@@ -783,14 +794,14 @@ describe('A use case', () => {
                     transactionId: uc._mainStep._auditTrail.transactionId,
                     elapsedTime: uc._mainStep._auditTrail.elapsedTime,
                     request: null,
-                    return: { Ok: {} },
+                    return: { Ok: { user: "John", id: '923b8b9a', isAdmin: true } },
                     authorized: true,
                     user: {
                         user: 'John',
                         id: '923b8b9a',
                         isAdmin: true
                     },
-                    steps: [{ type: 'step', description: 'Step 1', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
+                    steps: [{ type: 'step', description: 'Step 1', return: { Ok: { user: "John", id: '923b8b9a', isAdmin: true } }, elapsedTime: uc._auditTrail.steps[0].elapsedTime }]
                 })
             })
         })
