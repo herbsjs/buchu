@@ -17,6 +17,7 @@ Uniform, auditable and secure use case javascript library. Influenced by Clean A
     - [Auditable and Secure](#auditable-and-ecure)
 - [Audit](#audit)
 - [Request Validation](#request-validation)
+- [Authorization](#authorization)
 - [Use Case](#use-case)
     - [What is it?](#what-is-it?)
     - [Best-pratices](#best-pratices)
@@ -211,6 +212,14 @@ A field in a request can be basic types from Javascript or entities created from
 `Array`: the Array class is a object that is used in the construction of arrays.
 
 `Entity`: entity object represents an gotu base entity.
+
+### Authorization
+
+A usecase must declare the authorization function, which receives a user parameter, defined by some middleware in the infrastructure layer, this received parameter will be included within the ctx, and can be accessed from the steps with `ctx.user`.
+
+```javascript
+authorize: (user) => user.isAdmin ? Ok() : Err(),
+```
 
 ### Use Case
 
