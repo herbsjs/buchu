@@ -1,3 +1,10 @@
+## [1.6.3](https://github.com/herbsjs/buchu/compare/v1.6.2...v1.6.3) (2022-09-04)
+
+
+### Bug Fixes
+
+* **request.from:** now ignoreIDs works with entities with multiple IDs ([e13e1bd](https://github.com/herbsjs/buchu/commit/e13e1bd858afe38bee018d86bd70cbc19377f70a))
+
 ## [1.6.2](https://github.com/herbsjs/buchu/compare/v1.6.1...v1.6.2) (2022-07-27)
 
 
