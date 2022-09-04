@@ -1,13 +1,14 @@
 const assert = require('assert')
 const { request } = require('../../src/request')
-const { entity, field, id }  = require('@herbsjs/gotu')
+const { entity, field, id } = require('@herbsjs/gotu')
 
-const anEntity = entity('anEntiy',{
+const anEntity = entity('anEntiy', {
     id: id(Number),
-    stringField: field(String)    
+    id2: id(String),
+    stringField: field(String)
 })
 
-const anEntityWithEntityField = entity('anEntityWithEntityField',{
+const anEntityWithEntityField = entity('anEntityWithEntityField', {
     id: id(Number),
     stringField: field(String),
     entityField: field(anEntity)
@@ -17,48 +18,49 @@ describe('Request from', () => {
     it('should extract class schema with whole structure', () => {
         //given
         const schemaExpected = {
-            stringField: String, 
-            id: Number
+            id: Number,
+            id2: String,
+            stringField: String,
         }
 
         //when
         const requestResult = request.from(anEntity)
 
         //then
-        assert.deepEqual(requestResult, schemaExpected)        
+        assert.deepEqual(requestResult, schemaExpected)
     }),
 
-    it('should extract class schema with with entity as a field', () => {
-        //given
-        const entityFieldType = field(anEntity).type
-        const schemaExpected = {
-            id: Number,
-            stringField: String, 
-            entityField: entityFieldType
-        }
+        it('should extract class schema with with entity as a field', () => {
+            //given
+            const entityFieldType = field(anEntity).type
+            const schemaExpected = {
+                id: Number,
+                stringField: String,
+                entityField: entityFieldType
+            }
 
-        //when
-        const requestResult = request.from(anEntityWithEntityField)
+            //when
+            const requestResult = request.from(anEntityWithEntityField)
 
-        //then
-        assert.deepEqual(requestResult, schemaExpected)        
-    }),
+            //then
+            assert.deepEqual(requestResult, schemaExpected)
+        }),
 
-    it('should throw error when trying to transform an object without constructor', () => {
-        //given
-        const emptyObject = {}
+        it('should throw error when trying to transform an object without constructor', () => {
+            //given
+            const emptyObject = {}
 
-        //then
-        assert.throws(() => request.from(emptyObject), Error)
-    }),
+            //then
+            assert.throws(() => request.from(emptyObject), Error)
+        }),
 
-    it('should throw error when trying to transform class without schema', () => {
-        //given
-        class AClass {}
+        it('should throw error when trying to transform class without schema', () => {
+            //given
+            class AClass { }
 
-        //then
-        assert.throws(() => request.from(AClass), Error)
-    })
+            //then
+            assert.throws(() => request.from(AClass), Error)
+        })
 
     it('should remove IDs from main schema when ignoreIDs is true on settings', () => {
         //given
@@ -67,53 +69,53 @@ describe('Request from', () => {
         }
 
         //when
-        const settings = { ignoreIDs : true }
+        const settings = { ignoreIDs: true }
         const requestResult = request.from(anEntity, settings)
 
         //then
-        assert.deepEqual(requestResult, schemaExpected)        
+        assert.deepEqual(requestResult, schemaExpected)
     }),
 
-    it('should remove property from main schema when setted on ignore array', () => {
-        //given
-        const schemaExpected = {
-            id: Number
-        }
+        it('should remove property from main schema when setted on ignore array', () => {
+            //given
+            const schemaExpected = {
+                id: Number
+            }
 
-        //when
-        const settings = { ignore: ['stringField'] }
-        const requestResult = request.from(anEntity, settings)
+            //when
+            const settings = { ignore: ['id2', 'stringField'] }
+            const requestResult = request.from(anEntity, settings)
 
-        //then
-        assert.deepEqual(requestResult, schemaExpected)        
-    }),
+            //then
+            assert.deepEqual(requestResult, schemaExpected)
+        }),
 
-    it('should remove entity as property from main schema when setted on ignore array', () => {
-        //given
-        const schemaExpected = {
-            id: Number,
-            stringField: String
-        }
+        it('should remove entity as property from main schema when setted on ignore array', () => {
+            //given
+            const schemaExpected = {
+                id: Number,
+                stringField: String
+            }
 
-        //when
-        const settings = { ignore: ['entityField'] }
-        const requestResult = request.from(anEntityWithEntityField, settings)
+            //when
+            const settings = { ignore: ['entityField'] }
+            const requestResult = request.from(anEntityWithEntityField, settings)
 
-        //then
-        assert.deepEqual(requestResult, schemaExpected)        
-    }),
+            //then
+            assert.deepEqual(requestResult, schemaExpected)
+        }),
 
-    it('should work with both settings ignoreIDs and ignore setted up', () => {
-        //given
-        const schemaExpected = {
-            stringField: String
-        }
+        it('should work with both settings ignoreIDs and ignore setted up', () => {
+            //given
+            const schemaExpected = {
+                stringField: String
+            }
 
-        //when
-        const settings = { ignoreIDs: true, ignore: ['entityField'] }
-        const requestResult = request.from(anEntityWithEntityField, settings)
+            //when
+            const settings = { ignoreIDs: true, ignore: ['entityField'] }
+            const requestResult = request.from(anEntityWithEntityField, settings)
 
-        //then
-        assert.deepEqual(requestResult, schemaExpected)        
-    })
+            //then
+            assert.deepEqual(requestResult, schemaExpected)
+        })
 })
