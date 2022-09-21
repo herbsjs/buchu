@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/herbsjs/buchu/compare/v1.6.3...v2.0.0) (2022-09-21)
+
+
+### Features
+
+* **usecase.js:** added user inside context ([f4819ba](https://github.com/herbsjs/buchu/commit/f4819baba2e24fa3903e59fec3fad5dfd4289ef7)), closes [#84](https://github.com/herbsjs/buchu/issues/84)
+
+
+### BREAKING CHANGES
+
+* **usecase.js:** Projects may hbe using ctx.user wich is now user otherwise
+
 ## [1.6.3](https://github.com/herbsjs/buchu/compare/v1.6.2...v1.6.3) (2022-09-04)
 
 
