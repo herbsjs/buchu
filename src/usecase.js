@@ -46,6 +46,7 @@ class UseCase {
     async authorize(user) {
         this._hasAuthorization = false
         this._auditTrail.user = { ...user }
+        this._mainStep.context.user = user
         if (this._authorize) {
             const ret = await this._authorize(user)
             if (ret.isOk) this._hasAuthorization = true
