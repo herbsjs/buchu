@@ -33,11 +33,17 @@ class UseCase {
         this._mainStep.description = description
 
         // audit trail
+       
         this._auditTrail = this._mainStep._auditTrail
         this._auditTrail.type = this.type
         this._auditTrail.description = description
         this._auditTrail.request = null
         this._auditTrail.transactionId = crypto.randomUUID()
+        if (body.auditTrail) 
+        {
+            this._auditTrail.configuration = body.auditTrail
+            delete body.auditTrail
+        }
 
         // run flag
         this._hasRun = false
@@ -85,6 +91,33 @@ class UseCase {
     }
 
     get auditTrail() {
+
+        if(this._mainStep.auditTrail.configuration && this._mainStep.auditTrail.configuration?.mode === "minimal")
+        {
+            delete this._mainStep.auditTrail.steps
+            delete this._mainStep.auditTrail.request
+            delete this._mainStep.auditTrail.return
+            delete this._mainStep.auditTrail.user
+        }
+
+        if(this._mainStep.auditTrail.configuration && this._mainStep.auditTrail.configuration.output)
+        {
+            if(this._mainStep.auditTrail.configuration.output.steps === false)
+                delete this._mainStep.auditTrail.steps
+            
+            if(this._mainStep.auditTrail.configuration.output.request === false)
+                delete this._mainStep.auditTrail.request
+
+            if(this._mainStep.auditTrail.configuration.output.return === false)
+                delete this._mainStep.auditTrail.return
+
+            if(this._mainStep.auditTrail.configuration.output.user === false)
+                delete this._mainStep.auditTrail.user
+            
+            if(this._mainStep.auditTrail.configuration.output.elapsedTime === false)
+                delete this._mainStep.auditTrail.elapsedTime
+        }
+        
         return this._mainStep.auditTrail
     }
 
