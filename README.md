@@ -178,7 +178,7 @@ It is possible to retrieve the audit trail of an use case after its execution
     ]
 }
 ```
-You can also configure the output to ignore some fields of the audit trail by choosing those options:
+You can also configure the output to ignore some fields of the audit trail by choosing those options (mode or output):
 
 ```javascript
     auditTrail: {
