@@ -92,29 +92,23 @@ class UseCase {
 
     get auditTrail() {
 
-        if(this._mainStep.auditTrail.configuration && this._mainStep.auditTrail.configuration?.mode === "minimal")
-        {
-            delete this._mainStep.auditTrail.steps
-            delete this._mainStep.auditTrail.request
-            delete this._mainStep.auditTrail.return
-            delete this._mainStep.auditTrail.user
-        }
+        const auditTrailConfiguration = this._mainStep.auditTrail.configuration
 
-        if(this._mainStep.auditTrail.configuration && this._mainStep.auditTrail.configuration.output)
+        if(auditTrailConfiguration)
         {
-            if(this._mainStep.auditTrail.configuration.output.steps === false)
+            if(auditTrailConfiguration.steps === false)
                 delete this._mainStep.auditTrail.steps
             
-            if(this._mainStep.auditTrail.configuration.output.request === false)
+            if(auditTrailConfiguration.request === false)
                 delete this._mainStep.auditTrail.request
 
-            if(this._mainStep.auditTrail.configuration.output.return === false)
+            if(auditTrailConfiguration.return === false)
                 delete this._mainStep.auditTrail.return
 
-            if(this._mainStep.auditTrail.configuration.output.user === false)
+            if(auditTrailConfiguration.user === false)
                 delete this._mainStep.auditTrail.user
             
-            if(this._mainStep.auditTrail.configuration.output.elapsedTime === false)
+            if(auditTrailConfiguration.elapsedTime === false)
                 delete this._mainStep.auditTrail.elapsedTime
         }
         

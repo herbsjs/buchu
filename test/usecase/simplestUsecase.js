@@ -855,12 +855,16 @@ describe('A use case', () => {
         })
     })
 
-    describe('the simplest use case with auditTrail mode configuration', () => {
+    describe('the simplest use case with auditTrail removing all fields configuration', () => {
 
-        const givenTheSimplestUseCaseWithAuditTrailMode = () => {
+        const givenTheSimplestUseCaseWithAuditTrail = () => {
             const uc = usecase('A use case', {
                 auditTrail: {
-                    mode: "minimal"
+                        request: false, 
+                        steps: false, 
+                        return: false, 
+                        user: false,
+                        elapsedTime: false,
                 },
         
                 'A step': step(() => { return Ok() }),
@@ -870,7 +874,7 @@ describe('A use case', () => {
 
         it('should run', async () => {
             //given
-            const uc = givenTheSimplestUseCaseWithAuditTrailMode()
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
             //when
             const ret = await uc.run()
             //then
@@ -879,22 +883,22 @@ describe('A use case', () => {
 
         it('should audit', async () => {
             //given
-            const uc = givenTheSimplestUseCaseWithAuditTrailMode()
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
             //when
             await uc.run()
             //then
             assert.deepStrictEqual(uc.auditTrail, {
                 type: 'use case',
                 description: 'A use case',
-                configuration:{mode: "minimal"},
-                transactionId: uc._mainStep._auditTrail.transactionId,
-                elapsedTime: uc._mainStep._auditTrail.elapsedTime,
+                configuration:{ request: false,  steps: false,  return: false,user: false, elapsedTime:false},
+                transactionId: uc._mainStep._auditTrail.transactionId
+               
             })
         })
 
         it('should doc', () => {
             //given
-            const uc = givenTheSimplestUseCaseWithAuditTrailMode()
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
             //when
             const ret = uc.doc()
             //then
@@ -909,16 +913,14 @@ describe('A use case', () => {
 
     })
 
-    describe('the simplest use case with auditTrail output configuration', () => {
+    describe('the simplest use case with auditTrail removing some fields configuration', () => {
 
         const givenTheSimplestUseCaseWithAuditTrail = () => {
             const uc = usecase('A use case', {
                 auditTrail: {
-                    output:{
                         return: false, 
                         user: false,
                         elapsedTime: false,
-                    }
                 },
         
                 'A step': step(() => { return Ok() }),
@@ -944,7 +946,7 @@ describe('A use case', () => {
             assert.deepStrictEqual(uc.auditTrail, {
                 type: 'use case',
                 description: 'A use case',
-                configuration:{output:{return: false,user: false, elapsedTime:false}},
+                configuration:{return: false,user: false, elapsedTime:false},
                 transactionId: uc._mainStep._auditTrail.transactionId,
                 request: null,
                 steps: [

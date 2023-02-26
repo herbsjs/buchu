@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha --timeout 999999 --colors --recursive ./test",
     "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
+    "coverage": "npx nyc --reporter=lcov --reporter=html --reporter=text-summary npm test",
     "lint:fix": "npx eslint \"**/*.{js,jsx}\" --fix",
     "semantic-release": "semantic-release",
     "commit": "cz"
