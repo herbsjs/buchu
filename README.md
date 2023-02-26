@@ -178,21 +178,6 @@ It is possible to retrieve the audit trail of an use case after its execution
     ]
 }
 ```
-You can also configure the output to ignore some fields of the audit trail by choosing those options (mode or output):
-
-```javascript
-    auditTrail: {
-        mode: "minimal", // if minimal won't output especific fields: steps, request, return and user
-        output:{
-            steps: false,  // if the audit trail should return the usecase steps
-            request: false, // if the audit trail should return the usecase request
-            return:false, // if the audit trail should return the usecase return
-            user:false, // if the audit trail should return the usecase user
-            elapsedTime: false, // if the audit trail should return the elapsed time
-            }
-    }
-```
-
 You can use like this: 
 
 ```javascript
