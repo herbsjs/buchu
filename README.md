@@ -178,17 +178,15 @@ It is possible to retrieve the audit trail of an use case after its execution
     ]
 }
 ```
-You can use like this: 
+You can use like this, using a config inside use case to remove some output fields: 
 
 ```javascript
 
   const givenTheSimplestUseCaseWithAuditTrail = () => {
             const uc = usecase('A use case', {
                 auditTrail: {
-                    output:{
                         return: false, 
                         user: false,
-                    }
                 },
         
                 'A step': step(() => { return Ok() }),
