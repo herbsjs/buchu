@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/herbsjs/buchu/compare/v2.0.0...v2.1.0) (2023-03-06)
+
+
+### Features
+
+* **audittrail:** now audit trail can be configured by mode or output type to ignore some fields ([41f5f8b](https://github.com/herbsjs/buchu/commit/41f5f8b6b6a7cc7fd3a83437896ba2d22363a121)), closes [#90](https://github.com/herbsjs/buchu/issues/90)
+
 # [2.0.0](https://github.com/herbsjs/buchu/compare/v1.6.3...v2.0.0) (2022-09-21)
 
 
