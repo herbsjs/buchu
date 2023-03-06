@@ -210,7 +210,6 @@ describe('A use case', () => {
         })
     })
 
-
     describe('the simplest use case with context returning multiple Oks or Errs', () => {
 
         context('returning Ok', () => {
@@ -712,7 +711,6 @@ describe('A use case', () => {
         })
     })
 
-
     describe('the simplest use case with setup function', () => {
 
         const givenTheSimplestUseCaseWithSetupFunction = () => {
@@ -855,5 +853,122 @@ describe('A use case', () => {
                 })
             })
         })
+    })
+
+    describe('the simplest use case with auditTrail removing all fields configuration', () => {
+
+        const givenTheSimplestUseCaseWithAuditTrail = () => {
+            const uc = usecase('A use case', {
+                auditTrail: {
+                        request: false, 
+                        steps: false, 
+                        return: false, 
+                        user: false,
+                        elapsedTime: false,
+                },
+        
+                'A step': step(() => { return Ok() }),
+            })
+            return uc
+        }
+
+        it('should run', async () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
+            //when
+            const ret = await uc.run()
+            //then
+            assert.ok(ret.isOk)
+        })
+
+        it('should audit', async () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
+            //when
+            await uc.run()
+            //then
+            assert.deepStrictEqual(uc.auditTrail, {
+                type: 'use case',
+                description: 'A use case',
+                configuration:{ request: false,  steps: false,  return: false,user: false, elapsedTime:false},
+                transactionId: uc._mainStep._auditTrail.transactionId
+               
+            })
+        })
+
+        it('should doc', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepStrictEqual(ret, {
+                type: "use case",
+                description: "A use case",
+                steps: [
+                    { type: "step", description: "A step", steps: null }
+                ]
+            })
+        })
+
+    })
+
+    describe('the simplest use case with auditTrail removing some fields configuration', () => {
+
+        const givenTheSimplestUseCaseWithAuditTrail = () => {
+            const uc = usecase('A use case', {
+                auditTrail: {
+                        return: false, 
+                        user: false,
+                        elapsedTime: false,
+                },
+        
+                'A step': step(() => { return Ok() }),
+            })
+            return uc
+        }
+
+        it('should run', async () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
+            //when
+            const ret = await uc.run()
+            //then
+            assert.ok(ret.isOk)
+        })
+
+        it('should audit', async () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
+            //when
+            await uc.run()
+            //then
+            assert.deepStrictEqual(uc.auditTrail, {
+                type: 'use case',
+                description: 'A use case',
+                configuration:{return: false,user: false, elapsedTime:false},
+                transactionId: uc._mainStep._auditTrail.transactionId,
+                request: null,
+                steps: [
+                    { type: 'step', description: 'A step', return: { Ok: '' }, elapsedTime: uc._auditTrail.steps[0].elapsedTime },
+              ],
+            })
+        })
+
+        it('should doc', () => {
+            //given
+            const uc = givenTheSimplestUseCaseWithAuditTrail()
+            //when
+            const ret = uc.doc()
+            //then
+            assert.deepStrictEqual(ret, {
+                type: "use case",
+                description: "A use case",
+                steps: [
+                    { type: "step", description: "A step", steps: null }
+                ]
+            })
+        })
+
     })
 })

@@ -264,6 +264,24 @@ describe('A step', () => {
                 assert.deepStrictEqual(ret.value, 1)
             })
 
+            it('should check toString() function', async () => {
+                //given
+                const st = givenTheSimplestStepReturningValue()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepStrictEqual(ret.toString(), "Ok: 1")
+            })
+
+            it('should check toJSON() function', async () => {
+                //given
+                const st = givenTheSimplestStepReturningValue()
+                //when
+                const ret = await st.run()
+                //then
+                assert.deepStrictEqual(ret.toJSON(), { Ok: 1 })
+            })
+
             it('should audit', async () => {
                 //given
                 const st = givenTheSimplestStepReturningValue()

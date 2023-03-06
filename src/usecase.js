@@ -33,11 +33,17 @@ class UseCase {
         this._mainStep.description = description
 
         // audit trail
+       
         this._auditTrail = this._mainStep._auditTrail
         this._auditTrail.type = this.type
         this._auditTrail.description = description
         this._auditTrail.request = null
         this._auditTrail.transactionId = crypto.randomUUID()
+        if (body.auditTrail) 
+        {
+            this._auditTrail.configuration = body.auditTrail
+            delete body.auditTrail
+        }
 
         // run flag
         this._hasRun = false
@@ -85,6 +91,27 @@ class UseCase {
     }
 
     get auditTrail() {
+
+        const auditTrailConfiguration = this._mainStep.auditTrail.configuration
+
+        if(auditTrailConfiguration)
+        {
+            if(auditTrailConfiguration.steps === false)
+                delete this._mainStep.auditTrail.steps
+            
+            if(auditTrailConfiguration.request === false)
+                delete this._mainStep.auditTrail.request
+
+            if(auditTrailConfiguration.return === false)
+                delete this._mainStep.auditTrail.return
+
+            if(auditTrailConfiguration.user === false)
+                delete this._mainStep.auditTrail.user
+            
+            if(auditTrailConfiguration.elapsedTime === false)
+                delete this._mainStep.auditTrail.elapsedTime
+        }
+        
         return this._mainStep.auditTrail
     }
 

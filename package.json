@@ -6,6 +6,7 @@
   "scripts": {
     "test": "mocha --timeout 999999 --colors --recursive ./test",
     "lint": "npx eslint \"**/*.{js,jsx}\" --quiet",
+    "coverage": "npx nyc --reporter=lcov --reporter=html --reporter=text-summary npm test",
     "lint:fix": "npx eslint \"**/*.{js,jsx}\" --fix",
     "semantic-release": "semantic-release",
     "commit": "cz"
@@ -48,7 +49,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.1.0",
-    "mocha": "^10.0.0",
+    "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "@babel/eslint-parser": "^7.18.2",
     "prettier": "^2.7.1",

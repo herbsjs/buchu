@@ -178,6 +178,54 @@ It is possible to retrieve the audit trail of an use case after its execution
     ]
 }
 ```
+You can use like this, using a config inside use case to remove some output fields: 
+
+```javascript
+
+  const givenTheSimplestUseCaseWithAuditTrail = () => {
+            const uc = usecase('A use case', {
+                auditTrail: {
+                        return: false, 
+                        user: false,
+                },
+        
+                'A step': step(() => { return Ok() }),
+            })
+            return uc
+        }
+
+```
+
+In this example, the return of the audit trail you be: 
+
+```
+{
+    configuration:{output: {return: false, user: false}}
+    description:'A use case'
+    elapsedTime:362700n
+    request:null
+    steps: [ {type: 'step', description: 'A step', return: {Ok: ''}, elapsedTime: 76100n}]
+    transactionId:'cfd88c2b-1d34-4c81-a07c-ac4ea5420d04'
+    type:'use case'
+}
+
+```
+
+You can use those configuration to remove fields:
+
+```javascript
+
+const auditTrail = {
+        steps: false
+        request : false
+        return : false
+        user : false
+        elapsedTime : false
+  }
+
+```
+
+
 TIP: If you need to audit the exceptions thrown by the use case use `process.env.HERBS_EXCEPTION = "audit"`. This will swallow the exceptions and return a Err on the step. Recommended for production environments.
 
 
