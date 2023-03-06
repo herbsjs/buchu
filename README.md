@@ -211,20 +211,17 @@ In this example, the return of the audit trail you be:
 
 ```
 
-Or like this: 
+You can use those configuration to remove fields:
 
 ```javascript
 
-  const givenTheSimplestUseCaseWithAuditTrail = () => {
-            const uc = usecase('A use case', {
-                auditTrail: {
-                    mode: "minimal"
-                },
-        
-                'A step': step(() => { return Ok() }),
-            })
-            return uc
-        }
+const auditTrail = {
+        steps: false
+        request : false
+        return : false
+        user : false
+        elapsedTime : false
+  }
 
 ```
 
