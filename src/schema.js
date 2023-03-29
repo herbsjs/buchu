@@ -26,8 +26,8 @@ class SchemaValidator {
 
     static isBaseEntity(value) {
         try{
-            const { BaseEntity } = require('@herbsjs/gotu/src/baseEntity')
-            return value.prototype instanceof BaseEntity
+            const { entity } = require('@herbsjs/gotu')
+            return entity.isEntity(value)
         }catch{
             return false
         }
