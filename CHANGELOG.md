@@ -1,3 +1,10 @@
+## [2.1.1-beta.1](https://github.com/herbsjs/buchu/compare/v2.1.0...v2.1.1-beta.1) (2023-03-29)
+
+
+### Bug Fixes
+
+* **require:** bump suma and gotu version + fix check if entity ([ab1fe9f](https://github.com/herbsjs/buchu/commit/ab1fe9fdb87b97da7eaa82bb36f4d428a3c8f50c))
+
 # [2.1.0](https://github.com/herbsjs/buchu/compare/v2.0.0...v2.1.0) (2023-03-06)
 
 
