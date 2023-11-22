@@ -95,8 +95,8 @@ describe('Schema validation',  () => {
 
     it('should not create schema with entity when gotu is not installed',  () => {
         // given uninstalled context
-        const baseEntityPath = require.resolve('@herbsjs/gotu/src/baseEntity')
-        const tempPath = baseEntityPath.replace('baseEntity.js','baseEntity_temp')
+        const baseEntityPath = require.resolve('@herbsjs/gotu')
+        const tempPath = baseEntityPath.replace('gotu.js','gotu.js_temp')
         const storedCache = require.cache[baseEntityPath]
         fs.renameSync(baseEntityPath,tempPath)
         delete require.cache[baseEntityPath]
